@@ -3,8 +3,8 @@
         <thead>
             <tr>
                 <th>Tanggal</th>
-        <th>Nama Produk</th>
-        <th>Keterangan</th>
+                <th>Nama Produk</th>
+                <th>Keterangan</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>

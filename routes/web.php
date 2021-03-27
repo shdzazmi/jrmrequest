@@ -23,3 +23,4 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('requests', App\Http\Controllers\requestController::class);
+Route::get('/request/export_excel', [App\Http\Controllers\requestController::class, 'export_excel'])->name('export_excel');

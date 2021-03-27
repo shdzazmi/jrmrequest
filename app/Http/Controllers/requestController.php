@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Flash;
 use Response;
 
+use App\Exports\RequestExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class requestController extends AppBaseController
 {
     /** @var  requestRepository */
@@ -152,5 +155,10 @@ class requestController extends AppBaseController
         Flash::success('Request deleted successfully.');
 
         return redirect(route('requests.index'));
+    }
+
+    public function export_excel()
+    {
+        return Excel::download(new RequestExport, 'Request.xlsx');
     }
 }
