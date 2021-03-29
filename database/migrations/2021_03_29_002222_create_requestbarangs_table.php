@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRequestsTable extends Migration
+class CreateRequestbarangsTable extends Migration
 {
 
     /**
@@ -14,10 +14,12 @@ class CreateRequestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('requests', function (Blueprint $table) {
+        Schema::create('requestbarangs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('tanggal');
-            $table->string('nama_produk');
+            $table->string('nama');
+            $table->string('kendaraan');
+            $table->string('part_number');
             $table->string('keterangan');
             $table->timestamps();
             $table->softDeletes();
@@ -31,6 +33,6 @@ class CreateRequestsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('requests');
+        Schema::drop('requestbarangs');
     }
 }

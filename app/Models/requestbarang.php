@@ -7,22 +7,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * Class request
+ * Class requestbarang
  * @package App\Models
- * @version March 26, 2021, 8:38 am UTC
+ * @version March 29, 2021, 12:22 am UTC
  *
  * @property string $tanggal
- * @property string $nama_produk
+ * @property string $nama
+ * @property string $kendaraan
+ * @property string $part_number
  * @property string $keterangan
  */
-class request extends Model
+class requestbarang extends Model
 {
     use SoftDeletes;
 
     use HasFactory;
 
-    public $table = 'requests';
-
+    public $table = 'requestbarangs';
+    
 
     protected $dates = ['deleted_at'];
 
@@ -30,7 +32,9 @@ class request extends Model
 
     public $fillable = [
         'tanggal',
-        'nama_produk',
+        'nama',
+        'kendaraan',
+        'part_number',
         'keterangan'
     ];
 
@@ -42,7 +46,9 @@ class request extends Model
     protected $casts = [
         'id' => 'integer',
         'tanggal' => 'string',
-        'nama_produk' => 'string',
+        'nama' => 'string',
+        'kendaraan' => 'string',
+        'part_number' => 'string',
         'keterangan' => 'string'
     ];
 
@@ -53,8 +59,8 @@ class request extends Model
      */
     public static $rules = [
         'tanggal' => 'required',
-        'nama_produk' => 'required'
+        'nama' => 'required'
     ];
 
-
+    
 }
