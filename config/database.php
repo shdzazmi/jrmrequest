@@ -92,12 +92,12 @@ return [
         ],
 
         'odbc' => [
-            'driver' => 'odbc',
-            'dsn' => 'JRMDB',
-            'database' => 'JRM',
-            'host' => '192.168.1.172',
-            'username' => 'sa',
-            'password' => 'acuan'
+            'driver'   => 'odbc',
+            'dsn'      => env('ODBC_DSN'),
+            'host'     => env('ODBC_HOST'),
+            'database' => env('ODBC_DB'),
+            'username' => env('ODBC_USERNAME'),
+            'password' => env('ODBC_PASSWORD'),
         ],
 
     ],

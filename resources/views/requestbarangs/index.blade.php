@@ -48,10 +48,6 @@
 
         </div>
     </div>
-
-    <div class="content px-3">
-        
-    </div>
 @endsection
 
 @push('page_scripts')

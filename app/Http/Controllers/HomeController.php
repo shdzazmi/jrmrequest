@@ -14,6 +14,11 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $sqlconnect = odbc_connect("JRMDB", "sa", "acuan");
+        $sqlquery = "select * from bank;";
+        $process =odbc_exec($sqlconnect, $sqlquery);
+        odbc_result($process,'bank');
     }
 
     /**
