@@ -22,8 +22,5 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('requests', App\Http\Controllers\requestController::class);
-Route::get('/request/export_excel', [App\Http\Controllers\requestController::class, 'export_excel'])->name('export_excel');
 Route::get('/requestbarang/export_excel', [App\Http\Controllers\requestbarangController::class, 'export_excel'])->name('export_excel');
-
 Route::resource('requestbarangs', App\Http\Controllers\requestbarangController::class);
