@@ -91,6 +91,15 @@ return [
             'prefix_indexes' => true,
         ],
 
+        'odbc' => [
+            'driver' => 'odbc',
+            'dsn' => 'JRMDB',
+            'database' => 'JRM',
+            'host' => '192.168.1.172',
+            'username' => 'sa',
+            'password' => 'acuan'
+        ],
+
     ],
 
     /*
