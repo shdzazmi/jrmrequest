@@ -168,7 +168,6 @@ return [
 
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Abram\Odbc\ODBCServiceProvider::class,
         /*
          * Application Service Providers...
          */

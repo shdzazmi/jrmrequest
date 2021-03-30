@@ -6,6 +6,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | PDO Fetch Style
+    |--------------------------------------------------------------------------
+    |
+    | By default, database results will be returned as instances of the PHP
+    | stdClass object; however, you may desire to retrieve records in an
+    | array format for simplicity. Here you can tweak the fetch style.
+    |
+    */
+
+    'fetch' => PDO::FETCH_CLASS,
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Database Connection Name
     |--------------------------------------------------------------------------
     |
@@ -98,6 +111,10 @@ return [
             'database' => env('ODBC_DB'),
             'username' => env('ODBC_USERNAME'),
             'password' => env('ODBC_PASSWORD'),
+            'grammar' => [
+                'query' => Illuminate\Database\Query\Grammars\SqlServerGrammar::class,
+                'schema' => Illuminate\Database\Schema\Grammars\SqlServerGrammar::class,
+            ],
         ],
 
     ],

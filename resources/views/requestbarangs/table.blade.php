@@ -3,10 +3,10 @@
         <thead>
             <tr>
                 <th>Tanggal</th>
-        <th>Nama</th>
-        <th>Kendaraan</th>
-        <th>Part Number</th>
-        <th>Keterangan</th>
+                <th>Nama</th>
+                <th>Kendaraan</th>
+                <th>Part Number</th>
+                <th>Keterangan</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -14,10 +14,10 @@
         @foreach($requestbarangs as $requestbarang)
             <tr>
                 <td>{{ $requestbarang->tanggal }}</td>
-            <td>{{ $requestbarang->nama }}</td>
-            <td>{{ $requestbarang->kendaraan }}</td>
-            <td>{{ $requestbarang->part_number }}</td>
-            <td>{{ $requestbarang->keterangan }}</td>
+                <td>{{ $requestbarang->nama }}</td>
+                <td>{{ $requestbarang->kendaraan }}</td>
+                <td>{{ $requestbarang->part_number }}</td>
+                <td>{{ $requestbarang->keterangan }}</td>
                 <td width="120">
                     {!! Form::open(['route' => ['requestbarangs.destroy', $requestbarang->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>

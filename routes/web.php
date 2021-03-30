@@ -21,6 +21,10 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/synchronize', [App\Http\Controllers\HomeController::class, 'synchronize'])->name('synchronize');
 
 Route::get('/requestbarang/export_excel', [App\Http\Controllers\requestbarangController::class, 'export_excel'])->name('export_excel');
 Route::resource('requestbarangs', App\Http\Controllers\requestbarangController::class);
+
+Route::post('/storeProduks', 'ProdukController@store');
+Route::get('/getProduks', 'ProdukController@get');

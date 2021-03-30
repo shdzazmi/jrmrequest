@@ -11,7 +11,8 @@
 <li class="nav-item">
     <a href="{{ route('requestbarangs.index') }}"
        class="nav-link {{ Request::is('requestbarangs*') ? 'active' : '' }}">
-        <p>Requestbarangs</p>
+        <i class="nav-icon fas fa-hand-holding-usd"></i>
+        <p>Request barang</p>
     </a>
 </li>
 

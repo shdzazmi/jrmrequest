@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+
 @endsection
 
 @section('content')
@@ -48,13 +48,8 @@
 
         </div>
     </div>
+
+
+
 @endsection
 
-@push('page_scripts')
-    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready( function () {
-        $('#requests-table').DataTable();
-        } );
-    </script>
-@endpush

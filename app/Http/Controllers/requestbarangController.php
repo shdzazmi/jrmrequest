@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreaterequestbarangRequest;
 use App\Http\Requests\UpdaterequestbarangRequest;
+use App\Models\Produk;
 use App\Repositories\requestbarangRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ use App\Exports\RequestbarangExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class requestbarangController extends AppBaseController
+
 {
     /** @var  requestbarangRepository */
     private $requestbarangRepository;
@@ -45,7 +47,9 @@ class requestbarangController extends AppBaseController
      */
     public function create()
     {
-        return view('requestbarangs.create');
+        $produks = Produk::all();
+        return view('requestbarangs.create')
+            ->with('produks', $produks);
     }
 
     /**
@@ -96,14 +100,16 @@ class requestbarangController extends AppBaseController
     public function edit($id)
     {
         $requestbarang = $this->requestbarangRepository->find($id);
-
+        $produks = Produk::all();
         if (empty($requestbarang)) {
             Flash::error('Requestbarang not found');
 
             return redirect(route('requestbarangs.index'));
         }
 
-        return view('requestbarangs.edit')->with('requestbarang', $requestbarang);
+        return view('requestbarangs.edit')
+            ->with('requestbarang', $requestbarang)
+            ->with('produks', $produks);
     }
 
     /**
