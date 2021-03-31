@@ -25,10 +25,13 @@
 @endpush
 
 <!-- Nama Field -->
-<div class="form-group col-sm-6" data-toggle="modal" data-target="#myModal" id="btnModal">
+<div class="form-group col-sm-6">
     {!! Form::label('nama', 'Nama:') !!}
-    {!! Form::text('nama', null, ['class' => 'form-control', 'id' => 'inputNama']) !!}
-</div>
+    <div class="input-group">
+        {!! Form::text('nama', null, ['class' => 'form-control', 'id' => 'inputNama']) !!}
+        {!! Form::button('<i class="fa fa-search"></i>', array('class' => 'btn btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'id' => '#btnModal', 'title' => 'Pencarian')) !!}
+    </div>
+    </div>
 
 <!--Modal-->
 <!-- The Modal -->

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\requestbarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -22,9 +23,8 @@ class HomeController extends Controller
         //Koneksi data server
         $produks = Produk::all();
         if ($produks->isEmpty()) {
-            setlocale(LC_TIME, 'id');
             $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
-            $sqlquery = "select top 100 * from stock where Status='Aktif' ;"; //limit cuma 100 data
+            $sqlquery = "select * from stock where Status='Aktif' ;"; //limit cuma 100 data (top 100)
             $process = odbc_exec($sqlconnect, $sqlquery);
             $items = collect([]);
             while(odbc_fetch_row($process)) {
@@ -32,11 +32,15 @@ class HomeController extends Controller
                     'nama' => utf8_encode(odbc_result($process, 'Nama')),
                     'kendaraan' => utf8_encode(odbc_result($process, 'Ukuran')),
                     'part_number' => utf8_encode(odbc_result($process, 'PartNo1')),
+                    'created_at' => \Carbon\Carbon::now()->toDateTime(),
                 ];
                 $items->push($itemAll);
             }
             odbc_close($sqlconnect);
-            DB::table('Produks')->insert($items->toArray());
+            foreach (array_chunk($items->toArray(),1000)as $data)
+            {
+                Produk::insert($data);
+            }
         }
 
     }
@@ -48,7 +52,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $lastupdate = Produk::first()->created_at;
+        $requestdata = requestbarang::all();
+        $requestcount = $requestdata->count();
+        return view('home')
+            ->with('lastupdate', $lastupdate)
+            ->with('requestcount', $requestcount);
     }
 
     public function synchronize()
@@ -56,9 +65,8 @@ class HomeController extends Controller
         DB::table('Produks')->delete();
         $produks = Produk::all();
         if ($produks->isEmpty()) {
-            setlocale(LC_TIME, 'id');
             $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
-            $sqlquery = "select top 100 * from stock where Status='Aktif' ;"; //limit cuma 100 data
+            $sqlquery = "select * from stock where Status='Aktif' ;"; //limit cuma 100 data (top 100)
             $process = odbc_exec($sqlconnect, $sqlquery);
             $items = collect([]);
             while(odbc_fetch_row($process)) {
@@ -66,12 +74,21 @@ class HomeController extends Controller
                     'nama' => utf8_encode(odbc_result($process, 'Nama')),
                     'kendaraan' => utf8_encode(odbc_result($process, 'Ukuran')),
                     'part_number' => utf8_encode(odbc_result($process, 'PartNo1')),
+                    'created_at' => \Carbon\Carbon::now()->toDateTime(),
                 ];
                 $items->push($itemAll);
             }
             odbc_close($sqlconnect);
-            DB::table('Produks')->insert($items->toArray());
+            foreach (array_chunk($items->toArray(),1000)as $data)
+            {
+                Produk::insert($data);
+            }
         }
-        return view('home');
+        $lastupdate = Produk::first()->created_at;
+        $requestdata = requestbarang::all();
+        $requestcount = $requestdata->count();
+        return redirect('/home')
+            ->with('lastupdate', $lastupdate)
+            ->with('requestcount', $requestcount);
     }
 }

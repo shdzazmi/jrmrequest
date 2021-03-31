@@ -2,21 +2,18 @@
 
 namespace App\Models;
 
+use Eloquent as Model;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class Produk extends Model
 {
+    use HasFactory;
 
     protected $fillable = [
         'nama',
         'kendaraan',
         'part_number'
-    ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
     ];
     use HasFactory;
 

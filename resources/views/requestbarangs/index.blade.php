@@ -1,31 +1,32 @@
 @extends('layouts.app')
-
 @section('css')
-
 @endsection
-
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <div class="col-sm-6">
+                <div class="col-sm">
                     <h1>Request Barang</h1>
                 </div>
-                <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('requestbarangs.create') }}">
-                        Tambah baru
-                    </a>
+                <div class="col-sm" align="right">
+                    <div class='btn-group'>
+                        <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-primary btn-s'>
+                            <i class="fas fa-file-download"></i>
+                        </a>
+                    </div>
+                    <div class='btn-group'>
+                        <a class="btn btn-primary float-right"
+                           href="{{ route('requestbarangs.create') }}">
+                            Tambah baru
+                        </a>
+                    </div>
                 </div>
+
             </div>
             <div class="alert alert-info">
                 <strong>Petunjuk</strong> penggunaan form request.
             </div>
-            <div class='btn-group'>
-                <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-primary btn-s'>
-                    <i class="fas fa-file-download"></i>
-                </a>
-            </div>
+
         </div>
     </section>
 
@@ -35,7 +36,7 @@
 
         <div class="clearfix"></div>
 
-        <div class="card">
+        <div class="card card-outline card-primary">
             <div class="card-body p-0">
                 @include('requestbarangs.table')
 
@@ -45,11 +46,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
-
-
 @endsection
-

@@ -24,7 +24,7 @@ class requestbarang extends Model
     use HasFactory;
 
     public $table = 'requestbarangs';
-    
+
 
     protected $dates = ['deleted_at'];
 
@@ -62,5 +62,8 @@ class requestbarang extends Model
         'nama' => 'required'
     ];
 
-    
+
+
+
+
 }
