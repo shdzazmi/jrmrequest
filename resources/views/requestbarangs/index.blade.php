@@ -24,7 +24,7 @@
 
             </div>
             <div class="alert alert-info">
-                <strong>Petunjuk</strong> penggunaan form request.
+                Request barang berisi data barang kosong yang pernah diminta oleh customer, klik tombol Tambah baru untuk menambahkan data.
             </div>
 
         </div>

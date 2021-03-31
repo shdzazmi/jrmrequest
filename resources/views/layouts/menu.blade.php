@@ -1,12 +1,11 @@
 
-
-
-
-
-
-
-
-
+<li class="nav-item">
+    <a href="/#"
+       class="nav-link">
+        <i class="nav-icon fas fa-file-invoice-dollar"></i>
+        <p>Buat PO</p>
+    </a>
+</li>
 
 <li class="nav-item">
     <a href="{{ route('requestbarangs.index') }}"

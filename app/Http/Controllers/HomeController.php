@@ -53,10 +53,11 @@ class HomeController extends Controller
     public function index()
     {
         $lastupdate = Produk::first()->created_at;
+        $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
         $requestdata = requestbarang::all();
         $requestcount = $requestdata->count();
         return view('home')
-            ->with('lastupdate', $lastupdate)
+            ->with('time', $time)
             ->with('requestcount', $requestcount);
     }
 
@@ -85,10 +86,11 @@ class HomeController extends Controller
             }
         }
         $lastupdate = Produk::first()->created_at;
+        $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
         $requestdata = requestbarang::all();
         $requestcount = $requestdata->count();
         return redirect('/home')
-            ->with('lastupdate', $lastupdate)
+            ->with('time', $time)
             ->with('requestcount', $requestcount);
     }
 }

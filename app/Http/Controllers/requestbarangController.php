@@ -165,6 +165,8 @@ class requestbarangController extends AppBaseController
 
     public function export_excel()
     {
-        return Excel::download(new RequestbarangExport, 'Request Barang Report.xlsx');
+        $datetime = \Carbon\Carbon::now()->toDateTimeString();
+        $datetimes = \Carbon\Carbon::parse($datetime)->format('d-m-Y H;i');
+        return Excel::download(new RequestbarangExport, 'Request Barang '.$datetimes.'.xlsx');
     }
 }

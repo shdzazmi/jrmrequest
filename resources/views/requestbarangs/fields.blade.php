@@ -17,7 +17,7 @@
 @push('page_scripts')
     <script type="text/javascript">
         $('#tanggal').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm:ss',
+            format: 'DD-MM-YYYY HH:mm:ss',
             useCurrent: true,
             sideBySide: true
         })

@@ -14,7 +14,7 @@
         <div class="row mb-2">
             <div class="col-lg-3 col-6">
                 <!-- small card -->
-                <div class="small-box bg-info">
+                <div class="small-box bg-gradient-info">
                     <div class="inner">
                         <h3>{{$requestcount}}</h3>
                         <p>Request Barang</p>
@@ -29,11 +29,11 @@
             </div>
             <div class="col-lg-3 col-6">
                 <!-- small card -->
-                <div class="small-box bg-primary">
+                <div class="small-box bg-gradient-primary">
                     <div class="inner">
                         <b>Sinkronisasi Data</b>
                         <p>Last update:</p>
-                        <p>{{$lastupdate}}</p>
+                        <p>{{$time}}</p>
                     </div>
                     <div class="icon">
                         <i class="fas fa-sync-alt"></i>
