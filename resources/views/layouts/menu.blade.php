@@ -1,9 +1,8 @@
-
 <li class="nav-item">
-    <a href="/#"
-       class="nav-link">
+    <a href="{{ route('salesOrders.index') }}"
+       class="nav-link {{ Request::is('salesOrders*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-file-invoice-dollar"></i>
-        <p>Buat PO</p>
+        <p>Sales Orders</p>
     </a>
 </li>
 
@@ -14,5 +13,6 @@
         <p>Request barang</p>
     </a>
 </li>
+
 
 

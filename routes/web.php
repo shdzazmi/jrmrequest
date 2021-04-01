@@ -28,3 +28,8 @@ Route::resource('requestbarangs', App\Http\Controllers\requestbarangController::
 
 Route::post('/storeProduks', 'ProdukController@store');
 Route::get('/getProduks', 'ProdukController@get');
+
+
+
+
+Route::resource('salesOrders', App\Http\Controllers\SalesOrderController::class);

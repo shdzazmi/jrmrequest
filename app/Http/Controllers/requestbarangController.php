@@ -34,7 +34,7 @@ class requestbarangController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $requestbarangs = $this->requestbarangRepository->paginate(25);
+        $requestbarangs = $this->requestbarangRepository->paginate(20);
 
         return view('requestbarangs.index')
             ->with('requestbarangs', $requestbarangs);

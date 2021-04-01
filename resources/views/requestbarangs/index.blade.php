@@ -23,7 +23,9 @@
                 </div>
 
             </div>
-            <div class="alert alert-info">
+            <div class="alert alert-info alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
                 Request barang berisi data barang kosong yang pernah diminta oleh customer, klik tombol Tambah baru untuk menambahkan data.
             </div>
 

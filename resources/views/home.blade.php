@@ -23,7 +23,7 @@
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
                     <a href="/requestbarangs" class="small-box-footer">
-                        Tambah baru <i class="fas fa-arrow-circle-right"></i>
+                        Tambah baru <i class="fas fa-plus-circle"></i>
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                         <i class="fas fa-sync-alt"></i>
                     </div>
                     <a href="/synchronize" class="small-box-footer">
-                        Update <i class="fas fa-arrow-circle-right"></i>
+                        Update <i class="fas fa-sync-alt"></i>
                     </a>
                 </div>
             </div>
