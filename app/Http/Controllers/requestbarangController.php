@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreaterequestbarangRequest;
 use App\Http\Requests\UpdaterequestbarangRequest;
 use App\Models\Produk;
+use App\Models\requestbarang;
 use App\Repositories\requestbarangRepository;
-use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -34,10 +34,13 @@ class requestbarangController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $requestbarangs = $this->requestbarangRepository->paginate(20);
+        $reqCount = requestbarang::select('nama', 'barcode', 'kd_supplier', 'kendaraan',\DB::raw('COUNT(id) as amount'))
+            ->groupBy('nama', 'barcode', 'kd_supplier', 'kendaraan')
+            ->orderBy('amount', 'desc')
+            ->get();
 
         return view('requestbarangs.index')
-            ->with('requestbarangs', $requestbarangs);
+            ->with('reqCount', $reqCount);
     }
 
     /**
@@ -65,7 +68,7 @@ class requestbarangController extends AppBaseController
 
         $requestbarang = $this->requestbarangRepository->create($input);
 
-        Flash::success('Requestbarang saved successfully.');
+        Flash::success('Sukses tambah data.');
 
         return redirect(route('requestbarangs.index'));
     }
@@ -88,6 +91,15 @@ class requestbarangController extends AppBaseController
         }
 
         return view('requestbarangs.show')->with('requestbarang', $requestbarang);
+    }
+
+    public function showAll($nama = null)
+    {
+        $requestbarangs = $this->requestbarangRepository->paginate(999);
+
+        return view('requestbarangs.show_all')
+            ->with('nama', $nama)
+            ->with('requestbarangs', $requestbarangs);
     }
 
     /**

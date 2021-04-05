@@ -18,6 +18,8 @@ class CreateRequestbarangsTable extends Migration
             $table->increments('id');
             $table->string('tanggal');
             $table->string('nama');
+            $table->string('barcode')->nullable();
+            $table->string('kd_supplier')->nullable();
             $table->string('kendaraan')->nullable();
             $table->string('part_number')->nullable();
             $table->string('keterangan')->nullable();

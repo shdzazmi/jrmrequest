@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\SalesOrder;
-use App\Repositories\BaseRepository;
 
 /**
  * Class SalesOrderRepository

@@ -17,12 +17,14 @@
                 <div class="small-box bg-gradient-info">
                     <div class="inner">
                         <h3>{{$requestcount}}</h3>
-                        <p>Request Barang</p>
+                        <b>Request Barang</b>
+                        <br>
+                        <a href="/requestbarangs" class="text text-light">More info</a>
                     </div>
                     <div class="icon">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
-                    <a href="/requestbarangs" class="small-box-footer">
+                    <a href="/requestbarangs/create" class="small-box-footer">
                         Tambah baru <i class="fas fa-plus-circle"></i>
                     </a>
                 </div>
@@ -31,8 +33,8 @@
                 <!-- small card -->
                 <div class="small-box bg-gradient-primary">
                     <div class="inner">
-                        <b>Sinkronisasi Data</b>
-                        <p>Last update:</p>
+                        <h5>Sinkronisasi Data</h5>
+                        <b>Last update:</b>
                         <p>{{$time}}</p>
                     </div>
                     <div class="icon">

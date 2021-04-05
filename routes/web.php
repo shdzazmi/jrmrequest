@@ -24,12 +24,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/synchronize', [App\Http\Controllers\HomeController::class, 'synchronize'])->name('synchronize');
 
 Route::get('/requestbarang/export_excel', [App\Http\Controllers\requestbarangController::class, 'export_excel'])->name('export_excel');
+Route::get('/requestbarangsall/{query?}', [App\Http\Controllers\requestbarangController::class, 'showAll'])->name('showAll');
 Route::resource('requestbarangs', App\Http\Controllers\requestbarangController::class);
 
 Route::post('/storeProduks', 'ProdukController@store');
 Route::get('/getProduks', 'ProdukController@get');
-
-
-
 
 Route::resource('salesOrders', App\Http\Controllers\SalesOrderController::class);

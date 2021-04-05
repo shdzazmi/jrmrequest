@@ -2,10 +2,10 @@
     <table class="table" id="salesOrders-table">
         <thead>
             <tr>
-                <th>Nama</th>
-        <th>No Telepon</th>
-        <th>Tanggal</th>
-        <th>Status</th>
+                <th>Produk</th>
+                <th>No Telepon</th>
+                <th>Tanggal</th>
+                <th>Status</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>

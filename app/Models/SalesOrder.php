@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -19,16 +18,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class SalesOrder extends Model
 {
-    use SoftDeletes;
-
     use HasFactory;
 
     public $table = 'sales_orders';
-    
 
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'uid',
@@ -48,7 +42,7 @@ class SalesOrder extends Model
         'uid' => 'string',
         'nama' => 'string',
         'no_telepon' => 'string',
-        'tanggal' => 'string',
+        'tanggal' => 'datetime:d-m-Y H;i;s',
         'status' => 'string'
     ];
 
@@ -62,5 +56,5 @@ class SalesOrder extends Model
         'no_telepon' => 'required'
     ];
 
-    
+
 }

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSalesOrderRequest;
 use App\Http\Requests\UpdateSalesOrderRequest;
+use App\Models\Produk;
 use App\Repositories\SalesOrderRepository;
-use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -42,7 +42,10 @@ class SalesOrderController extends AppBaseController
      */
     public function create()
     {
-        return view('sales_orders.create');
+        $produks = Produk::all();
+        $datetime = \Carbon\Carbon::now()->toDateTimeString();
+        $datetimes = \Carbon\Carbon::parse($datetime)->format('d-m-Y H:i:s');
+        return view('sales_orders.create')->with('datetimes', $datetimes)->with('produks', $produks);
     }
 
     /**
@@ -52,13 +55,14 @@ class SalesOrderController extends AppBaseController
      *
      * @return Response
      */
+
     public function store(CreateSalesOrderRequest $request)
     {
         $input = $request->all();
 
         $salesOrder = $this->salesOrderRepository->create($input);
 
-        Flash::success('Sales Order saved successfully.');
+        Flash::success('Sukses tambah data.');
 
         return redirect(route('salesOrders.index'));
     }
@@ -90,17 +94,18 @@ class SalesOrderController extends AppBaseController
      *
      * @return Response
      */
+
     public function edit($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
-
+        $produks = Produk::all();
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
 
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.edit')->with('salesOrder', $salesOrder);
+        return view('sales_orders.edit')->with('salesOrder', $salesOrder)->with('produks', $produks);
     }
 
     /**

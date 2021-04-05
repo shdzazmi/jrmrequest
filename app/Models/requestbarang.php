@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -13,26 +12,25 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @property string $tanggal
  * @property string $nama
+ * @property string $barcode
+ * @property string $kd_supplier
  * @property string $kendaraan
  * @property string $part_number
  * @property string $keterangan
  */
 class requestbarang extends Model
 {
-    use SoftDeletes;
-
     use HasFactory;
 
     public $table = 'requestbarangs';
 
-
     protected $dates = ['deleted_at'];
-
-
 
     public $fillable = [
         'tanggal',
         'nama',
+        'barcode',
+        'kd_supplier',
         'kendaraan',
         'part_number',
         'keterangan'
@@ -45,8 +43,10 @@ class requestbarang extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'tanggal' => 'string',
+        'tanggal' => 'datetime:d-m-Y H;i;s ',
         'nama' => 'string',
+        'barcode' => 'string',
+        'kd_supplier' => 'string',
         'kendaraan' => 'string',
         'part_number' => 'string',
         'keterangan' => 'string'

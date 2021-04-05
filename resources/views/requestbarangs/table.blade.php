@@ -1,11 +1,12 @@
 <div class="table-responsive">
-    <table class="table" id="requestbarangs-table">
+    <table class="table dataTable table-striped" id="tbRequest">
         <thead>
             <tr>
-                <th>Tanggal</th>
-                <th>Nama</th>
+                <th>Tanggal request</th>
+                <th>Produk</th>
+                <th>Supplier</th>
                 <th>Kendaraan</th>
-                <th>Part Number</th>
+                <th>Part number</th>
                 <th>Keterangan</th>
                 <th colspan="3">Action</th>
             </tr>
@@ -13,11 +14,12 @@
         <tbody>
         @foreach($requestbarangs as $requestbarang)
             <tr>
-                <td>{{ $requestbarang->tanggal }}</td>
-                <td>{{ $requestbarang->nama }}</td>
-                <td>{{ $requestbarang->kendaraan }}</td>
-                <td>{{ $requestbarang->part_number }}</td>
-                <td>{{ $requestbarang->keterangan }}</td>
+                <td>{{ $requestbarang->tanggal}}</td>
+                <td>{{ $requestbarang->nama}}<br/><span class="badge bg-secondary">{{ $requestbarang->barcode }}</span></td>
+                <td>{{ $requestbarang->kd_supplier}}</td>
+                <td>{{ $requestbarang->kendaraan}}</td>
+                <td>{{ $requestbarang->part_number}}</td>
+                <td>{{ $requestbarang->keterangan}}</td>
                 <td width="120">
                     {!! Form::open(['route' => ['requestbarangs.destroy', $requestbarang->id], 'method' => 'delete']) !!}
                     <div class='btn-group'>
@@ -36,3 +38,25 @@
         </tbody>
     </table>
 </div>
+
+@push('page_scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#tbRequest').DataTable({
+                select: true,
+                oSearch: {"sSearch": "{{$nama}}"},
+                columns: [
+                    {data: 'tanggal', name: 'tanggal'},
+                    {data: 'nama', name: 'nama'},
+                    {data: 'kd_supplier', name: 'kd_supplier'},
+                    {data: 'kendaraan', name: 'kendaraan'},
+                    {data: 'part_number', name: 'part_number'},
+                    {data: 'keterangan', name: 'keterangan'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ]
+            })
+        });
+
+    </script>
+@endpush

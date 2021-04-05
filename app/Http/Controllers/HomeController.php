@@ -24,14 +24,18 @@ class HomeController extends Controller
         $produks = Produk::all();
         if ($produks->isEmpty()) {
             $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
-            $sqlquery = "select * from stock where Status='Aktif' ;"; //limit cuma 100 data (top 100)
+            $sqlquery = "select top 50 * from stock where Status='Aktif' ;"; //limit cuma 100 data (top 100)
             $process = odbc_exec($sqlconnect, $sqlquery);
             $items = collect([]);
             while(odbc_fetch_row($process)) {
                 $itemAll = [
                     'nama' => utf8_encode(odbc_result($process, 'Nama')),
+                    'barcode' => utf8_encode(odbc_result($process, 'BarcodeAktif')),
+                    'kd_supplier' => utf8_encode(odbc_result($process, 'KodeSupp')),
                     'kendaraan' => utf8_encode(odbc_result($process, 'Ukuran')),
                     'part_number' => utf8_encode(odbc_result($process, 'PartNo1')),
+                    'lokasi' => utf8_encode(odbc_result($process, 'Lokasi1')),
+                    'harga' => utf8_encode(odbc_result($process, 'HJual')),
                     'created_at' => \Carbon\Carbon::now()->toDateTime(),
                 ];
                 $items->push($itemAll);

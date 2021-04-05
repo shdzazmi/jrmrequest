@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 use App\Models\requestbarang;
-use App\Repositories\BaseRepository;
 
 /**
  * Class requestbarangRepository
@@ -19,6 +18,8 @@ class requestbarangRepository extends BaseRepository
     protected $fieldSearchable = [
         'tanggal',
         'nama',
+        'barcode',
+        'kd_supplier',
         'kendaraan',
         'part_number',
         'keterangan'
