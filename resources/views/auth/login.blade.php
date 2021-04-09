@@ -34,7 +34,9 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ url('/home') }}"><b>{{ config('app.name') }}</b></a>
+        <a href="{{ url('/home') }}">
+            <h1><b>JRM</b>Portal</h1>
+        </a>
     </div>
 
     <!-- /.login-logo -->
@@ -46,6 +48,20 @@
 
             <form method="post" action="{{ url('/login') }}">
                 @csrf
+
+{{--                <div class="input-group mb-3">--}}
+{{--                    <input type="text"--}}
+{{--                           name="name"--}}
+{{--                           value="{{ old('name') }}"--}}
+{{--                           placeholder="Username"--}}
+{{--                           class="form-control @error('name') is-invalid @enderror">--}}
+{{--                    <div class="input-group-append">--}}
+{{--                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>--}}
+{{--                    </div>--}}
+{{--                    @error('name')--}}
+{{--                    <span class="error invalid-feedback">{{ $message }}</span>--}}
+{{--                    @enderror--}}
+{{--                </div>--}}
 
                 <div class="input-group mb-3">
                     <input type="email"

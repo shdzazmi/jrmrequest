@@ -30,7 +30,15 @@
             <!-- Tanggal Field -->
             <div class="form-group col-sm-5">
                 {!! Form::label('tanggal', 'Tanggal:') !!}
-                {!! Form::text('tanggal', $datetimes, ['class' => 'form-control','id'=>'tanggal','disabled']) !!}
+                {!! Form::text('tanggal', $datetimes, ['class' => 'form-control','id'=>'tanggal']) !!}
+            </div>
+            <!-- uuid Field -->
+            <div>
+                {!! Form::hidden('uid', $uuid, ['id'=>'uuid_input', 'style'=>'width=1px']) !!}
+            </div>
+            <!-- status Field -->
+            <div>
+                {!! Form::hidden('status', 'Proses', ['id'=>'uuid_input', 'style'=>'width=1px']) !!}
             </div>
         </div>
     </div>
@@ -38,33 +46,38 @@
 
     <!-- Table produk -->
 <div class="card">
-
-    <div class="card-body">
+    <div class="card-header">
+        <h3 class="card-title">Pilih produk</h3>
+    </div>
+    <div class="card-body table-responsive">
         <div class="table-responsive">
-            <table class="dataTable table-striped" id="salesorderproduk">
+            <table class="table dataTable table-striped" id="salesorderproduk">
                 <thead>
-                <tr>
-                    <th>Produk</th>
-                    <th>Kode Supplier</th>
-                    <th>Kendaraan</th>
-                    <th>Part Number</th>
-                </tr>
-                </thead>
-                <tbody>
-                @foreach($produks as $item)
-                    <tr class='clickable-row'>
-                        <td>{{ $item['nama'] }}<br/><span class="badge bg-secondary">{{ $item->barcode }}</span></td>
-                        <td>{{ $item['kd_supplier'] }}</td>
-                        <td>{{ $item['kendaraan'] }}</td>
-                        <td>{{ $item['part_number'] }}</td>
+                    <tr>
+                        <th style="width: 125px">Produk</th>
+                        <th style="width: 70px">Barcode</th>
+                        <th style="width: 70px">Kode Supplier</th>
+                        <th style="width: 125px">Kendaraan</th>
+                        <th>Part Number</th>
+                        <th>Harga</th>
                     </tr>
-                @endforeach
-                </tbody>
+                </thead>
+            <tbody>
+            @foreach($produks as $item)
+                <tr class='clickable-row'>
+                    <td>{{ $item['nama'] }}</td>
+                    <td>{{ $item['barcode'] }}</td>
+                    <td>{{ $item['kd_supplier'] }}</td>
+                    <td>{{ $item['kendaraan'] }}</td>
+                    <td>{{ $item['part_number'] }}</td>
+                    <td>{{ $item['harga'] }}</td>
+                </tr>
+            @endforeach
+            </tbody>
             </table>
         </div>
     </div>
 </div>
-
 
 @push('page_scripts')
     <script type="text/javascript">
@@ -88,60 +101,50 @@
 @push('page_scripts')
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
+
         $(document).ready(function() {
-            var events = $('#events');
             var table2 = $('#salesorderproduk').DataTable( {
                 select: true,
                 processing: true,
+                autoWidth: false,
                 initComplete: function(){
                     $("#salesorderproduk").show();
-                }
-            } );
-
-            table2.on('select', function (e, dt, type, indexes){
-                var rowData = table2.rows(indexes).data().toArray();
-                events.prepend(JSON.stringify(rowData));
-            })
-        } );
-
-        var table = document.getElementById('salesorderproduk');
-
-        for(var i = 1; i < table.rows.length; i++)
-        {
-            table.rows[i].onclick = function()
+                },
+                columnDefs: [
             {
-                var table = document.getElementById("orderlist");
+                "targets": [ 4 ],
+                "visible": false
+            }
+        ]
+            });
+            table2.on('click', 'tr', function (e, dt, type, indexes){
+                var rowData = table2.row( this ).data();
+                var table = document.getElementById("table-body");
                 var row = table.insertRow();
+
                 var cell1 = row.insertCell(0);
                 var cell2 = row.insertCell(1);
                 var cell3 = row.insertCell(2);
                 var cell4 = row.insertCell(3);
                 var cell5 = row.insertCell(4);
-                cell1.innerHTML = this.cells[0].innerHTML;
-                cell2.innerHTML = this.cells[1].innerHTML;
-                var pHarga = 10000;
-                var qtyInput = '<input type="number" value="1" min="1" oninput="validity.valid||(value=1);" id="pJumlah" style="width:50px">';
-                cell3.innerHTML = pHarga;
-                cell4.innerHTML = qtyInput;
-                var pQty = document.getElementById("pJumlah").value;
-                cell5.innerHTML = '<p id="subTotal"></p';
+                var cell6 = row.insertCell(5);
+                var cell7 = row.insertCell(6);
 
-                $('#pJumlah').change(function(e) {
-                    document.getElementById("pJumlah").innerHTML = document.getElementById("pJumlah").value;
-                    document.getElementById("subTotal").innerText = pHarga * document.getElementById("pJumlah").value;
-                });
+                cell1.innerHTML = rowData[0];
+                cell2.innerHTML = rowData[1];
+                cell3.innerHTML = rowData[3];
+                cell4.innerHTML = parseFloat(rowData[5]);
+                var qty = 1;
+                cell5.innerHTML = '<input type="number" value="'+qty+'" class="form-control form-control-sm quantity" min="1" id="qtyInput" oninput="addSubtotal()" style="width: 60px"/>';
+                cell6.innerHTML = rowData[5]*qty;
+                cell7.innerHTML = '<button class="btn btn-tool" type="button" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>';
 
-                $('#pJumlah').keydown(function(e) {
-                    document.getElementById("pJumlah").innerHTML = document.getElementById("pJumlah").value;
-                    document.getElementById("subTotal").innerText = pHarga * document.getElementById("pJumlah").value;
-                });
+                getTotalPrice();
 
-                // rIndex = this.rowIndex;
-                // document.getElementById("inputNama").value = this.cells[0].innerHTML;
-                // document.getElementById("inputKendaraan").value = this.cells[1].innerHTML;
-                // document.getElementById("inputPartNumber").value = this.cells[2].innerHTML;
-            };
-        }
+            });
 
+        } );
     </script>
+
+
 @endpush

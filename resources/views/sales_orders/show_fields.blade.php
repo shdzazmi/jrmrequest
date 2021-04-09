@@ -1,8 +1,8 @@
 <!-- Uid Field -->
-<div class="col-sm-12">
+{{--<div class="col-sm-12">
     {!! Form::label('uid', 'Uid:') !!}
     <p>{{ $salesOrder->uid }}</p>
-</div>
+</div>--}}
 
 <!-- Nama Field -->
 <div class="col-sm-12">
@@ -39,4 +39,3 @@
     {!! Form::label('updated_at', 'Updated At:') !!}
     <p>{{ $salesOrder->updated_at }}</p>
 </div>
-

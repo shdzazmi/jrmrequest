@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSalesOrderRequest;
 use App\Http\Requests\UpdateSalesOrderRequest;
+use App\Models\ListOrder;
 use App\Models\Produk;
 use App\Repositories\SalesOrderRepository;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
+use Webpatser\Uuid\Uuid;
 
 class SalesOrderController extends AppBaseController
 {
@@ -40,12 +42,15 @@ class SalesOrderController extends AppBaseController
      *
      * @return Response
      */
+
     public function create()
     {
         $produks = Produk::all();
+        $list_order = ListOrder::all();
         $datetime = \Carbon\Carbon::now()->toDateTimeString();
         $datetimes = \Carbon\Carbon::parse($datetime)->format('d-m-Y H:i:s');
-        return view('sales_orders.create')->with('datetimes', $datetimes)->with('produks', $produks);
+        $uuid = substr(Uuid::generate(4),24);
+        return view('sales_orders.create')->with('datetimes', $datetimes)->with('produks', $produks)->with('list_order', $list_order)->with('uuid', $uuid);
     }
 
     /**

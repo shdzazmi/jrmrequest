@@ -2,7 +2,7 @@
     <table class="table" id="salesOrders-table">
         <thead>
             <tr>
-                <th>Produk</th>
+                <th>Nama Customer</th>
                 <th>No Telepon</th>
                 <th>Tanggal</th>
                 <th>Status</th>

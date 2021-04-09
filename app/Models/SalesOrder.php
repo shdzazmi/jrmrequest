@@ -38,11 +38,11 @@ class SalesOrder extends Model
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
+        'id' => 'string',
         'uid' => 'string',
         'nama' => 'string',
         'no_telepon' => 'string',
-        'tanggal' => 'datetime:d-m-Y H;i;s',
+        'tanggal' => 'string',
         'status' => 'string'
     ];
 

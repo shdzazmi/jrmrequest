@@ -39,3 +39,18 @@
     </div>
 
 @endsection
+@push('page_scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        function getTotalPrice() {
+            var total = 0;
+            $(".harga").each(function () { // or $(".total_price") if given a class
+                var val = $(this).text();
+                total += isNaN(val) || $.trim(val) == "" ? 0 : parseFloat(val); // or parseInt(val,10);
+            });
+            $("#total-text").text(total); // or (total) if an int
+        }
+    </script>
+
+
+@endpush

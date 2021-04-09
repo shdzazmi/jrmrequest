@@ -9,10 +9,13 @@ use App\Models\requestbarang;
 use App\Repositories\requestbarangRepository;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\DB;
 use Response;
 
 use App\Exports\RequestbarangExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Yajra\DataTables\Facades\DataTables;
 
 class requestbarangController extends AppBaseController
 
@@ -32,6 +35,7 @@ class requestbarangController extends AppBaseController
      *
      * @return Response
      */
+
     public function index(Request $request)
     {
         $reqCount = requestbarang::select('nama', 'barcode', 'kd_supplier', 'kendaraan',\DB::raw('COUNT(id) as amount'))
@@ -69,7 +73,6 @@ class requestbarangController extends AppBaseController
         $requestbarang = $this->requestbarangRepository->create($input);
 
         Flash::success('Sukses tambah data.');
-
         return redirect(route('requestbarangs.index'));
     }
 
@@ -95,11 +98,14 @@ class requestbarangController extends AppBaseController
 
     public function showAll($nama = null)
     {
-        $requestbarangs = $this->requestbarangRepository->paginate(999);
-
-        return view('requestbarangs.show_all')
-            ->with('nama', $nama)
-            ->with('requestbarangs', $requestbarangs);
+        if(request()->ajax()) {
+            return datatables()->of(requestbarang::select('*'))
+                ->addColumn('namabarcode', 'requestbarangs.nama_requestbarangs')
+                ->addColumn('action', 'requestbarangs.action_requestbarangs')
+                ->rawColumns(['action','namabarcode'])
+                ->make(true);
+        }
+        return view('requestbarangs.show_all')->with('nama', $nama);
     }
 
     /**
@@ -118,7 +124,6 @@ class requestbarangController extends AppBaseController
 
             return redirect(route('requestbarangs.index'));
         }
-
         return view('requestbarangs.edit')
             ->with('requestbarang', $requestbarang)
             ->with('produks', $produks);
@@ -171,7 +176,23 @@ class requestbarangController extends AppBaseController
         $this->requestbarangRepository->delete($id);
 
         Flash::success('Requestbarang deleted successfully.');
+        return redirect(route('requestbarangs.index'));
+    }
 
+    public function destroyAll($barcode)
+    {
+        $barcodeX = "01/".$barcode;
+        $requestbarang = requestbarang::where('barcode', $barcodeX);
+
+        if (empty($requestbarang)) {
+            Flash::error($barcodeX." not found");
+
+            return redirect(route('requestbarangs.index'));
+        }
+
+        $requestbarang->delete();
+
+        Flash::success($barcodeX.' deleted successfully.');
         return redirect(route('requestbarangs.index'));
     }
 

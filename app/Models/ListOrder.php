@@ -2,11 +2,10 @@
 
 namespace App\Models;
 
-use Eloquent as Model;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Produk extends Model
+class ListOrder extends Model
 {
     use HasFactory;
 
@@ -18,7 +17,6 @@ class Produk extends Model
         'part_number',
         'lokasi',
         'harga',
+        'qty'
     ];
-
-
 }

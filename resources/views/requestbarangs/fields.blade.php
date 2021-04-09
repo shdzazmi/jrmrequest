@@ -149,15 +149,9 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
     <script>
         $(document).ready(function() {
-            var events = $('#events');
-            var table = $('#requestbarangproduk').DataTable( {
+            $('#requestbarangproduk').DataTable( {
                 select: true
             } );
-
-            table.on('select', function (e, dt, type, indexes){
-                var rowData = table.rows(indexes).data().toArray();
-                events.prepend(JSON.stringify(rowData));
-            })
         } );
 
         var table = document.getElementById('requestbarangproduk');
@@ -166,8 +160,6 @@
         {
             table.rows[i].onclick = function()
             {
-                rIndex = this.rowIndex;
-                // console.log(rIndex);
                 document.getElementById("inputNama").value = this.cells[0].innerHTML;
                 document.getElementById("inputBarcode").value = this.cells[1].innerHTML;
                 document.getElementById("inputKd_supplier").value = this.cells[2].innerHTML;

@@ -1,11 +1,5 @@
 @extends('layouts.app')
-<style>
-        #tbRequest tbody tr:hover{
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
-    }
 
-</style>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 
 @section('content')
@@ -16,20 +10,17 @@
                     <h1>Request Barang</h1>
                 </div>
                 <div class="col-sm" align="right">
-
                     <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
                         <i class="fas fa-file-download"></i>
                         Export
                     </a>
                     <a href="/requestbarangsall" data-toggle="tooltip" class='btn btn-info'>
-                        Show All
+                        Semua request
                     </a>
-                    <div class='btn-group'>
-                        <a class="btn btn-info float-right"
-                           href="{{ route('requestbarangs.create') }}">
-                            Tambah baru
-                        </a>
-                    </div>
+                    <a class="btn btn-info"
+                       href="{{ route('requestbarangs.create') }}">
+                        Tambah baru
+                    </a>
                 </div>
 
             </div>
@@ -46,12 +37,12 @@
 
         @include('flash::message')
 
-
         <div class="card card-outline card-info">
             <div class="card-body">
-                @include('requestbarangs.tableDashboard')
+                @include('requestbarangs.table_index')
             </div>
         </div>
+
     </div>
 
 @endsection

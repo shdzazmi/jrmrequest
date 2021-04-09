@@ -28,7 +28,7 @@
             </div>
 
             <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('Save', ['class' => 'btn btn-primary', 'id'=>'add-data']) !!}
                 <a href="{{ route('requestbarangs.index') }}" class="btn btn-default">Cancel</a>
             </div>
 

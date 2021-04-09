@@ -9,10 +9,16 @@
                     <h1>Request Barang</h1>
                 </div>
                 <div class="col-sm" align="right">
-
                     <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
                         <i class="fas fa-file-download"></i>
                         Export
+                    </a>
+                    <a href="/requestbarangs" data-toggle="tooltip" class='btn btn-info'>
+                        Dashboard
+                    </a>
+                    <a class="btn btn-info"
+                       href="{{ route('requestbarangs.create') }}">
+                        Tambah baru
                     </a>
                 </div>
             </div>
@@ -33,4 +39,3 @@
     </div>
 
 @endsection
-
