@@ -28,7 +28,7 @@
 
 <!-- Nama Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('nama', 'Nama:') !!}
+    {!! Form::label('nama', 'Produk:') !!}
     <div class="input-group">
         {!! Form::text('nama', null, ['class' => 'form-control', 'id' => 'inputNama']) !!}
         {!! Form::button('<i class="fa fa-search"></i>', array('class' => 'btn btn btn-primary', 'data-toggle' => 'modal', 'data-target' => '#myModal', 'id' => '#btnModal', 'title' => 'Pencarian')) !!}
@@ -143,6 +143,11 @@
 <div class="form-group col-sm-6">
     {!! Form::label('keterangan', 'Keterangan:') !!}
     {!! Form::text('keterangan', null, ['class' => 'form-control']) !!}
+</div>
+
+<!-- User Field -->
+<div>
+    {!! Form::hidden('user', Auth::user()->name, ['style'=>'width=1px']) !!}
 </div>
 
 @push('page_scripts')

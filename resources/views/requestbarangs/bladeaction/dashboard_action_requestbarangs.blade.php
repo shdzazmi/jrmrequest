@@ -1,0 +1,3 @@
+{!! Form::open(['route' => ['destroyAll', substr($barcode,3)], 'method' => 'delete']) !!}
+{!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-sm', 'id'=>'delete-data','onclick' => "return confirm('Hapus semua request produk ini?')"]) !!}
+{!! Form::close() !!}

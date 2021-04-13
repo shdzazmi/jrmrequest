@@ -1,10 +1,10 @@
-{{--<li class="nav-item">
+<li class="nav-item">
     <a href="{{ route('salesOrders.index') }}"
        class="nav-link {{ Request::is('salesOrders*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-file-invoice-dollar"></i>
         <p>Sales Order</p>
     </a>
-</li>--}}
+</li>
 
 <li class="nav-item">
     <a href="{{ route('requestbarangs.index') }}" class="nav-link {{ Request::is('requestbarangs*') ? 'active' : '' }}">
@@ -22,10 +22,26 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="/requestbarangsall" class="nav-link {{ Request::is('requestbarangsall*') ? 'active' : '' }}">
+            <a href="{{ route('showAll') }}" class="nav-link {{ Request::is('requestbarangsall*') ? 'active' : '' }}">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Semua request</p>
+                <p>Semua Request</p>
             </a>
         </li>
     </ul>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('search') }}"
+       class="nav-link {{ Request::is('search*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-search"></i>
+        <p>Pencarian Stok</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('location') }}"
+       class="nav-link {{ Request::is('location*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-boxes"></i>
+        <p>Lokasi Produk</p>
+    </a>
 </li>

@@ -6,8 +6,14 @@
 
 <!-- Nama Field -->
 <div class="col-sm-12">
-    {!! Form::label('nama', 'Nama:') !!}
+    {!! Form::label('nama', 'Produk:') !!}
     <p>{{ $requestbarang->nama }}</p>
+</div>
+
+<!-- Barcode Field -->
+<div class="col-sm-12">
+    {!! Form::label('barcode', 'Barcode:') !!}
+    <p>{{ $requestbarang->barcode }}</p>
 </div>
 
 <!-- Kendaraan Field -->
@@ -26,6 +32,12 @@
 <div class="col-sm-12">
     {!! Form::label('keterangan', 'Keterangan:') !!}
     <p>{{ $requestbarang->keterangan }}</p>
+</div>
+
+<!-- User Field -->
+<div class="col-sm-12">
+    {!! Form::label('user', 'Direquest oleh:') !!}
+    <p>{{ $requestbarang->user }}</p>
 </div>
 
 <!-- Created At Field -->

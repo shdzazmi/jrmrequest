@@ -23,6 +23,7 @@ class CreateRequestbarangsTable extends Migration
             $table->string('kendaraan')->nullable();
             $table->string('part_number')->nullable();
             $table->string('keterangan')->nullable();
+            $table->string('user')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

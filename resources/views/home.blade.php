@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Home')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -19,12 +20,12 @@
                         <h3>{{$requestcount}}</h3>
                         <b>Request Barang</b>
                         <br>
-                        <a href="/requestbarangs" class="text text-light">More info</a>
+                        <a href="{{ route('requestbarangs.index') }}" class="text text-light">More info</a>
                     </div>
                     <div class="icon">
                         <i class="fas fa-hand-holding-usd"></i>
                     </div>
-                    <a href="/requestbarangs/create" class="small-box-footer">
+                    <a href="{{ route('requestbarangs.create') }}" class="small-box-footer">
                         Tambah baru <i class="fas fa-plus-circle"></i>
                     </a>
                 </div>
@@ -40,7 +41,7 @@
                     <div class="icon">
                         <i class="fas fa-sync-alt"></i>
                     </div>
-                    <a href="/synchronize" class="small-box-footer">
+                    <a href="JavaScript:void(0)" class="small-box-footer" onclick="synchronize()">
                         Update <i class="fas fa-sync-alt"></i>
                     </a>
                 </div>
@@ -50,3 +51,23 @@
 
 @endsection
 
+@push('page_scripts')
+    <script>
+
+        function synchronize() {
+            const produkAjax = '{{ route('synchronize') }}'
+            Swal.queue([{
+                title: 'Sinkronisasi Data',
+                confirmButtonText: 'Sinkronkan!',
+                text:
+                    'Sinkron data produk untuk request dan sales order?',
+                showLoaderOnConfirm: true,
+                showCancelButton: true,
+                preConfirm: () => {
+                    return fetch(produkAjax).then(data => Swal.fire('Sukses!','Data telah tersinkron','success'))
+                }
+            }])
+        }
+
+    </script>
+@endpush

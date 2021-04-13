@@ -16,6 +16,7 @@
                 <th>Kendaraan</th>
                 <th>Part number</th>
                 <th>Keterangan</th>
+                <th>Direquest oleh</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
@@ -31,7 +32,6 @@
         $(document).ready(function() {
             $table = $('#tbRequest').DataTable({
                 select: true,
-                processing: true,
                 serverside: true,
                 ajax: {
                     url: '{{URL::to('requestbarangsall')}}'
@@ -45,11 +45,12 @@
                     {data: 'kendaraan', name: 'kendaraan'},
                     {data: 'part_number', name: 'part_number'},
                     {data: 'keterangan', name: 'keterangan'},
+                    {data: 'user', name: 'user'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             })
             setInterval( function () {
-                $table.ajax.reload(false);
+                $table.ajax.reload(null, false);
             }, 5000 );
         })
 

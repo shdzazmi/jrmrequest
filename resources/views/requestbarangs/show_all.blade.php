@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Request barang')
 @section('content')
 
     <section class="content-header">
@@ -9,11 +9,11 @@
                     <h1>Request Barang</h1>
                 </div>
                 <div class="col-sm" align="right">
-                    <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
+                    <a href="{{ route('export_excel') }}" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
                         <i class="fas fa-file-download"></i>
                         Export
                     </a>
-                    <a href="/requestbarangs" data-toggle="tooltip" class='btn btn-info'>
+                    <a href="{{ route('requestbarangs.index') }}" data-toggle="tooltip" class='btn btn-info'>
                         Dashboard
                     </a>
                     <a class="btn btn-info"

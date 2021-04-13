@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', $requestbarang->barcode)
 
 @section('content')
     <section class="content-header">

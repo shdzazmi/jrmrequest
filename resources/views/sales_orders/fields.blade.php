@@ -38,7 +38,7 @@
             </div>
             <!-- status Field -->
             <div>
-                {!! Form::hidden('status', 'Proses', ['id'=>'uuid_input', 'style'=>'width=1px']) !!}
+                {!! Form::hidden('status', 'Proses', ['style'=>'width=1px']) !!}
             </div>
         </div>
     </div>

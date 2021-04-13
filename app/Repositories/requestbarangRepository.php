@@ -22,7 +22,8 @@ class requestbarangRepository extends BaseRepository
         'kd_supplier',
         'kendaraan',
         'part_number',
-        'keterangan'
+        'keterangan',
+        'user'
     ];
 
     /**

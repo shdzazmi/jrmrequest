@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@section('title', 'Buat request')
 @section('content')
     <section class="content-header">
         <div class="container-fluid">
@@ -20,11 +20,9 @@
             {!! Form::open(['route' => 'requestbarangs.store']) !!}
 
             <div class="card-body">
-
                 <div class="row">
                     @include('requestbarangs.fields')
                 </div>
-
             </div>
 
             <div class="card-footer">

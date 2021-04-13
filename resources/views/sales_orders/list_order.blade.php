@@ -70,7 +70,7 @@
 
     function deleteRow(r) {
         var i = r.parentNode.parentNode.rowIndex;
-        document.getElementById("table-body").deleteRow(i);
+        document.getElementById("table-body").deleteRow(i-1);
         getTotalPrice();
     }
 

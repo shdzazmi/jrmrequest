@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $kendaraan
  * @property string $part_number
  * @property string $keterangan
+ * @property string $user
  */
 class requestbarang extends Model
 {
@@ -33,7 +34,8 @@ class requestbarang extends Model
         'kd_supplier',
         'kendaraan',
         'part_number',
-        'keterangan'
+        'keterangan',
+        'user'
     ];
 
     /**
@@ -49,7 +51,8 @@ class requestbarang extends Model
         'kd_supplier' => 'string',
         'kendaraan' => 'string',
         'part_number' => 'string',
-        'keterangan' => 'string'
+        'keterangan' => 'string',
+        'user' => 'string'
     ];
 
     /**
@@ -61,9 +64,4 @@ class requestbarang extends Model
         'tanggal' => 'required',
         'nama' => 'required'
     ];
-
-
-
-
-
 }

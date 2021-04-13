@@ -2,9 +2,9 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ config('app.name') }}</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-
+    <link rel="shortcut icon" type="image/png" href="/jrmrequest/public/favicon.png"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
           integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
@@ -79,7 +79,7 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <a href="/synchronize" class="btn btn-primary btn-flat">Synchronize</a>
+                        <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
                         <a href="#" class="btn btn-default btn-flat float-right"
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                             Sign out
@@ -163,6 +163,10 @@
         crossorigin="anonymous"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js" integrity="sha512-J+763o/bd3r9iW+gFEqTaeyi+uAphmzkE/zU8FxY6iAvD3nQKXa+ZAWkBI9QS9QkYEKddQoiy0I5GDxKf/ORBA==" crossorigin="anonymous"></script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="sweetalert2.all.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 
 <script>
     $(function () {

@@ -9,13 +9,10 @@ use App\Models\requestbarang;
 use App\Repositories\requestbarangRepository;
 use Illuminate\Http\Request;
 use Flash;
-use Illuminate\Support\Facades\DB;
 use Response;
 
 use App\Exports\RequestbarangExport;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Yajra\DataTables\Facades\DataTables;
 
 class requestbarangController extends AppBaseController
 
@@ -38,13 +35,17 @@ class requestbarangController extends AppBaseController
 
     public function index(Request $request)
     {
-        $reqCount = requestbarang::select('nama', 'barcode', 'kd_supplier', 'kendaraan',\DB::raw('COUNT(id) as amount'))
-            ->groupBy('nama', 'barcode', 'kd_supplier', 'kendaraan')
-            ->orderBy('amount', 'desc')
-            ->get();
 
-        return view('requestbarangs.index')
-            ->with('reqCount', $reqCount);
+        if(request()->ajax()) {
+            return datatables()->of(requestbarang::select('nama', 'barcode', 'kd_supplier', 'kendaraan',\DB::raw('COUNT(id) as amount'))
+                ->groupBy('nama', 'barcode', 'kd_supplier', 'kendaraan'))
+                ->addColumn('amount', 'requestbarangs.bladeaction.amount_requestbarangs')
+                ->addColumn('namabarcode', 'requestbarangs.bladeaction.nama_requestbarangs')
+                ->addColumn('action', 'requestbarangs.bladeaction.dashboard_action_requestbarangs')
+                ->rawColumns(['namabarcode','amount','action'])
+                ->make(true);
+        }
+        return view('requestbarangs.index');
     }
 
     /**
@@ -100,8 +101,8 @@ class requestbarangController extends AppBaseController
     {
         if(request()->ajax()) {
             return datatables()->of(requestbarang::select('*'))
-                ->addColumn('namabarcode', 'requestbarangs.nama_requestbarangs')
-                ->addColumn('action', 'requestbarangs.action_requestbarangs')
+                ->addColumn('namabarcode', 'requestbarangs.bladeaction.nama_requestbarangs')
+                ->addColumn('action', 'requestbarangs.bladeaction.action_requestbarangs')
                 ->rawColumns(['action','namabarcode'])
                 ->make(true);
         }
@@ -198,8 +199,8 @@ class requestbarangController extends AppBaseController
 
     public function export_excel()
     {
-        $datetime = \Carbon\Carbon::now()->toDateTimeString();
-        $datetimes = \Carbon\Carbon::parse($datetime)->format('d-m-Y H;i');
+        $datetime = Carbon::now()->toDateTimeString();
+        $datetimes = Carbon::parse($datetime)->format('d-m-Y H;i');
         return Excel::download(new RequestbarangExport, 'Request Barang '.$datetimes.'.xlsx');
     }
 }

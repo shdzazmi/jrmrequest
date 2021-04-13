@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('title', 'Request barang')
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 
@@ -10,11 +11,11 @@
                     <h1>Request Barang</h1>
                 </div>
                 <div class="col-sm" align="right">
-                    <a href="/requestbarang/export_excel" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
+                    <a href="{{ route('export_excel') }}" data-toggle="tooltip" title="Export excel" class='btn btn-info'>
                         <i class="fas fa-file-download"></i>
                         Export
                     </a>
-                    <a href="/requestbarangsall" data-toggle="tooltip" class='btn btn-info'>
+                    <a href="{{ route('showAll') }}" data-toggle="tooltip" class='btn btn-info'>
                         Semua request
                     </a>
                     <a class="btn btn-info"
@@ -24,7 +25,7 @@
                 </div>
 
             </div>
-            <div class="callout callout-info alert-dismissible">
+            <div class="alert alert-info alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                 <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
                 Request barang berisi data barang kosong yang pernah diminta oleh customer, klik tombol Tambah baru untuk menambahkan data.
