@@ -19,9 +19,17 @@ class CreateProduksTable extends Migration
             $table->string('barcode');
             $table->string('kd_supplier');
             $table->string('kendaraan');
-            $table->string('part_number');
-            $table->string('lokasi');
+            $table->string('partno1');
+            $table->string('partno2');
+            $table->string('lokasi1');
+            $table->string('lokasi2');
+            $table->string('lokasi3');
             $table->integer('harga');
+            $table->integer('harga2');
+            $table->integer('harga3');
+            $table->integer('hargamin');
+            $table->integer('qty');
+            $table->string('subkategori');
             $table->timestamps();
         });
     }

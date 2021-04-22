@@ -26,17 +26,28 @@ Route::get('/synchronize', [App\Http\Controllers\HomeController::class, 'synchro
 //Request barang
 Route::get('/requestbarang/export_excel', [App\Http\Controllers\requestbarangController::class, 'export_excel'])->name('export_excel');
 Route::resource('requestbarangs', App\Http\Controllers\requestbarangController::class);
-Route::delete('requestbarangs/delete/{query}', [App\Http\Controllers\requestbarangController::class, 'destroyAll'])->name('destroyAll');
-Route::get('/requestbarangsall/{query?}', [App\Http\Controllers\requestbarangController::class, 'showAll'])->name('showAll');
+Route::delete('requestbarangs/delete/{query}', [App\Http\Controllers\requestbarangController::class, 'destroyAll'])->name('destroyAll')->where('query', '(.*)');
+Route::get('/requestbarangsall/{query?}', [App\Http\Controllers\requestbarangController::class, 'showAll'])->name('showAll')->where('query', '(.*)');
 
 //Sales order
 Route::resource('salesOrders', App\Http\Controllers\SalesOrderController::class);
+Route::post('/salesOrders/put/{barcode}', [App\Http\Controllers\SalesOrderController::class, 'putItem'])->where('barcode', '(.*)')->name('salesOrder.put');;
+Route::post('/salesOrders/postData', [App\Http\Controllers\SalesOrderController::class, 'storeData'])->name('salesOrder.storeData');;
 
 //Search produk
 Route::get('/search/{query?}', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
 
 //Lokasi produk
 Route::get('/location', [App\Http\Controllers\LocationController::class, 'index'])->name('location');
-Route::get('/location/search/01/{barcode}', [App\Http\Controllers\LocationController::class, 'search'])->name('location.search');
-Route::get('/location/{barcode}/edit', [App\Http\Controllers\LocationController::class, 'edit'])->name('location.edit');
-Route::get('/location/update', [App\Http\Controllers\LocationController::class, 'update'])->name('location.update');
+Route::get('/location/search/barcode/{barcode}', [App\Http\Controllers\LocationController::class, 'search'])->where('barcode', '(.*)')->name('location.search');
+Route::get('/location/search/lokasi/{lokasi}', [App\Http\Controllers\LocationController::class, 'searchs'])->name('location.searchs');
+Route::get('/location/search/{barcode}', [App\Http\Controllers\LocationController::class, 'search'])->where('barcode', '(.*)');;
+Route::get('/location/{barcode}/edit', [App\Http\Controllers\LocationController::class, 'edit'])->name('location.edit')->where('barcode', '(.*)');
+Route::post('/location/store', [App\Http\Controllers\LocationController::class, 'store'])->name('location.store');
+Route::post('/location/update/{barcode}/{lokasi}', [App\Http\Controllers\LocationController::class, 'update'])->name('location.update')->where('barcode', '(.*)');;
+Route::post('/location/put/{barcode}', [App\Http\Controllers\LocationController::class, 'putItem'])->name('location.put')->where('barcode', '(.*)');
+
+//Admin
+Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
+Route::get('/admin/edit/{id}/{role}', [App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
+

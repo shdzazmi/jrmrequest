@@ -3,39 +3,40 @@
 
 @section('content')
 
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Sales Orders</h1>
-                </div>
-                <div class="col-sm-6">
-                    <a class="btn btn-primary float-right"
-                       href="{{ route('salesOrders.create') }}">
-                        Add New
-                    </a>
+    <div class="col-md-10 offset-md-1" >
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Sales Orders</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <a class="btn btn-primary float-right"
+                           href="{{ route('salesOrders.create') }}">
+                            Add New
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <div class="content px-3">
+        <div class="content px-3">
 
-        @include('flash::message')
+            @include('flash::message')
 
-        <div class="clearfix"></div>
+            <div class="clearfix"></div>
 
-        <div class="card card-outline card-primary">
-            <div class="card-body p-0">
-                @include('sales_orders.table')
-                <div class="card-footer clearfix float-right">
-                    <div class="float-right">
+            <div class="card card-outline card-primary">
+                <div class="card-body">
+                    @include('sales_orders.table')
+                    <div class="card-footer clearfix float-right">
+                        <div class="float-right">
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 

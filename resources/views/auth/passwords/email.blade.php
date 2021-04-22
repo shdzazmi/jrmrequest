@@ -34,13 +34,15 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="{{ url('/home') }}"><b>{{ config('app.name') }}</b></a>
+        <a href="{{ url('/home') }}">
+            <h1><b>JRM</b>Portal</h1>
+        </a>
     </div>
 
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">You forgot your password? Here you can easily retrieve a new password.</p>
+            <p class="login-box-msg">Lupa password? masukan email yang terdaftar untuk mendapat link reset password.</p>
 
             @if (session('status'))
                 <div class="alert alert-success">
@@ -55,7 +57,7 @@
                     <input type="email"
                            name="email"
                            class="form-control @error('email') is-invalid @enderror"
-                           placeholder="Email">
+                           placeholder="Email terdaftar">
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                     </div>
@@ -66,18 +68,18 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-block">Send Password Reset Link</button>
+                        <button type="submit" class="btn btn-primary btn-block">Kirim link reset password</button>
                     </div>
                     <!-- /.col -->
                 </div>
             </form>
 
             <p class="mt-3 mb-1">
-                <a href="{{ route("login") }}">Login</a>
+                <a href="{{ route("login") }}">Saya sudah mengingat password</a>
             </p>
-            <p class="mb-0">
-                <a href="{{ route("register") }}" class="text-center">Register a new membership</a>
-            </p>
+{{--            <p class="mb-0">--}}
+{{--                <a href="{{ route("register") }}" class="text-center">Register a new membership</a>--}}
+{{--            </p>--}}
         </div>
         <!-- /.login-card-body -->
     </div>

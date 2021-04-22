@@ -2,37 +2,42 @@
 @section('title', 'Ubah sales order')
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
+
+    <div class = "row">
+        <section class="content-header">
+            <div class="container-fluid">
                 <div class="col-sm-12">
-                    <h1>Edit Sales Order</h1>
-                </div>
+                        <h5>Edit Sales Order</h5>
+                    </div>
+            </div>
+        </section>
+    </div>
+
+    <div class = "col-sm-12">
+        @include('adminlte-templates::common.errors')
+    </div>
+
+    <div class = "row">
+        <div class = "col-sm-3">
+            <div class="content px-3">
+                @include('sales_orders.fields')
+                <button class="btn btn-primary btn-block" onclick="uploadSalesOrder()">Check out</button>
+                <a href="{{ route('salesOrders.index') }}" class="btn btn-default btn-outline btn-block">Cancel</a>
             </div>
         </div>
-    </section>
-
-    <div class="content px-3">
-
-        @include('adminlte-templates::common.errors')
-
-        <div class="card">
-
-            {!! Form::model($salesOrder, ['route' => ['salesOrders.update', $salesOrder->id], 'method' => 'patch']) !!}
-
-            <div class="card-body">
-                <div class="row">
-                    @include('sales_orders.fields')
-                </div>
+        <div class = "col-sm-9">
+            <div class="content pr-3">
+                @include('sales_orders.list_order')
             </div>
+        </div>
+    </div>
 
-            <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}
-                <a href="{{ route('salesOrders.index') }}" class="btn btn-default">Cancel</a>
+    <div class = "row">
+        <div class="col-sm-12">
+            <div class="content px-3" style="height: 300px">
+                @include('sales_orders.table_produk')
             </div>
-
-           {!! Form::close() !!}
-
         </div>
     </div>
 @endsection
+

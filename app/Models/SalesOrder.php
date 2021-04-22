@@ -27,7 +27,6 @@ class SalesOrder extends Model
     public $fillable = [
         'uid',
         'nama',
-        'no_telepon',
         'tanggal',
         'status'
     ];
@@ -41,7 +40,6 @@ class SalesOrder extends Model
         'id' => 'string',
         'uid' => 'string',
         'nama' => 'string',
-        'no_telepon' => 'string',
         'tanggal' => 'string',
         'status' => 'string'
     ];
@@ -53,7 +51,6 @@ class SalesOrder extends Model
      */
     public static $rules = [
         'nama' => 'required',
-        'no_telepon' => 'required'
     ];
 
 

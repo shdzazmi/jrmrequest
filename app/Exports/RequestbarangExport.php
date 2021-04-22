@@ -27,7 +27,7 @@ class RequestbarangExport implements FromCollection, WithHeadings, WithStyles, S
         return [
             ['REQUEST ITEM KOSONG'],
             [],
-            ['No', 'Tanggal', 'Nama produk', 'Barcode', 'Kode supplier', 'Kendaraan', 'Part number', 'Keterangan', 'Created_at', 'Updated_at']
+            ['No', 'Tanggal', 'Nama produk', 'Barcode', 'Kode supplier', 'Kendaraan', 'Part number', 'Keterangan', 'Request by', 'Created_at', 'Updated_at']
         ];
     }
 

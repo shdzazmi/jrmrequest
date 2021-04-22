@@ -78,7 +78,7 @@
                                     <td>{{ $item['barcode'] }}</td>
                                     <td>{{ $item['kd_supplier'] }}</td>
                                     <td>{{ $item['kendaraan'] }}</td>
-                                    <td>{{ $item['part_number'] }}</td>
+                                    <td>{{ $item['partno1'] }}</td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -135,8 +135,8 @@
 
 <!-- Part Number Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('part_number', 'Part Number:') !!}
-    {!! Form::text('part_number', null, ['class' => 'form-control', 'id' => 'inputPartNumber']) !!}
+    {!! Form::label('partno1', 'Part Number:') !!}
+    {!! Form::text('partno1', null, ['class' => 'form-control', 'id' => 'inputPartNumber']) !!}
 </div>
 
 <!-- Keterangan Field -->

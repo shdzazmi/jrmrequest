@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ListOrder;
 use App\Repositories\ListOrderRepository;
 use Illuminate\Http\Request;
+use Symfony\Component\Console\Input\Input;
 
 class ListOrderController extends Controller
 {
@@ -15,9 +16,10 @@ class ListOrderController extends Controller
         $this->ListOrderRepository = $ListOrderRepo;
     }
 
-    public function store(Request $request){
-        $list_order = ListOrder::create($request->all());
-        return $list_order;
+    public function store(){
+//        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+//        $output->writeln("Data = $lokasi1");
+//        ListOrder::insert(Input::all());
     }
     public function get(){
         $list_order = ListOrder::all();

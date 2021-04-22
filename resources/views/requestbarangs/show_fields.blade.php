@@ -24,8 +24,8 @@
 
 <!-- Part Number Field -->
 <div class="col-sm-12">
-    {!! Form::label('part_number', 'Part Number:') !!}
-    <p>{{ $requestbarang->part_number }}</p>
+    {!! Form::label('partno1', 'Part Number:') !!}
+    <p>{{ $requestbarang->partno1 }}</p>
 </div>
 
 <!-- Keterangan Field -->

@@ -6,7 +6,7 @@
 <div class="form-group col-sm-4">
     <label for="kodelokasi">Kode Lokasi:</label>
     <div class="form-group input-group">
-        <input type="text" class="form-control" placeholder="Masukan kode lokasi" id="inputLokasi">
+        <input type="search" class="form-control" placeholder="Masukan kode lokasi" id="inputLokasi">
         <span class="input-group-append">
                     <button type="submit" class="btn btn-primary" id="btnSearchLoc" onclick="searchLokasi()"><i class="fas fa-search"></i></button>
                   </span>
@@ -16,7 +16,7 @@
 <div class="form-group col-sm-4">
     <label for="barcode">Barcode:</label>
     <div class="form-group input-group">
-        <input type="text" class="form-control" placeholder="Masukan kode barcode" id="inputBarcode">
+        <input type="search" class="form-control" placeholder="Masukan kode barcode" id="inputBarcode">
         <span class="input-group-append">
                     <button type="submit" class="btn btn-primary" id="btnSearchBarcode" onclick="searchBarcode()"><i class="fas fa-search" ></i></button>
                   </span>

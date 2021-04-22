@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ config('app.name') }} | @yield('title')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="shortcut icon" type="image/png" href="/jrmrequest/public/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/jrm/public/favicon.png"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
           integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
@@ -46,7 +46,7 @@
     @stack('page_css')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed {{--sidebar-collapse--}}">
 <div class="se-pre-con"></div>
 
 <div class="wrapper">
@@ -68,7 +68,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <!-- User image -->
-                    <li class="user-header bg-primary">
+                    <li class="user-header">
                         <img src="https://image.flaticon.com/icons/png/512/149/149071.png"
                              class="img-circle elevation-2"
                              alt="User Image">
@@ -79,9 +79,11 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
-                        <a href="#" class="btn btn-default btn-flat float-right"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        @if(Auth::user()->role == "Admin")
+                            <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
+                        @endif
+                        <a href="JavaScript:void(0)" class="btn btn-default btn-flat float-right"
+                           onclick="document.getElementById('logout-form').submit();">
                             Sign out
                         </a>
                         <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -164,6 +166,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js" integrity="sha512-J+763o/bd3r9iW+gFEqTaeyi+uAphmzkE/zU8FxY6iAvD3nQKXa+ZAWkBI9QS9QkYEKddQoiy0I5GDxKf/ORBA==" crossorigin="anonymous"></script>
 
+{{--sweetalert 2--}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="sweetalert2.all.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
@@ -176,12 +179,39 @@
     $("input[data-bootstrap-switch]").each(function(){
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
     });
-</script>
 
-<script>
     $(document).ready(function(){
         $('[data-toggle="tooltip"]').tooltip();
     });
+
+    function numberFormat($number){
+        return new Intl.NumberFormat().format(parseInt($number));
+    }
+
+    function toastError(title, desc){
+        Swal.fire({
+            title: title,
+            text: desc,
+            icon: "error", //built in icons: success, warning, error, info
+            toast: "true",
+            timer: 2000, //timeOut for auto-close
+            showConfirmButton: false,
+            position: 'top'
+        });
+    }
+
+    function toastSuccess(title, desc){
+        Swal.fire({
+            title: title,
+            text: desc,
+            icon: "success", //built in icons: success, warning, error, info
+            toast: "true",
+            timer: 2000, //timeOut for auto-close
+            showConfirmButton: false,
+            position: 'top'
+        });
+    }
+
 </script>
 
 @yield('third_party_scripts')

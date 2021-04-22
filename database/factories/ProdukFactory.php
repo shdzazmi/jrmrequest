@@ -24,7 +24,7 @@ class ProdukFactory extends Factory
         return [
             'nama' => $this->faker->word,
             'kendaraan' => $this->faker->word,
-            'part_number' => $this->faker->word,
+            'partno1' => $this->faker->word,
             'created_at' => $this->faker->date('Y-m-d H:i:s'),
             'updated_at' => $this->faker->date('Y-m-d H:i:s')
         ];

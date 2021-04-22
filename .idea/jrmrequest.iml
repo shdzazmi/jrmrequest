@@ -132,5 +132,6 @@
     <orderEntry type="library" name="jquery.dataTables" level="application" />
     <orderEntry type="library" name="select.dataTables" level="application" />
     <orderEntry type="library" name="buttons.bootstrap4" level="application" />
+    <orderEntry type="library" name="html5-qrcode" level="application" />
   </component>
 </module>

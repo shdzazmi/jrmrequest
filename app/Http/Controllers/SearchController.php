@@ -43,7 +43,7 @@ class SearchController extends Controller
                         'barcode' => utf8_encode(odbc_result($process, 'BarcodeAktif')),
                         'kd_supplier' => utf8_encode(odbc_result($process, 'KodeSupp')),
                         'kendaraan' => utf8_encode(odbc_result($process, 'Ukuran')),
-                        'part_number' => utf8_encode(odbc_result($process, 'PartNo1')),
+                        'partno1' => utf8_encode(odbc_result($process, 'PartNo1')),
                         'lokasi' => utf8_encode(odbc_result($process, 'Lokasi1')),
                         'harga' => floatval(odbc_result($process, 'HJual')),
                         'qty' => floatval(odbc_result($process, 'qtyAkhir')),
@@ -53,7 +53,6 @@ class SearchController extends Controller
                     {
                         $items->push($data);
                     }
-//                $items->push($itemAll);
                 }
                 odbc_close($sqlconnect);
 

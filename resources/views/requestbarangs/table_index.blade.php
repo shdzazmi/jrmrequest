@@ -30,6 +30,7 @@
                 select: true,
                 order: [[3, "desc"]],
                 autoWidth: false,
+                pageLength: 50,
                 ajax: {
                     url: '{{URL::to('requestbarangs')}}'
                 },

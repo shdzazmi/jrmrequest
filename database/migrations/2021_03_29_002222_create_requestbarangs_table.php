@@ -21,7 +21,7 @@ class CreateRequestbarangsTable extends Migration
             $table->string('barcode')->nullable();
             $table->string('kd_supplier')->nullable();
             $table->string('kendaraan')->nullable();
-            $table->string('part_number')->nullable();
+            $table->string('partno1')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('user')->nullable();
             $table->timestamps();

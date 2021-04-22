@@ -42,7 +42,7 @@
                     {data: 0, name: 'nama'},
                     {data: 2, name: 'kd_supplier'},
                     {data: 3, name: 'kendaraan'},
-                    {data: 4, name: 'part_number'},
+                    {data: 4, name: 'partno1'},
                     {data: 5, name: 'lokasi'},
                     {data: 6, name: 'harga'},
                     {data: 7, name: 'qty'},

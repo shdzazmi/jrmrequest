@@ -21,7 +21,7 @@ class requestbarangRepository extends BaseRepository
         'barcode',
         'kd_supplier',
         'kendaraan',
-        'part_number',
+        'partno1',
         'keterangan',
         'user'
     ];

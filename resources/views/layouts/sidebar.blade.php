@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-dark-primary elevation-2">
+<aside class="main-sidebar sidebar-dark-info elevation-2">
     <a href="{{ route('home') }}" class="brand-link">
         <img src="/jrmrequest/public/storage/logo.png"
              alt="Logo"

@@ -20,7 +20,7 @@ class ListOrderRepository extends BaseRepository
         'barcode',
         'kd_supplier',
         'kendaraan',
-        'part_number',
+        'partno1',
         'lokasi',
         'harga',
         'qty'

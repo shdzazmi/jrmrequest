@@ -18,7 +18,6 @@ class CreateSalesOrdersTable extends Migration
             $table->increments('id');
             $table->string('uid', 16);
             $table->string('nama');
-            $table->string('no_telepon', 16);
             $table->string('tanggal');
             $table->string('status', 10);
             $table->timestamps();

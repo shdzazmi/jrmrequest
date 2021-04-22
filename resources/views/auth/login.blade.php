@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{ config('app.name') }} | Login</title>
-    <link rel="shortcut icon" type="image/png" href="/jrmrequest/public/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="/jrm/public/favicon.png"/>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -49,20 +49,6 @@
 
             <form method="post" action="{{ url('/login') }}">
                 @csrf
-
-{{--                <div class="input-group mb-3">--}}
-{{--                    <input type="text"--}}
-{{--                           name="name"--}}
-{{--                           value="{{ old('name') }}"--}}
-{{--                           placeholder="Username"--}}
-{{--                           class="form-control @error('name') is-invalid @enderror">--}}
-{{--                    <div class="input-group-append">--}}
-{{--                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>--}}
-{{--                    </div>--}}
-{{--                    @error('name')--}}
-{{--                    <span class="error invalid-feedback">{{ $message }}</span>--}}
-{{--                    @enderror--}}
-{{--                </div>--}}
 
                 <div class="input-group mb-3">
                     <input type="email"
@@ -110,7 +96,7 @@
             </form>
 
 {{--            <p class="mb-1">--}}
-{{--                <a href="{{ route('password.request') }}">I forgot my password</a>--}}
+{{--                <a href="{{ route('password.request') }}">Lupa password</a>--}}
 {{--            </p>--}}
 {{--            <p class="mb-0">--}}
 {{--                <a href="{{ route('register') }}" class="text-center">Daftar baru</a>--}}

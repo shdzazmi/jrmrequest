@@ -2,35 +2,41 @@
     <table class="table" id="salesOrders-table">
         <thead>
             <tr>
+                <th>No. Order</th>
                 <th>Nama Customer</th>
-                <th>No Telepon</th>
                 <th>Tanggal</th>
                 <th>Status</th>
                 <th colspan="3">Action</th>
             </tr>
         </thead>
         <tbody>
-        @foreach($salesOrders as $salesOrder)
-            <tr>
-                <td>{{ $salesOrder->nama }}</td>
-            <td>{{ $salesOrder->no_telepon }}</td>
-            <td>{{ $salesOrder->tanggal }}</td>
-            <td>{{ $salesOrder->status }}</td>
-                <td width="120">
-                    {!! Form::open(['route' => ['salesOrders.destroy', $salesOrder->id], 'method' => 'delete']) !!}
-                    <div class='btn-group'>
-                        <a href="{{ route('salesOrders.show', [$salesOrder->id]) }}" class='btn btn-default btn-xs'>
-                            <i class="far fa-eye"></i>
-                        </a>
-                        <a href="{{ route('salesOrders.edit', [$salesOrder->id]) }}" class='btn btn-default btn-xs'>
-                            <i class="far fa-edit"></i>
-                        </a>
-                        {!! Form::button('<i class="far fa-trash-alt"></i>', ['type' => 'submit', 'class' => 'btn btn-danger btn-xs', 'onclick' => "return confirm('Are you sure?')"]) !!}
-                    </div>
-                    {!! Form::close() !!}
-                </td>
-            </tr>
-        @endforeach
         </tbody>
     </table>
 </div>
+
+@push('page_scripts')
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+
+        $(document).each( function () {
+            $('#salesOrders-table').DataTable({
+                select: true,
+                pageLength: 50,
+                autoWidth: false,
+                ajax: {
+                    url: '{{URL::to('salesOrders')}}'
+                },
+                columns: [
+                    {data: 'id', name: 'id'},
+                    {data: 'nama', name: 'nama'},
+                    {data: 'tanggal', name: 'tanggal'},
+                    {data: 'status', name: 'status'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ]
+            })
+        });
+
+    </script>
+
+@endpush
+

@@ -10,6 +10,6 @@
 
 <div class="form-group col-sm-4">
     <label for="barcode">Barcode:</label>
-        <input type="text" class="form-control" id="kodeBarcode" placeholder="Masukan kode barcode">
+        <input type="text" class="form-control" id="kodeBarcode" placeholder="Masukan kode barcode" maxlength="11">
 </div>
 

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $barcode
  * @property string $kd_supplier
  * @property string $kendaraan
- * @property string $part_number
+ * @property string $partno1
  * @property string $keterangan
  * @property string $user
  */
@@ -33,7 +33,7 @@ class requestbarang extends Model
         'barcode',
         'kd_supplier',
         'kendaraan',
-        'part_number',
+        'partno1',
         'keterangan',
         'user'
     ];
@@ -50,7 +50,7 @@ class requestbarang extends Model
         'barcode' => 'string',
         'kd_supplier' => 'string',
         'kendaraan' => 'string',
-        'part_number' => 'string',
+        'partno1' => 'string',
         'keterangan' => 'string',
         'user' => 'string'
     ];

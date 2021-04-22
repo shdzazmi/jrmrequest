@@ -15,9 +15,17 @@ class Produk extends Model
         'barcode',
         'kd_supplier',
         'kendaraan',
-        'part_number',
-        'lokasi',
+        'partno1',
+        'partno2',
+        'lokasi1',
+        'lokasi2',
+        'lokasi3',
         'harga',
+        'harga2',
+        'harga3',
+        'hargamin',
+        'qty',
+        'subkategori',
     ];
 
 

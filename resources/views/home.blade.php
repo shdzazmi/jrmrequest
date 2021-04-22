@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Home')
 @section('content')
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -30,22 +31,24 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-6">
-                <!-- small card -->
-                <div class="small-box bg-gradient-primary">
-                    <div class="inner">
-                        <h5>Sinkronisasi Data</h5>
-                        <b>Last update:</b>
-                        <p>{{$time}}</p>
+            @if(Auth::user()->role == "Admin")
+                <div class="col-lg-3 col-6">
+                    <!-- small card -->
+                    <div class="small-box bg-gradient-primary">
+                        <div class="inner">
+                            <h5>Sinkronisasi Data</h5>
+                            <b>Last update:</b>
+                            <p>{{$time}}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <a href="JavaScript:void(0)" class="small-box-footer" onclick="synchronize()">
+                            Update <i class="fas fa-sync-alt"></i>
+                        </a>
                     </div>
-                    <div class="icon">
-                        <i class="fas fa-sync-alt"></i>
-                    </div>
-                    <a href="JavaScript:void(0)" class="small-box-footer" onclick="synchronize()">
-                        Update <i class="fas fa-sync-alt"></i>
-                    </a>
                 </div>
-            </div>
+            @endif
         </div>
     </div>
 

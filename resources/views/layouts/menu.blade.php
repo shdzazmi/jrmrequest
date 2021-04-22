@@ -10,20 +10,20 @@
     <a href="{{ route('requestbarangs.index') }}" class="nav-link {{ Request::is('requestbarangs*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-hand-holding-usd"></i>
         <p>
-            Request Barang
+            Request
             <i class="right fas fa-angle-left"></i>
         </p>
     </a>
     <ul class="nav nav-treeview" style="display: none;">
         <li class="nav-item">
             <a href="{{ route('requestbarangs.index') }}" class="nav-link {{ Request::is('requestbarangs') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
+                <i class="far fa-circle nav-icon text-sm"></i>
                 <p>Dashboard</p>
             </a>
         </li>
         <li class="nav-item">
             <a href="{{ route('showAll') }}" class="nav-link {{ Request::is('requestbarangsall*') ? 'active' : '' }}">
-                <i class="far fa-circle nav-icon"></i>
+                <i class="far fa-circle nav-icon text-sm"></i>
                 <p>Semua Request</p>
             </a>
         </li>
@@ -34,7 +34,7 @@
     <a href="{{ route('search') }}"
        class="nav-link {{ Request::is('search*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-search"></i>
-        <p>Pencarian Stok</p>
+        <p>Pencarian</p>
     </a>
 </li>
 
@@ -42,6 +42,16 @@
     <a href="{{ route('location') }}"
        class="nav-link {{ Request::is('location*') ? 'active' : '' }}">
         <i class="nav-icon fas fa-boxes"></i>
-        <p>Lokasi Produk</p>
+        <p>Lokasi</p>
     </a>
 </li>
+
+@if(Auth::user()->role == "Admin")
+    <li class="nav-item">
+        <a href="{{ route('admin') }}"
+           class="nav-link {{ Request::is('admin*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user"></i>
+            <p>Admin</p>
+        </a>
+    </li>
+@endif
