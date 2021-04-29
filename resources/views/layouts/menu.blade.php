@@ -38,15 +38,17 @@
     </a>
 </li>
 
-<li class="nav-item">
-    <a href="{{ route('location') }}"
-       class="nav-link {{ Request::is('location*') ? 'active' : '' }}">
-        <i class="nav-icon fas fa-boxes"></i>
-        <p>Lokasi</p>
-    </a>
-</li>
+@if(Auth::user()->role != "User")
+    <li class="nav-item">
+        <a href="{{ route('location') }}"
+           class="nav-link {{ Request::is('location*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-boxes"></i>
+            <p>Lokasi</p>
+        </a>
+    </li>
+@endif
 
-@if(Auth::user()->role == "Admin")
+@if(Auth::user()->role == "Master")
     <li class="nav-item">
         <a href="{{ route('admin') }}"
            class="nav-link {{ Request::is('admin*') ? 'active' : '' }}">

@@ -37,16 +37,12 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
 
-
-
-
-
     @yield('third_party_stylesheets')
 
     @stack('page_css')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed {{--sidebar-collapse--}}">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
 <div class="se-pre-con"></div>
 
 <div class="wrapper">
@@ -79,7 +75,7 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        @if(Auth::user()->role == "Admin")
+                        @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
                             <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
                         @endif
                         <a href="JavaScript:void(0)" class="btn btn-default btn-flat float-right"
@@ -106,12 +102,12 @@
     </div>
 
     <!-- Main Footer -->
-    <footer class="main-footer">
+    {{-- <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
             <b>Version</b> 1.0.0
         </div>
         <strong>Jaya Raya Mobil Portal App</strong>
-    </footer>
+    </footer> --}}
 </div>
 
 

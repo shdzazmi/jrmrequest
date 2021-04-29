@@ -1,37 +1,89 @@
-@extends('layouts.app')
-@section('title', 'Buat request')
-@section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-12">
-                    <h1>Tambah Request barang</h1>
+
+
+    <div class="card">
+        <div class="card-body register-card-body">
+
+            <form method="post" action="{{ route("admin.create") }}">
+                @csrf
+
+                <div class="input-group mb-3">
+                    <input type="text"
+                           name="name"
+                           class="form-control @error('name') is-invalid @enderror"
+                           placeholder="Nama lengkap"
+                           required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                    @error('name')
+                    <span class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
                 </div>
-            </div>
-        </div>
-    </section>
 
-    <div class="content px-3">
+                <div class="input-group mb-3">
+                    <input type="text"
+                           name="email"
+                           class="form-control"
+                           placeholder="Username"
+                           required>
 
-        @include('adminlte-templates::common.errors')
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-at"></span></div>
+                    </div>
+                    @error('email')
+                    <span class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
 
-        <div class="card">
+                <div class="input-group mb-3">
+                    <input type="password"
+                           name="password"
+                           class="form-control @error('password') is-invalid @enderror"
+                           placeholder="Password"
+                           required>
 
-            {!! Form::open(['route' => 'requestbarangs.store']) !!}
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                    </div>
+                    @error('password')
+                    <span class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input type="password"
+                           name="password_confirmation"
+                           class="form-control"
+                           placeholder="Konfirmasi password"
+                           required>
+
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3">
+                    <select name="role" class="form-control">
+                        <option>User</option>
+                        <option>Admin</option>
+                        <option>Master</option>
+                    </select>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-tools"></span></div>
+                    </div>
+                    @error('name')
+                    <span class="error invalid-feedback">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <div class="row">
-                    @include('requestbarangs.fields')
+                    <!-- /.col -->
+                    <div class="col-4">
+                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    </div>
+                    <!-- /.col -->
                 </div>
-            </div>
-
-            <div class="card-footer">
-                {!! Form::submit('Save', ['class' => 'btn btn-primary', 'id'=>'add-data']) !!}
-                <a href="{{ route('requestbarangs.index') }}" class="btn btn-default">Cancel</a>
-            </div>
-
-            {!! Form::close() !!}
-
+            </form>
         </div>
-    </div>
-@endsection
+        <!-- /.form-box -->
+    </div><!-- /.card -->

@@ -13,6 +13,12 @@ use Flash;
 use Response;
 use Webpatser\Uuid\Uuid;
 
+use Dompdf\Dompdf;
+use PDF;
+
+use App\Exports\SalesorderExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class SalesOrderController extends AppBaseController
 
 {
@@ -21,6 +27,8 @@ class SalesOrderController extends AppBaseController
 
     public function __construct(SalesOrderRepository $salesOrderRepo)
     {
+        $this->middleware('auth');
+
         $this->salesOrderRepository = $salesOrderRepo;
     }
 
@@ -54,9 +62,9 @@ class SalesOrderController extends AppBaseController
     public function create()
     {
         $produks = Produk::all();
-        $list_order = ListOrder::all();
-        $uuid = substr(Uuid::generate(4),24);
-        return view('sales_orders.create')->with('produks', $produks)->with('uuid', $uuid);
+        $uid = substr(Uuid::generate(4),24);
+        $status = "Proses";
+        return view('sales_orders.create')->with('produks', $produks)->with('uid', $uid)->with('status', $status);
     }
 
     /**
@@ -72,10 +80,11 @@ class SalesOrderController extends AppBaseController
         $input = $request->all();
 
         $salesOrder = $this->salesOrderRepository->create($input);
-
         Flash::success('Sukses tambah data.');
-
-        return redirect(route('salesOrders.index'));
+        $id = SalesOrder::firstWhere('uid', $request->uid);
+        // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+        // $output->writeln("Data = ");
+        return $id;
     }
 
     public function storeData(Request $request){
@@ -91,9 +100,10 @@ class SalesOrderController extends AppBaseController
         $lokasi1 = $produk->lokasi1;
         $lokasi2 = $produk->lokasi2;
         $lokasi3 = $produk->lokasi3;
-        $harga = $produk->harga;
+        $harga = $request->harga;
         $qty = $request->qty;
         $subtotal = $request->subtotal;
+        $stok = $produk->qty;
 
         $data = [
             'uid' => $uid,
@@ -109,12 +119,50 @@ class SalesOrderController extends AppBaseController
             'harga' => $harga,
             'qty' => $qty,
             'subtotal' => $subtotal,
+            'stok' => $stok
         ];
 
         ListOrder::insert($data);
 
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $output->writeln("Produk 1 = $produk");
+        return false;
+    }
+
+    public function updateData(Request $request){
+        $barcode = $request->barcode;
+        $produk = Produk::where('barcode', $barcode)->first();
+
+        $id = $request->id;
+        $uid = $request->uid;
+        $nama = $produk->nama;
+        $kd_supplier = $produk->kd_supplier;
+        $kendaraan = $produk->kendaraan;
+        $partno1 = $produk->partno1;
+        $partno2 = $produk->partno2;
+        $lokasi1 = $produk->lokasi1;
+        $lokasi2 = $produk->lokasi2;
+        $lokasi3 = $produk->lokasi3;
+        $harga = $request->harga;
+        $qty = $request->qty;
+        $subtotal = $request->subtotal;
+        $stok = $produk->qty;
+        
+        ListOrder::updateOrCreate(['id' => $id],
+            [
+                'uid' => $uid,
+                'nama' => $nama,
+                'barcode' => $barcode,
+                'kd_supplier' => $kd_supplier,
+                'kendaraan' => $kendaraan,
+                'partno1' => $partno1,
+                'partno2' => $partno2,
+                'lokasi1' => $lokasi1,
+                'lokasi2' => $lokasi2,
+                'lokasi3' => $lokasi3,
+                'harga' => $harga,
+                'qty' => $qty,
+                'subtotal' => $subtotal,
+                'stok' => $stok
+            ]);
 
         return false;
     }
@@ -129,6 +177,8 @@ class SalesOrderController extends AppBaseController
     public function show($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
+        $uid = $salesOrder->uid;
+        $listorder = ListOrder::all()->Where('uid', $uid);
 
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
@@ -136,7 +186,7 @@ class SalesOrderController extends AppBaseController
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.show')->with('salesOrder', $salesOrder);
+        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder);
     }
 
     /**
@@ -150,17 +200,30 @@ class SalesOrderController extends AppBaseController
     public function edit($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
+        $uid = $salesOrder->uid;
+
+        $listorder = ListOrder::all()->Where('uid', $uid);
         $produks = Produk::all();
-        $datetimes = $salesOrder->tanggal;
-        $uuid = $salesOrder->uid;
-        $list_order = ListOrder::all();
+
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
 
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.edit')->with('salesOrder', $salesOrder)->with('produks', $produks)->with('datetimes', $datetimes)->with('uuid', $uuid);
+        return view('sales_orders.edit')
+            ->with('salesOrder', $salesOrder)
+            ->with('produks', $produks)
+            ->with('listorder', $listorder);
+    }
+
+    public function editStatus($id, $newStatus){
+        $salesorder = SalesOrder::find($id);
+        $salesorder->status = $newStatus;
+        $salesorder->save();
+        $salesOrders = SalesOrder::all();
+        return redirect(route('salesOrders.index'))
+            ->with('salesOrders', $salesOrders);
     }
 
     /**
@@ -184,8 +247,9 @@ class SalesOrderController extends AppBaseController
         $salesOrder = $this->salesOrderRepository->update($request->all(), $id);
 
         Flash::success('Sales Order updated successfully.');
+        $id = SalesOrder::firstWhere('uid', $request->uid);
 
-        return redirect(route('salesOrders.index'));
+        return $id;
     }
 
     /**
@@ -200,6 +264,8 @@ class SalesOrderController extends AppBaseController
     public function destroy($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
+        $uid = $salesOrder->uid;
+        $listOrder = ListOrder::where('uid', $uid);
 
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
@@ -208,6 +274,7 @@ class SalesOrderController extends AppBaseController
         }
 
         $this->salesOrderRepository->delete($id);
+        $listOrder->delete();
 
         Flash::success('Sales Order deleted successfully.');
 
@@ -217,4 +284,29 @@ class SalesOrderController extends AppBaseController
     public function putItem($barcode){
         return Produk::where('barcode', $barcode)->first();
     }
+
+    public function export_pdf($id)
+    {
+        $salesOrder = $this->salesOrderRepository->find($id);
+        $uid = $salesOrder->uid;
+        $listorder = ListOrder::all()->where('uid', $uid);
+        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder]);
+        return $pdf->download('Sales Order SO'.$id.'.pdf');
+    }
+
+    public function export_excel($id)
+    {
+        return Excel::download(new SalesorderExport($id), 'Sales Order SO'.$id.'.xlsx');
+    }
+
+    public function getdetails($id)
+    {
+        $salesOrder = $this->salesOrderRepository->find($id);
+        $uid = $salesOrder->uid;
+        $listOrder = ListOrder::all()->where('uid', $uid);
+        // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+        // $output->writeln("listorder = $listOrder");
+        return $listOrder;
+    }
+
 }

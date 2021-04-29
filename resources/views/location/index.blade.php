@@ -258,7 +258,6 @@
                 for ( var i = 1; i < table.rows.length; i++ ) {
                     var lokasi = table.rows[i].cells[0].innerHTML;
                     var barcode = table.rows[i].cells[1].innerHTML;
-                    console.log(lokasi+" "+barcode)
                     var url = '{{ route("location.update", [":bcode", ":lok"]) }}';
                     url = url.replace(':bcode', barcode);
                     url = url.replace(':lok', lokasi);

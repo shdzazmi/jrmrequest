@@ -48,7 +48,7 @@ class LocationController extends Controller
 
     public function update($barcode, $lokasi)
     {
-        $bcode = "01/$barcode";
+        $bcode = "$barcode";
         $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
         $sqlqueryselect = "SELECT * FROM stock WHERE BarcodeAktif='$bcode'";
         $process = odbc_exec($sqlconnect, $sqlqueryselect);
@@ -85,7 +85,7 @@ class LocationController extends Controller
     public function edit($barcode)
     {
         $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
-        $sqlquery = "SELECT Lokasi1, Lokasi2, Lokasi3 FROM stock WHERE BarcodeAktif='01/$barcode';";
+        $sqlquery = "SELECT Lokasi1, Lokasi2, Lokasi3 FROM stock WHERE BarcodeAktif='$barcode';";
         $process = odbc_exec($sqlconnect, $sqlquery);
         $items = [
             'lokasi1' => utf8_encode(odbc_result($process, 'Lokasi1')),
@@ -144,7 +144,7 @@ class LocationController extends Controller
 
     public function putItem($barcode)
     {
-        $bcode = "01/$barcode";
+        $bcode = "$barcode";
         $produk = Produk::where('barcode', $bcode)->first();
         return $produk ;
     }

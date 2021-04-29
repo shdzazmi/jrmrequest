@@ -31,8 +31,16 @@ Route::get('/requestbarangsall/{query?}', [App\Http\Controllers\requestbarangCon
 
 //Sales order
 Route::resource('salesOrders', App\Http\Controllers\SalesOrderController::class);
-Route::post('/salesOrders/put/{barcode}', [App\Http\Controllers\SalesOrderController::class, 'putItem'])->where('barcode', '(.*)')->name('salesOrder.put');;
-Route::post('/salesOrders/postData', [App\Http\Controllers\SalesOrderController::class, 'storeData'])->name('salesOrder.storeData');;
+Route::post('/salesOrders/put/{barcode}', [App\Http\Controllers\SalesOrderController::class, 'putItem'])->where('barcode', '(.*)')->name('salesOrder.put');
+Route::post('/salesOrders/postData', [App\Http\Controllers\SalesOrderController::class, 'storeData'])->name('salesOrder.storeData');
+Route::post('/salesOrders/updateData', [App\Http\Controllers\SalesOrderController::class, 'updateData'])->name('salesOrder.updateData');
+Route::post('/getdetails/{id}', [App\Http\Controllers\SalesOrderController::class, 'getdetails'])->name('salesOrder.getdetails');
+Route::get('/salesOrders/{id}/{status}', [App\Http\Controllers\SalesOrderController::class, 'editStatus'])->name('salesOrder.editStatus');
+Route::get('/getPdf/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_pdf'])->name('salesOrder.getPdf');
+Route::get('/getExcel/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_excel'])->name('salesOrder.export_excel');
+
+//List order
+Route::post('/salesOrders/deletelist', [App\Http\Controllers\ListOrderController::class, 'destroy'])->name('listOrder.delete');;
 
 //Search produk
 Route::get('/search/{query?}', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
@@ -50,4 +58,4 @@ Route::post('/location/put/{barcode}', [App\Http\Controllers\LocationController:
 //Admin
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 Route::get('/admin/edit/{id}/{role}', [App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
-
+Route::post('/admin/create', [App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');

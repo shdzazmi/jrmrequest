@@ -15,7 +15,39 @@
     <div class="content px-3">
         <div class="row mb-2">
             <div class="col-lg-3 col-6">
-                <!-- small card -->
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                    <div class="small-box bg-gradient-success">
+                        <div class="inner">
+                            <h3>{{$salesordercount}}</h3>
+                            <b>Sales Order</b>
+                            <br>
+                            <a href="{{ route('salesOrders.index') }}" class="text text-light">More info</a>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                        <a href="{{ route('salesOrders.create') }}" class="small-box-footer">
+                            Buat Sales Order Baru <i class="fas fa-plus-circle"></i>
+                        </a>
+                    <div class="list-group">
+                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
+                            Proses <span class="float-right badge bg-warning">{{$prosescount}}</span>
+                        </a>
+                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
+                            Selesai <span class="float-right badge bg-success">{{$selesaicount}}</span>
+                        </a>
+                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
+                            Batal <span class="float-right badge bg-danger">{{$batalcount}}</span>
+                        </a>
+                    </div>
+                    </div>
+                    
+
+            </div>
+            
+
+            <!-- small card -->
+            <div class="col-lg-3 col-6">
                 <div class="small-box bg-gradient-info">
                     <div class="inner">
                         <h3>{{$requestcount}}</h3>
@@ -31,9 +63,10 @@
                     </a>
                 </div>
             </div>
-            @if(Auth::user()->role == "Admin")
+
+            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
+                <!-- small card -->
                 <div class="col-lg-3 col-6">
-                    <!-- small card -->
                     <div class="small-box bg-gradient-primary">
                         <div class="inner">
                             <h5>Sinkronisasi Data</h5>
@@ -49,6 +82,7 @@
                     </div>
                 </div>
             @endif
+
         </div>
     </div>
 

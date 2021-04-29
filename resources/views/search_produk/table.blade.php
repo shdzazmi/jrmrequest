@@ -6,56 +6,170 @@
     }
 
 </style>
-<div class="table-responsive">
-    <table class="table dataTable table-striped cell-border" id="tbSearch">
-        <thead>
-            <tr>
-                <th class="text-center" style="width:25%">Nama</th>
-                <th class="text-center" style="width:10%">Supplier</th>
-                <th class="text-center" style="width:15%">Kendaraan</th>
-                <th class="text-center" style="width:15%">Part Number</th>
-                <th class="text-center" style="width:15%">Lokasi</th>
-                <th class="text-center" style="width:15%">Harga</th>
-                <th class="text-center" style="width:5%">Qty</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
+<!-- Table produk -->
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Pilih produk</h3>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered dataTable table-striped"  id="salesorderproduk">
+                <thead>
+                <tr style="text-align:center">
+                    <th>Barcode</th>
+                    <th>Produk</th>
+                    <th style="width: 75px">Kode Supplier</th>
+                    <th>Kendaraan</th>
+                    <th>Part Number</th>
+                    <th>Harga</th>
+                    <th>Qty</th>
+                </tr>
+                </thead>
+                <tfoot style="display: table-header-group">
+                <tr style="text-align:center">
+                    <th>Barcode</th>
+                    <th>Produk</th>
+                    <th>Kode Supplier</th>
+                    <th>Kendaraan</th>
+                    <th>Part Number</th>
+                    <th>Harga</th>
+                    <th>Qty</th>
+                </tr>
+                </tfoot>
+                <tbody id="tbsalesorder">
+                @foreach($produks as $item)
+                    <tr class='clickable-row'>
+                        <td>
+                            {{ $item['barcode'] }}
+                        </td>
+                        <td>
+                            {{ $item['nama'] }}<br/>
+                            <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
+                        </td>
+                        <td>{{ $item['kd_supplier'] }}</td>
+                        <td>{{ $item['kendaraan'] }}</td>
+                        <td>
+                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                        </td>
+                        <td style="text-align:right">
+                            <span class="badge badge-pill bg-secondary">1</span> {{ number_format($item['harga']) }}<br/>
+                            <span class="badge badge-pill bg-secondary">2</span> {{ number_format($item['harga2']) }}<br/>
+                            <span class="badge badge-pill bg-secondary">3</span> {{ number_format($item['harga3']) }}<br/>
+                            <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
+                        </td>
+                        <td style="text-align:right">
+                            <span class="badge badge-pill bg-success">Semua:</span> {{ $item['qty'] }}<br/>
+                            <span class="badge badge-pill bg-success">Toko:</span> {{ $item['qtyTk'] }}<br/>
+                            <span class="badge badge-pill bg-success">Gudang:</span> {{ $item['qtyGd'] }}<br/>
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
+
+
 @push('page_scripts')
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-    <script>
-        $(document).ready(function() {
-            var table = $('#tbSearch').DataTable({
-                serverside: true,
-                autoWidth: false,
-                ajax: {
-                    url: '{{URL::to('search')}}',
-                },
-                // ajax: "scripts/server_processing.php",
-                draw: 10,
-                oSearch: {"sSearch": "{{$nama = null}}"},
-                columns: [
-                    {data: 0, name: 'nama'},
-                    {data: 2, name: 'kd_supplier'},
-                    {data: 3, name: 'kendaraan'},
-                    {data: 4, name: 'partno1'},
-                    {data: 5, name: 'lokasi'},
-                    {data: 6, name: 'harga'},
-                    {data: 7, name: 'qty'},
-                ]
-            })
-            $('#searchInput').on( 'keyup', function () {
-                table.search( this.value ).draw();
-            } );
-            $('#searchButton').on( 'click', function () {
-                table.search( this.value ).draw();
-            } );
-            $(".dataTables_filter").hide();
-        })
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-    </script>
+<script>
+
+    $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#salesorderproduk tfoot th').each( function () {
+            var title = $(this).text();
+            $(this).html( '<input style="width:75px" type="text"/>' );
+        } );
+
+        const tbProduk = $('#salesorderproduk').DataTable({
+            select: true,
+            processing: true,
+            autoWidth: false,
+            initComplete: function () {
+                $("#salesorderproduk").show();
+                // Apply the 
+                this.api().columns().every( function () {
+                    var that = this;
+
+                    $( 'input', this.footer() ).on( 'keyup change clear', function () {
+                        if ( that.search() !== this.value ) {
+                            that
+                                .search( this.value )
+                                .draw();
+                        }
+                    } );
+                } );
+            },
+            columnDefs: [
+                {
+                    targets: [ 0 ],
+                    visible: false,
+                }
+            ]
+        });
+
+        // Onclick event
+        /*var lastResult;
+        tbProduk.on('click', 'tr', function (e, dt, type, indexes) {
+            var rowData = tbProduk.row(this).data();
+            if (rowData !== lastResult) {
+                lastResult = rowData;
+                var bcode = rowData[0];
+                var url = '{{ route("salesOrder.put", ":bcode") }}';
+                url = url.replace(':bcode', bcode);
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    data: bcode,
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    success: function (data) {
+
+                        $('#table-body').append(
+                            '<tr>' +
+                            '<td style="display:none;"></td>  ' +
+                            '<td>' + data.nama + '</td>  ' +
+                            '<td>' + data.barcode + '</td> ' +
+                            '<td>' + data.kendaraan + '</td> ' +
+                            '<td >' +
+                                '<div class="input-group-append">'+
+                                    '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data.harga +'">'+
+                                        '<div  class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data.harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data.harga +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data.harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data.harga2 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data.harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data.harga3 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data.hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data.hargamin +'</a>'+
+                                        '</div >'+
+                                    '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
+                                '</div>' +
+                            '</td> ' +
+                            '<td ><input type="number" value="1" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                            '<td class="text">' + data.harga + '</td> ' +
+                            '<td><button class="btn btn-tool" type="button" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                            '</tr>'
+                        );
+                        getTotalPrice();
+                        toastSuccess("Produk berhasil ditambahkan!")
+                    },
+                    error: function (data) {
+                        toastError("Gagal!", "Terjadi kesalahan internal.")
+                    }
+                })
+            }
+        });*/
+
+
+
+    });
+
+
+
+</script>
 @endpush

@@ -27,7 +27,8 @@ class CreateListOrdersTable extends Migration
             $table->string('lokasi3');
             $table->string('harga');
             $table->integer('qty');
-            $table->float('subtotal');
+            $table->integer('subtotal');
+            $table->integer('stok');
             $table->timestamps();
         });
     }

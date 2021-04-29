@@ -50,6 +50,7 @@ class SalesOrder extends Model
      * @var array
      */
     public static $rules = [
+        'tanggal' => 'required',
         'nama' => 'required',
     ];
 

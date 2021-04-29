@@ -29,6 +29,8 @@ class CreateProduksTable extends Migration
             $table->integer('harga3');
             $table->integer('hargamin');
             $table->integer('qty');
+            $table->integer('qtyTk');
+            $table->integer('qtyGd');
             $table->string('subkategori');
             $table->timestamps();
         });

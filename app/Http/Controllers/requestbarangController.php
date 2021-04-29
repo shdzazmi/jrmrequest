@@ -23,6 +23,8 @@ class requestbarangController extends AppBaseController
 
     public function __construct(requestbarangRepository $requestbarangRepo)
     {
+        $this->middleware('auth');
+
         $this->requestbarangRepository = $requestbarangRepo;
     }
 
@@ -183,7 +185,7 @@ class requestbarangController extends AppBaseController
 
     public function destroyAll($barcode)
     {
-        $barcodeX = "01/".$barcode;
+        $barcodeX = $barcode;
         $requestbarang = requestbarang::where('barcode', $barcodeX);
 
         if (empty($requestbarang)) {

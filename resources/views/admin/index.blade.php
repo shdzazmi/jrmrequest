@@ -12,7 +12,6 @@
         </div>
     </section>
 
-    {{--Pencarian--}}
     <div class="content px-3">
         @include('flash::message')
         <div class="row">
@@ -42,7 +41,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <button type="button" class="btn btn-outline-primary">
+                        <button type="button" class="btn btn-outline-danger" data-toggle = 'modal' data-target = '#myModal'>
                             <i class="fas fa-user"></i> Tambah user
                         </button>
                     </div>
@@ -51,11 +50,44 @@
         </div>
         </div>
 
+    <!--Modal-->
+    <!-- The Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title">Register a new membership</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    @include('admin.create')
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
 @endsection
 
 @push('page_scripts')
+    {{--Modal Script--}}
+    <script>
+        $(document).ready(function(){
+            $(".show-modal").click(function(){
+                $("#myModal").modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            });
+        });
+    </script>
 
+    <script type="text/javascript">
+        $("#btnModal").click(function(){});
+    </script>
 @endpush

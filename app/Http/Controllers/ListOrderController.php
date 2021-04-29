@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ListOrder;
 use App\Repositories\ListOrderRepository;
 use Illuminate\Http\Request;
-use Symfony\Component\Console\Input\Input;
 
-class ListOrderController extends Controller
+class ListOrderController extends AppBaseController
 {
     private $ListOrderRepository;
 
@@ -16,21 +14,16 @@ class ListOrderController extends Controller
         $this->ListOrderRepository = $ListOrderRepo;
     }
 
-    public function store(){
-//        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-//        $output->writeln("Data = $lokasi1");
-//        ListOrder::insert(Input::all());
-    }
-    public function get(){
-        $list_order = ListOrder::all();
-        return view('list_order', $list_order);
-    }
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $this->ListOrderRepository->delete($id);
-    }
-    public function destroyAll($id)
-    {
-        $this->ListOrderRepository->delete($id);
+        $listorder = $this->ListOrderRepository->find($request->id);
+
+        if (empty($listorder)) {
+            return "error";
+        } else {
+            $this->ListOrderRepository->delete($request->id);
+            return "success";
+        }
+
     }
 }

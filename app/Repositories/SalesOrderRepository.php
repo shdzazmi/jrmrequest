@@ -16,11 +16,20 @@ class SalesOrderRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'id',
         'uid',
         'nama',
-        'no_telepon',
-        'tanggal',
-        'status'
+        'barcode',
+        'kd_supplier',
+        'kendaraan',
+        'partno1',
+        'partno2',
+        'lokasi1',
+        'lokasi2',
+        'lokasi3',
+        'harga',
+        'qty',
+        'subtotal'
     ];
 
     /**

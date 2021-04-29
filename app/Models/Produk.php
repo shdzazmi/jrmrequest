@@ -25,6 +25,8 @@ class Produk extends Model
         'harga3',
         'hargamin',
         'qty',
+        'qtyTk',
+        'qtyGd',
         'subkategori',
     ];
 

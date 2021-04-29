@@ -34,6 +34,7 @@
                 select: true,
                 serverside: true,
                 pageLength: 50,
+                autoWidth: false,
                 ajax: {
                     url: '{{URL::to('requestbarangsall')}}'
                 },

@@ -10,6 +10,7 @@ class ListOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'uid',
         'nama',
         'barcode',
@@ -23,5 +24,6 @@ class ListOrder extends Model
         'harga',
         'qty',
         'subtotal',
+        'stok'
     ];
 }

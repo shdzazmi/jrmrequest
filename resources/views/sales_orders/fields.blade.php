@@ -16,25 +16,36 @@
                 {!! Form::label('tanggal', 'Tanggal:') !!}
                 {!! Form::text('tanggal', null, ['class' => 'form-control','id'=>'tanggal_input']) !!}
             </div>
-            <!-- uuid Field -->
-            <div>
-                @if($uuid==null)
+            <!-- uid Field -->
+            @if(isset($uid))
+                <div>
+                    {!! Form::hidden('uid', $uid, ['id'=>'uid_input', 'style'=>'width=1px']) !!}
+                </div>
+            @else
+                <div>
                     {!! Form::hidden('uid', null, ['id'=>'uid_input', 'style'=>'width=1px']) !!}
-                @else
-                    {!! Form::hidden('uid', $uuid, ['id'=>'uid_input', 'style'=>'width=1px']) !!}
-                @endif
+                </div>
+            @endif
+            <!-- id Field -->
+            <div>
+                {!! Form::hidden('id', null, ['id'=>'id_input', 'style'=>'width=1px']) !!}
             </div>
             <!-- status Field -->
-            <div>
-                {!! Form::hidden('status', 'Proses', ['id'=>'status_input', 'style'=>'width=1px']) !!}
-            </div>
+            @if(isset($status))
+                <div>
+                    {!! Form::hidden('status', $status, ['id'=>'status_input', 'style'=>'width=1px']) !!}
+                </div>
+            @else
+                <div>
+                    {!! Form::hidden('status', null, ['id'=>'status_input', 'style'=>'width=1px']) !!}
+                </div>
+            @endif
         </div>
     </div>
 </div>
 
 
 @push('page_scripts')
-
     <script type="text/javascript">
         $('#tanggal_input').datetimepicker({
             format: 'DD-MM-YYYY HH:mm:ss',
@@ -51,6 +62,4 @@
         })
 
     </script>
-
-
 @endpush

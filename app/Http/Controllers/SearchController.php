@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Setting;
 use Carbon\Carbon;
-use Flash;
 
 class SearchController extends Controller
 {

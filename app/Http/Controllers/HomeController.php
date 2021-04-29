@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use App\Models\SalesOrder;
 use App\Models\requestbarang;
 use Carbon\Carbon;
 use Flash;
@@ -20,11 +21,6 @@ class HomeController extends Controller
     {
         $this->middleware('auth');
 
-        //Initialize data
-        $produks = Produk::all();
-        if ($produks->isEmpty()) {
-            $this->fetchDataProduk();
-        }
     }
 
     /**
@@ -34,13 +30,29 @@ class HomeController extends Controller
      */
     public function index()
     {
+        //Initialize data
+        $produks = Produk::all();
+        if ($produks->isEmpty()) {
+            $this->fetchDataProduk();
+        }
+
         $lastupdate = Produk::first()->created_at;
         $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
         $requestdata = requestbarang::all();
         $requestcount = $requestdata->count();
+        $prosescount = SalesOrder::all()->where('status', 'Proses')->count();
+        $selesaicount = SalesOrder::all()->where('status', 'Selesai')->count();
+        $batalcount = SalesOrder::all()->where('status', 'Batal')->count();
+        $salesordercount = SalesOrder::all()->count();
+
         return view('home')
             ->with('time', $time)
-            ->with('requestcount', $requestcount);
+            ->with('requestcount', $requestcount)
+            ->with('prosescount', $prosescount)
+            ->with('selesaicount', $selesaicount)
+            ->with('batalcount', $batalcount)
+            ->with('salesordercount', $salesordercount);
+
     }
 
     public function synchronize()
@@ -76,6 +88,8 @@ class HomeController extends Controller
         $sqlquery .= "partno1 AS partno1, ";
         $sqlquery .= "partno2 AS partno2, ";
         $sqlquery .= "qtyAkhir + qtyGd AS qty, ";
+        $sqlquery .= "qtyAkhir AS qtyTk, ";
+        $sqlquery .= "qtyGd AS qtyGd, ";
         $sqlquery .= "subkategori AS subkategori ";
         $sqlquery .= "FROM stock ";
         $sqlquery .= "LEFT JOIN kelproduk ON stock.kelproduk = kelproduk.id ";
@@ -95,6 +109,8 @@ class HomeController extends Controller
                 'harga3' => floatval(odbc_result($process, 'harga3')),
                 'hargamin' => floatval(odbc_result($process, 'hargamin')),
                 'qty' => floatval(odbc_result($process, 'qty')),
+                'qtyTk' => floatval(odbc_result($process, 'qtyTk')),
+                'qtyGd' => floatval(odbc_result($process, 'qtyGd')),
                 'lokasi1' => utf8_encode(odbc_result($process, 'lokasi1')),
                 'lokasi2' => utf8_encode(odbc_result($process, 'lokasi2')),
                 'lokasi3' => utf8_encode(odbc_result($process, 'lokasi3')),

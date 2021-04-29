@@ -16,30 +16,34 @@
             </tr>
         </thead>
         <tbody id="tbRole">
+            @php $i = 1 @endphp
         @foreach($user as $users)
             <tr>
-                <th>{{ $users->id }}</th>
+                <th>{{$i++}}</th>
                 <td>{{ $users->name }}</td>
                 @if($users->role == 'Admin')
                     <td>
                         <a href="javascript:void(0)" class="badge badge-pill badge-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
                     </td>
                 @elseif($users->role == 'User')
                     <td>
-                        <a href="javascript:void(0)" class="badge badge-pill badge-default" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
+                        <a href="javascript:void(0)" class="badge badge-pill badge-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
                     </td>
-                @else
+                @elseif($users->role == 'Master')
                     <td>
-                        <a href="javascript:void(0)" class="badge badge-pill badge-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">None</a>
+                        <a href="javascript:void(0)" class="badge badge-pill badge-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>

@@ -40,6 +40,7 @@
         </div>
     </div>
 @endsection
+@push('page_scripts')
 
     <script>
         var tbOrder = document.getElementById("table-body");
@@ -49,7 +50,7 @@
             var totaltext = document.getElementById("total-text");
             for(var i = 0; i < table.rows.length; i++)
             {
-                total = total + parseFloat(table.rows[i].cells[5].innerHTML);
+                total = total + parseFloat(table.rows[i].cells[6].innerHTML);
             }
             totaltext.innerHTML = numberFormat(total);
         }
@@ -57,14 +58,14 @@
         function updateSubtotal(id) {
             var qty =  Number($(id).closest("tr").find("input[id*='qtyInput']").val());
             var price = Number($(id).closest("tr").find("input[id*='hargaInput']").val());
-            $(id).closest("tr").find('td:eq(5)').text(qty*price);
-            getTotalPrice()
+            $(id).closest("tr").find('td:eq(6)').text(qty*price);
+            getTotalPrice();
             return false;
         }
 
         function updateInputHarga(id) {
             Number($(id).closest("tr").find("input[id*='hargaInput']").val($(id).attr('data-value')));
-            updateSubtotal(id)
+            updateSubtotal(id);
         }
 
         function uploadSalesOrder() {
@@ -78,18 +79,18 @@
 
                 // listorder
                 for ( var i = 0; i < table.rows.length; i++ ) {
-                    var harga = table.rows[i].cells[3].children[0].children[0].value;
-                    var qty = table.rows[i].cells[4].children[0].value;
+                    var harga = table.rows[i].cells[4].children[0].children[0].value;
+                    var qty = table.rows[i].cells[5].children[0].value;
                     var subtotal = harga*qty;
                     var data = {
                         uid : document.getElementById( "uid_input" ).value,
-                        produk: table.rows[i].cells[0].innerHTML,
-                        barcode: table.rows[i].cells[1].innerHTML,
-                        kendaraan: table.rows[i].cells[2].innerHTML,
+                        produk: table.rows[i].cells[1].innerHTML,
+                        barcode: table.rows[i].cells[2].innerHTML,
+                        kendaraan: table.rows[i].cells[3].innerHTML,
                         harga: harga,
                         qty: qty,
                         subtotal: subtotal.toString()
-                    }
+                    };
                     // console.log(data)
                     $.ajax({
                         url: url,
@@ -107,7 +108,7 @@
                     nama,
                     tanggal,
                     status : document.getElementById( "status_input" ).value
-                }
+                };
 
                 // salesorder
                 $.ajax({
@@ -119,10 +120,14 @@
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success: function (data){
-                        toastSuccess("Sukses!", "Data berhasil ditambah")
+                        toastSuccess("Sukses!", "Data berhasil ditambah");
+                         var url = '{{ route("salesOrders.show", [":id"])}}';
+                         url = url.replace(':id', data.id);
+                         window.location.href = url;
                     },
                     error: function (data){
-                        toastError("Gagal!", "Terjadi kesalahan internal.")
+                        toastError("Gagal!", "Terjadi kesalahan internal.");
+                        window.location.href = '{{ route("salesOrders.index") }}';
                     }
                 });
 
@@ -132,5 +137,4 @@
         }
 
     </script>
-@push('page_scripts')
 @endpush
