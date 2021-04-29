@@ -36,7 +36,7 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     public function view(): View
     {
         return view('sales_orders.export.sales_orders_excel')
-        ->with('salesOrder', $this->sales_orders) 
+        ->with('salesOrder', $this->sales_orders)
         ->with('listorder', $this->listorder);
     }
 

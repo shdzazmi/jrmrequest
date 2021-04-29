@@ -15,7 +15,7 @@
     <div class="card-header">
         <h3 class="card-title">Pilih produk</h3>
     </div>
-    <div class="card-body">
+    <div style="font-size:14px;" class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered dataTable table-striped"  id="salesorderproduk">
                 <thead>
@@ -25,6 +25,7 @@
                     <th style="width: 75px">Kode Supplier</th>
                     <th>Kendaraan</th>
                     <th>Part Number</th>
+                    <th>Lokasi</th>
                     <th>Harga</th>
                     <th>Qty</th>
                 </tr>
@@ -36,6 +37,7 @@
                     <th>Kode Supplier</th>
                     <th>Kendaraan</th>
                     <th>Part Number</th>
+                    <th>Lokasi</th>
                     <th>Harga</th>
                     <th>Qty</th>
                 </tr>
@@ -53,8 +55,36 @@
                         <td>{{ $item['kd_supplier'] }}</td>
                         <td>{{ $item['kendaraan'] }}</td>
                         <td>
-                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
-                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                            @if($item['partno1'] != "")
+                                <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                            @else
+                                <span class="badge badge-pill bg-secondary">1</span> -<br/>
+                            @endif
+
+                            @if($item['partno2'] != "")
+                                <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                            @else
+                                <span class="badge badge-pill bg-secondary">2</span> -<br/>
+                            @endif
+                        </td>
+                        <td>
+                            @if($item['lokasi1'] != "")
+                                <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                            @else
+                                <span class="badge badge-pill bg-secondary">1</span> -<br/>
+                            @endif
+
+                            @if($item['lokasi2'] != "")
+                                <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                            @else
+                                <span class="badge badge-pill bg-secondary">2</span> -<br/>
+                            @endif
+
+                            @if($item['lokasi3'] != "")
+                                <span class="badge badge-pill bg-secondary">3</span> {{ $item['partno3'] }}
+                            @else
+                                <span class="badge badge-pill bg-secondary">3</span> -<br/>
+                            @endif
                         </td>
                         <td style="text-align:right">
                             <span class="badge badge-pill bg-secondary">1</span> {{ number_format($item['harga']) }}<br/>

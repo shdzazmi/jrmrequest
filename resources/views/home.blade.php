@@ -29,22 +29,24 @@
                         <a href="{{ route('salesOrders.create') }}" class="small-box-footer">
                             Buat Sales Order Baru <i class="fas fa-plus-circle"></i>
                         </a>
-                    <div class="list-group">
-                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
-                            Proses <span class="float-right badge bg-warning">{{$prosescount}}</span>
-                        </a>
-                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
-                            Selesai <span class="float-right badge bg-success">{{$selesaicount}}</span>
-                        </a>
-                        <a href="{{ route('salesOrders.index') }}" class="list-group-item">
-                            Batal <span class="float-right badge bg-danger">{{$batalcount}}</span>
-                        </a>
+                        <div class="list-group no-padding">
+                            <a href="{{ route('salesOrders.index') }}" class="list-group-item text-gray">
+                                Proses <span class="float-right badge-pill bg-warning text-light">{{$prosescount}}</span>
+                            </a>
+                            <a href="{{ route('salesOrders.index') }}" class="list-group-item text-gray">
+                                Selesai <span class="float-right badge-pill bg-success">{{$selesaicount}}</span>
+                            </a>
+                            <a href="{{ route('salesOrders.index') }}" class="list-group-item text-gray">
+                                Batal <span class="float-right badge-pill bg-danger">{{$batalcount}}</span>
+                            </a>
+                        </div>
                     </div>
-                    </div>
-                    
+
+
+
 
             </div>
-            
+
 
             <!-- small card -->
             <div class="col-lg-3 col-6">

@@ -145,7 +145,7 @@ class SalesOrderController extends AppBaseController
         $qty = $request->qty;
         $subtotal = $request->subtotal;
         $stok = $produk->qty;
-        
+
         ListOrder::updateOrCreate(['id' => $id],
             [
                 'uid' => $uid,
@@ -179,6 +179,7 @@ class SalesOrderController extends AppBaseController
         $salesOrder = $this->salesOrderRepository->find($id);
         $uid = $salesOrder->uid;
         $listorder = ListOrder::all()->Where('uid', $uid);
+        $totalharga = $listorder->sum('subtotal');
 
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
@@ -186,7 +187,7 @@ class SalesOrderController extends AppBaseController
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder);
+        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder)->with('totalharga', $totalharga);
     }
 
     /**
@@ -290,7 +291,8 @@ class SalesOrderController extends AppBaseController
         $salesOrder = $this->salesOrderRepository->find($id);
         $uid = $salesOrder->uid;
         $listorder = ListOrder::all()->where('uid', $uid);
-        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder]);
+        $totalharga = $listorder->sum('subtotal');
+        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder, 'totalharga'=> $totalharga]);
         return $pdf->download('Sales Order SO'.$id.'.pdf');
     }
 

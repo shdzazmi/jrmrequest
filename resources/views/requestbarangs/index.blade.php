@@ -12,11 +12,11 @@
                         <h1>Request Barang</h1>
                     </div>
                     <div class="col-sm" align="right">
-                        <a href="{{ route('export_excel') }}" data-toggle="tooltip" title="Export excel" class='btn btn-outline-info'>
+                        <a href="{{ route('export_excel') }}" title="Export excel" class='btn btn-outline-info'>
                             <i class="fas fa-file-download"></i>
                             Export
                         </a>
-                        <a href="{{ route('showAll') }}" data-toggle="tooltip" class='btn btn-outline-info'>
+                        <a href="{{ route('showAll') }}" class='btn btn-outline-info'>
                             Semua request
                         </a>
                         <a class="btn btn-info"

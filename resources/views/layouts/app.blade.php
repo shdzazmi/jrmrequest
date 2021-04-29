@@ -51,7 +51,7 @@
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" data-widget="pushmenu" href="javascript:void(0)" role="button"><i class="fas fa-bars"></i></a>
             </li>
         </ul>
 
@@ -59,7 +59,7 @@
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                     <img src="https://image.flaticon.com/icons/png/512/149/149071.png"
-                         class="user-image img-circle elevation-2" alt="User Image">
+                         class="user-image img-circle elevation-1" alt="User Image">
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -70,7 +70,7 @@
                              alt="User Image">
                         <p>
                             {{ Auth::user()->name }}
-                            <small>Member since {{ Auth::user()->created_at->format('M. Y') }}</small>
+                            <small>Member since {{ Auth::user()->created_at->format('d M. Y') }}</small>
                         </p>
                     </li>
                     <!-- Menu Footer-->

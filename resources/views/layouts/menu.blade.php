@@ -38,7 +38,7 @@
     </a>
 </li>
 
-@if(Auth::user()->role != "User")
+@if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
     <li class="nav-item">
         <a href="{{ route('location') }}"
            class="nav-link {{ Request::is('location*') ? 'active' : '' }}">

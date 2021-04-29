@@ -5,71 +5,98 @@
         background-color: #ddd;
     }
 
+    #salesorderproduk{
+        display:none;
+    }
+
 </style>
 <!-- Table produk -->
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Pilih produk</h3>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered dataTable table-striped"  id="salesorderproduk">
-                <thead>
-                <tr style="text-align:center">
-                    <th>Barcode</th>
-                    <th>Produk</th>
-                    <th style="width: 75px">Kode Supplier</th>
-                    <th>Kendaraan</th>
-                    <th>Part Number</th>
-                    <th>Harga</th>
-                    <th>Qty</th>
-                </tr>
-                </thead>
-                <tfoot style="display: table-header-group">
-                <tr style="text-align:center">
-                    <th>Barcode</th>
-                    <th>Produk</th>
-                    <th>Kode Supplier</th>
-                    <th>Kendaraan</th>
-                    <th>Part Number</th>
-                    <th>Harga</th>
-                    <th>Qty</th>
-                </tr>
-                </tfoot>
-                <tbody id="tbsalesorder">
-                @foreach($produks as $item)
-                    <tr class='clickable-row'>
-                        <td>
-                            {{ $item['barcode'] }}
-                        </td>
-                        <td>
-                            {{ $item['nama'] }}<br/>
-                            <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
-                        </td>
-                        <td>{{ $item['kd_supplier'] }}</td>
-                        <td>{{ $item['kendaraan'] }}</td>
-                        <td>
+    <div style="font-size:14px;" class="card-body">
+        <table style="font-size:14px;" class="table table-bordered dataTable table-striped"  id="salesorderproduk">
+            <thead>
+            <tr style="text-align:center">
+                <th>Barcode</th>
+                <th>Produk</th>
+                <th style="width: 75px">Kode Supplier</th>
+                <th>Kendaraan</th>
+                <th>Part Number</th>
+                <th>Lokasi</th>
+                <th>Harga</th>
+                <th>Qty</th>
+            </tr>
+            </thead>
+            <tfoot style="display: table-header-group">
+            <tr style="text-align:center">
+                <th>Barcode</th>
+                <th>Produk</th>
+                <th>Kode Supplier</th>
+                <th>Kendaraan</th>
+                <th>Part Number</th>
+                <th>Lokasi</th>
+                <th>Harga</th>
+                <th>Qty</th>
+            </tr>
+            </tfoot>
+            <tbody id="tbsalesorder">
+            @foreach($produks as $item)
+                <tr class='clickable-row'>
+                    <td>
+                        {{ $item['barcode'] }}
+                    </td>
+                    <td>
+                        {{ $item['nama'] }}<br/>
+                        <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
+                    </td>
+                    <td>{{ $item['kd_supplier'] }}</td>
+                    <td>{{ $item['kendaraan'] }}</td>
+                    <td>
+                        @if($item['partno1'] != "")
                             <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                        @else
+                            <span class="badge badge-pill bg-secondary">1</span> -<br/>
+                        @endif
+
+                        @if($item['partno2'] != "")
                             <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
-                        </td>
-                        <td style="text-align:right">
-                            <span class="badge badge-pill bg-secondary">1</span> {{ number_format($item['harga']) }}<br/>
-                            <span class="badge badge-pill bg-secondary">2</span> {{ number_format($item['harga2']) }}<br/>
-                            <span class="badge badge-pill bg-secondary">3</span> {{ number_format($item['harga3']) }}<br/>
-                            <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
-                        </td>
-                        <td style="text-align:right">
-                            <span class="badge badge-pill bg-success">Semua:</span> {{ $item['qty'] }}<br/>
-                            <span class="badge badge-pill bg-success">Toko:</span> {{ $item['qtyTk'] }}<br/>
-                            <span class="badge badge-pill bg-success">Gudang:</span> {{ $item['qtyGd'] }}<br/>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
+                        @else
+                            <span class="badge badge-pill bg-secondary">2</span> -<br/>
+                        @endif
+                    </td>
+                    <td>
+                        @if($item['lokasi1'] != "")
+                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                        @else
+                            <span class="badge badge-pill bg-secondary">1</span> -<br/>
+                        @endif
+
+                        @if($item['lokasi2'] != "")
+                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                        @else
+                            <span class="badge badge-pill bg-secondary">2</span> -<br/>
+                        @endif
+
+                        @if($item['lokasi3'] != "")
+                            <span class="badge badge-pill bg-secondary">3</span> {{ $item['partno3'] }}
+                        @else
+                            <span class="badge badge-pill bg-secondary">3</span> -<br/>
+                        @endif
+                    </td>
+                    <td style="text-align:right">
+                        <span class="badge badge-pill bg-secondary">1</span> {{ number_format($item['harga']) }}<br/>
+                        <span class="badge badge-pill bg-secondary">2</span> {{ number_format($item['harga2']) }}<br/>
+                        <span class="badge badge-pill bg-secondary">3</span> {{ number_format($item['harga3']) }}<br/>
+                        <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
+                    </td>
+                    <td style="text-align:right">
+                        <span class="badge badge-pill bg-success">Semua:</span> {{ $item['qty'] }}<br/>
+                        <span class="badge badge-pill bg-success">Toko:</span> {{ $item['qtyTk'] }}<br/>
+                        <span class="badge badge-pill bg-success">Gudang:</span> {{ $item['qtyGd'] }}<br/>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
-</div>
 
 
 
@@ -92,7 +119,7 @@
             autoWidth: false,
             initComplete: function () {
                 $("#salesorderproduk").show();
-                // Apply the 
+                // Apply the
                 this.api().columns().every( function () {
                     var that = this;
 

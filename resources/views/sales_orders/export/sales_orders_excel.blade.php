@@ -20,9 +20,15 @@
             <thead>
             <tr>
                 <th></th>
-                <th>No: SO{{ $salesOrder->id }}</th>
-                <th>Cust: {{ $salesOrder->nama }}</th> 
+                <th>Cust: {{ $salesOrder->nama }}</th>
                 <th>Tgl: {{ $salesOrder->tanggal }}</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>No: SO{{ $salesOrder->id }}</th>
             </tr>
             <tr>
                 <th>No.</th>
@@ -31,6 +37,7 @@
                 <th>Supplier</th>
                 <th>Kendaraan</th>
                 <th>Part number</th>
+                <th>Lokasi</th>
                 <th>Harga</th>
                 <th>Qty</th>
                 <th>Subtotal</th>
@@ -54,6 +61,22 @@
                             @endif
                         @else
                             1. {{ $item->partno2 }}
+                        @endif
+                    </td>
+                    <td>@if($item->lokasi1 != "")
+                            1. {{ $item->lokasi1 }}
+                        @else
+                            1. -
+                        @endif
+                        @if($item->lokasi2 != "")
+                            <br>2. {{ $item->lokasi2 }}
+                        @else
+                            2. -
+                        @endif
+                        @if($item->lokasi3 != "")
+                            <br>3. {{ $item->lokasi3 }}
+                        @else
+                            3. -
                         @endif
                     </td>
                     <td>{{ number_format($item->harga) }}</td>
