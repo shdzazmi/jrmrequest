@@ -28,7 +28,8 @@ class CreateListOrdersTable extends Migration
             $table->string('harga');
             $table->integer('qty');
             $table->integer('subtotal');
-            $table->integer('stok');
+            $table->integer('stokTk');
+            $table->integer('stokGd');
             $table->timestamps();
         });
     }

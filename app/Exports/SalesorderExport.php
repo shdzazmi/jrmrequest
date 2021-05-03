@@ -18,15 +18,16 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     public $uid;
     public $sales_orders;
     public $listorder;
+    public $totalharga;
 
     function __construct($id) {
         $this->id = $id;
         $this->sales_orders = SalesOrder::firstWhere('id', $this->id);
         $this->uid = $this->sales_orders->uid;
         $this->listorder = ListOrder::all()->where('uid', $this->uid);
+        $this->totalharga = $this->listorder->sum('subtotal');
         // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
         // $output->writeln("listorder = $this->listorder");
-
     }
 
     /**
@@ -36,30 +37,30 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     public function view(): View
     {
         return view('sales_orders.export.sales_orders_excel')
-        ->with('salesOrder', $this->sales_orders)
-        ->with('listorder', $this->listorder);
+            ->with('salesOrder', $this->sales_orders)
+            ->with('listorder', $this->listorder)
+            ->with('totalharga', $this->totalharga);
     }
 
     public function styles(Worksheet $sheet)
     {
-        $sheet->getStyle('A:J')->getAlignment()->applyFromArray(
-            array('vertical' => 'center') //left,right,center & vertical
-            );
-        $sheet->getStyle('H')->getAlignment()->applyFromArray(
-            array('horizontal' => 'center') //left,right,center & vertical
-            );
-        $sheet->getStyle('G')->getAlignment()->applyFromArray(
-            array('horizontal' => 'right') //left,right,center & vertical
-            );
-        $sheet->getStyle('I')->getAlignment()->applyFromArray(
-            array('horizontal' => 'right') //left,right,center & vertical
-            );
-        $sheet->getStyle('2')->getAlignment()->applyFromArray(
-            array('horizontal' => 'center') //left,right,center & vertical
-            );
-        $sheet->getStyle('B')->getAlignment()->setWrapText(true);
-        $sheet->getStyle('E')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('A:L')->getAlignment()->applyFromArray(array('vertical' => 'center'));
+        $sheet->getStyle('A')->getAlignment()->applyFromArray(array('horizontal' => 'center'));
+        $sheet->getStyle('B')->getAlignment()->applyFromArray(array('horizontal' => 'center'));
+        $sheet->getStyle('I')->getAlignment()->applyFromArray(array('horizontal' => 'right'));
+        $sheet->getStyle('J')->getAlignment()->applyFromArray(array('horizontal' => 'right'));
+        $sheet->getStyle('K')->getAlignment()->applyFromArray(array('horizontal' => 'center'));
+        $sheet->getStyle('L')->getAlignment()->applyFromArray(array('horizontal' => 'center'));
+        $sheet->getStyle('2')->getAlignment()->applyFromArray(array('horizontal' => 'center'));
+        $sheet->getStyle('1')->getAlignment()->applyFromArray(array('horizontal' => 'left'));
+        $sheet->getStyle('C')->getAlignment()->setWrapText(true);
         $sheet->getStyle('F')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('G')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('H')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('2')->getAlignment()->setWrapText(true);
+        $sheet->getStyle('I')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
+        $sheet->getStyle('J')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
+
         return [
             // Style
             1    => ['font' => ['bold' => true]],
@@ -71,15 +72,17 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     {
         return [
             'A' => 4,
-            'B' => 15,
-            'C' => 15,
+            'B' => 8,
+            'C' => 20,
             'D' => 15,
-            'E' => 20,
-            'F' => 15,
-            'G' => 10,
-            'H' => 5,
-            'I' => 10,
-            'J' => 10,
+            'E' => 15,
+            'F' => 20,
+            'G' => 20,
+            'H' => 10,
+            'I' => 15,
+            'J' => 15,
+            'K' => 8,
+            'L' => 8,
         ];
     }
 }

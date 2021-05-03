@@ -58,4 +58,6 @@ Route::post('/location/put/{barcode}', [App\Http\Controllers\LocationController:
 //Admin
 Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
 Route::get('/admin/edit/{id}/{role}', [App\Http\Controllers\AdminController::class, 'edit'])->name('admin.edit');
+Route::get('/admin/show/{id}', [App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
 Route::post('/admin/create', [App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
+Route::post('/admin/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');

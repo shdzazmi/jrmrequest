@@ -28,7 +28,8 @@ class SalesOrder extends Model
         'uid',
         'nama',
         'tanggal',
-        'status'
+        'status',
+        'operator'
     ];
 
     /**

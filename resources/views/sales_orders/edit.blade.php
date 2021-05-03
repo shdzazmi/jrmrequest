@@ -117,7 +117,9 @@
                         uid : document.getElementById( "uid_input" ).value,
                         nama,
                         tanggal,
-                        status : document.getElementById( "status_input" ).value
+                        status : document.getElementById( "status_input" ).value,
+                        operator : document.getElementById( "operator_input" ).value,
+
                     };
 
                     // salesorder

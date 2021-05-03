@@ -1,12 +1,41 @@
+<style>
+    tr.hide-table-padding td {
+        padding: 0;
+    }
+
+    .table-nopadding{
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .accordion-toggle .expand-button:after
+    {
+        position: absolute;
+        left:.75rem;
+        top: 50%;
+        transform: translate(0, -50%);
+        content: '-';
+    }
+    .accordion-toggle.collapsed .expand-button:after
+    {
+        content: '+';
+    }
+    #tbRequest tbody tr:hover{
+        cursor: pointer;
+        transition: all .15s ease-in-out;
+        background-color: #ddd;
+    }
+</style>
+
 
 <div class="table-responsive table p-0">
-    <table class="table-sm table table-bordered" id="tbRequest">
+    <table class="table-sm table table-bordered table-nopadding" id="tbRequest">
         <thead>
         <tr>
             <th style="text-align: center; width:5%;">No</th>
             <th style="width:50%;">Produk</th>
-            <th style="text-align: center; width:5%;">Qty</th>
-            <th style="text-align: center; width:20%;">Harga</th>
+            <th style="text-align: center; width:10%;">Qty</th>
+            <th style="text-align: center; width:15%;">Harga</th>
             <th style="text-align: center; width:20%;">Subtotal</th>
         </tr>
         </thead>
@@ -14,46 +43,16 @@
 
         @php $i=1 @endphp
         @foreach($listorder as $item)
-            <tr>
+            <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
             <td>{{ $i++ }}</td>
             <td>
-                {{$item->nama}}
-{{--                <div>--}}
-{{--                    <p>--}}
-{{--                        Barcode:&nbsp<b>{{ $item->barcode }}</b>&nbsp&nbsp--}}
-{{--                        Supplier:&nbsp<b>{{ $item->kd_supplier }}</b>&nbsp&nbsp--}}
-{{--                        @if($item->kendaraan != "")--}}
-{{--                            <br>Kendaraan:&nbsp<b>{{ $item->kendaraan }}</b>&nbsp&nbsp--}}
-{{--                        @endif--}}
-{{--                    <br>--}}
-{{--                        @if($item->partno1 != "")--}}
-{{--                            Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno1 }}</span>--}}
-{{--                            @if($item->partno2 != "")--}}
-{{--                                <span class="badge badge-dark">2. {{ $item->partno2 }}</span>&nbsp&nbsp--}}
-{{--                            @endif--}}
-{{--                        @else--}}
-{{--                            Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno2 }}</span>--}}
-{{--                        @endif--}}
+                {{$item->nama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif
+                <div>
 
-
-{{--                        @if($item->lokasi1 != "")--}}
-{{--                            <br>Lokasi:&nbsp<span class="badge badge-dark">1. {{ $item->lokasi1 }}</span>--}}
-{{--                        @endif--}}
-{{--                        @if($item->lokasi2 != "")--}}
-{{--                            <span class="badge badge-dark">2. {{ $item->lokasi2 }}</span>&nbsp&nbsp--}}
-{{--                        @endif--}}
-{{--                        @if($item->lokasi3 != "")--}}
-{{--                            <span class="badge badge-dark">3. {{ $item->lokasi3 }}</span>&nbsp&nbsp--}}
-{{--                        @endif--}}
-
-{{--                        <br>--}}
-{{--                        Stok: <b>{{number_format($item->stok)}}</b>--}}
-
-{{--                    </p>--}}
-{{--                </div>--}}
+                </div>
             </td>
-            <td class="text-right">
-                {{number_format($item->qty)}}
+            <td style="text-align: center">
+                {{number_format($item->qty)}} {{$item->satuan}}
             </td>
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}
@@ -61,6 +60,43 @@
             <td class="text-right">
                  {{number_format($item->subtotal,0,",",".")}}
             </td>
+            </tr>
+
+            <tr class="hide-table-padding">
+                <td></td>
+                <td colspan="4">
+                    <div id="collapseOne" class="collapse in">
+                        <p>
+                            Barcode:&nbsp{{ $item->barcode }}&nbsp&nbsp
+                            Supplier:&nbsp{{ $item->kd_supplier }}&nbsp&nbsp
+                            @if($item->kendaraan != "")
+                                <br>Kendaraan:&nbsp{{ $item->kendaraan }}&nbsp&nbsp
+                            @endif
+                            <br>
+                            @if($item->partno1 != "")
+                                Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno1 }}</span>
+                                @if($item->partno2 != "")
+                                    <span class="badge badge-dark">2. {{ $item->partno2 }}</span>&nbsp&nbsp
+                                @endif
+                            @else
+                                Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno2 }}</span>
+                            @endif
+
+                            @if($item->lokasi1 != "")
+                                <br>Lokasi:&nbsp<span class="badge badge-dark">1. {{ $item->lokasi1 }}</span>
+                            @endif
+                            @if($item->lokasi2 != "")
+                                <span class="badge badge-dark">2. {{ $item->lokasi2 }}</span>&nbsp&nbsp
+                            @endif
+                            @if($item->lokasi3 != "")
+                                <span class="badge badge-dark">3. {{ $item->lokasi3 }}</span>&nbsp&nbsp
+                            @endif
+
+                            <br>
+                            Stok: {{number_format($item->stokTk+$item->stokGd)}}
+
+                        </p>
+                    </div></td>
             </tr>
 
         @endforeach

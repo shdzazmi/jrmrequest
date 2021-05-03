@@ -30,6 +30,7 @@
     </ul>
 </li>
 
+@if(Auth::user()->role == "Master")
 <li class="nav-item">
     <a href="{{ route('search') }}"
        class="nav-link {{ Request::is('search*') ? 'active' : '' }}">
@@ -37,6 +38,7 @@
         <p>Pencarian</p>
     </a>
 </li>
+@endif
 
 @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
     <li class="nav-item">
@@ -45,6 +47,31 @@
             <i class="nav-icon fas fa-boxes"></i>
             <p>Lokasi</p>
         </a>
+    </li>
+@endif
+
+@if(Auth::user()->role == "Master")
+    <li class="nav-item">
+        <a href="#"
+           class="nav-link {{ Request::is('security*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-user-secret"></i>
+            <p>Security
+            <i class="right fas fa-angle-left"></i></p>
+        </a>
+        <ul class="nav nav-treeview" style="display: none;">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-user-friends nav-icon text-sm"></i>
+                    <p>Karyawan keluar</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-box nav-icon text-sm"></i>
+                    <p>Barang keluar</p>
+                </a>
+            </li>
+        </ul>
     </li>
 @endif
 

@@ -20,6 +20,7 @@ class CreateSalesOrdersTable extends Migration
             $table->string('nama');
             $table->string('tanggal');
             $table->string('status', 10);
+            $table->string('operator');
             $table->timestamps();
             $table->softDeletes();
         });

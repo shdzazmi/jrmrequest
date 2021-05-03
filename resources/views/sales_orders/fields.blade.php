@@ -40,6 +40,10 @@
                     {!! Form::hidden('status', null, ['id'=>'status_input', 'style'=>'width=1px']) !!}
                 </div>
             @endif
+            <!-- Operator Field -->
+                <div>
+                    {!! Form::hidden('user', Auth::user()->name, ['id'=>'operator_input','style'=>'width=1px']) !!}
+                </div>
         </div>
     </div>
 </div>

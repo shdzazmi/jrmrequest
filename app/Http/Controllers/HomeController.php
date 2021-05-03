@@ -41,9 +41,10 @@ class HomeController extends Controller
         $requestdata = requestbarang::all();
         $requestcount = $requestdata->count();
         $prosescount = SalesOrder::all()->where('status', 'Proses')->count();
+        $void = SalesOrder::all()->where('status', 'Void')->count();
         $selesaicount = SalesOrder::all()->where('status', 'Selesai')->count();
         $batalcount = SalesOrder::all()->where('status', 'Batal')->count();
-        $salesordercount = SalesOrder::all()->count();
+        $salesordercount = $prosescount + $selesaicount;
 
         return view('home')
             ->with('time', $time)
@@ -90,7 +91,7 @@ class HomeController extends Controller
         $sqlquery .= "qtyAkhir + qtyGd AS qty, ";
         $sqlquery .= "qtyAkhir AS qtyTk, ";
         $sqlquery .= "qtyGd AS qtyGd, ";
-        $sqlquery .= "subkategori AS subkategori ";
+        $sqlquery .= "satb AS satuan ";
         $sqlquery .= "FROM stock ";
         $sqlquery .= "LEFT JOIN kelproduk ON stock.kelproduk = kelproduk.id ";
         $sqlquery .= "LEFT JOIN supplier ON stock.kodesupp = supplier.kode ";
@@ -116,7 +117,7 @@ class HomeController extends Controller
                 'lokasi3' => utf8_encode(odbc_result($process, 'lokasi3')),
                 'partno1' => utf8_encode(odbc_result($process, 'partno1')),
                 'partno2' => utf8_encode(odbc_result($process, 'partno2')),
-                'subkategori' => utf8_encode(odbc_result($process, 'subkategori')),
+                'satuan' => utf8_encode(odbc_result($process, 'satuan')),
                 'created_at' => Carbon::now()->toDateTime(),
             ];
             $items->push($itemAll);

@@ -164,7 +164,6 @@
 
 {{--sweetalert 2--}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="sweetalert2.all.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 
 <script>

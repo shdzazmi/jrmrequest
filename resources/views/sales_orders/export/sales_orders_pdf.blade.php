@@ -8,24 +8,57 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
-<body style="font-size:14px;" class="m-0 p-0">
-<div class="row">
-    <div class="col-sm-6">
-        Customer: <strong>{{ $salesOrder->nama }}</strong>
-        Tanggal: <strong>{{ $salesOrder->tanggal }}</strong>
-    </div>
-    <div class="text-right">
-        No. Order: <strong>SO{{ $salesOrder->id }}</strong>
-    </div>
-</div>
+<style>
+    .table-nopadding{
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .box {
+        align-items:center;
+    }
+
+    .a {
+        text-indent: 50px;
+    }
+</style>
+<body>
+<table class="table table-nopadding" >
+    <tr>
+        <td class="pl-3" style="width: 20%; text-align: center; vertical-align: middle; border-color: white">
+            <img src="D:\xampp74\htdocs\jrm\public\storage\JRM.png>" alt="logo" style="width:100px;height:100px;">
+        </td>
+        <td class="pr-3" style="width: 80%; border-color: white">
+            <h2 style="padding-bottom: 0; margin-bottom: 0;">JAYA RAYA MOBIL</h2>
+            JL. A. Yani No. 25, Samarinda<br>
+            Telp: 0541-747168, HP: 0813-5087-1638<br>
+            <div class="box">
+            <img src="D:\xampp74\htdocs\jrm\public\storage\facebook.png>" alt="logo" style="width:15px;height:15px;">
+                <img src="D:\xampp74\htdocs\jrm\public\storage\instagram.png>" alt="logo" style="width:15px;height:15px;">
+                <span> : <b>@jayarayamobil.smd</b> /</span>
+            <img src="D:\xampp74\htdocs\jrm\public\storage\email.png>" alt="logo" style="width:15px;height:15px;">
+            <span>: lisgun@gmail.com</span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<hr style="border-top: 2px solid black; margin-top: 0.1em; margin-bottom: 0.1em;">
+<hr style="border-top: 2px solid black; margin-top: 0.1em; margin-bottom: 0.1em;">
+<br>
+
+<p>Dengan hormat,</p>
+<p class="a">Bersama ini kami ingin memberikan penawaran harga dari kami sebagai berikut:</p>
+
 <div class="table-responsive table p-0">
-    <table class="table-sm table table-bordered" id="tbRequest">
+    <table class="table-sm table table-bordered table-nopadding" id="tbRequest">
         <thead>
         <tr>
             <th style="width:5%;">No</th>
-            <th style="width:50%;">Produk</th>
-            <th style="text-align: center; width:5%;">Qty</th>
-            <th style="text-align: center; width:20%;">Harga</th>
+            <th style="width:45%;">Produk</th>
+            <th style="text-align: center; width:7%;">Qty</th>
+            <th style="text-align: center; width:8%;">Satuan</th>
+            <th style="text-align: center; width:15%;">Harga</th>
             <th style="text-align: center; width:20%;">Subtotal</th>
         </tr>
         </thead>
@@ -34,43 +67,15 @@
         @php $i=1 @endphp
         @foreach($listorder as $item)
             <tr>
-            <td>{{ $i++ }}</td>
+            <td style="text-align: center">{{ $i++ }}</td>
             <td>
                 <strong>{{$item->nama}}</strong>
-{{--                <div>--}}
-{{--                        Barcode: <strong>{{ $item->barcode }}</strong>--}}
-{{--                        Supplier: <strong>{{ $item->kd_supplier }}</strong><br>--}}
-{{--                        @if($item->kendaraan != "")--}}
-{{--                            Kendaraan: <strong>{{ $item->kendaraan }}</strong>--}}
-{{--                        @endif--}}
-{{--                        <br>--}}
-{{--                        @if($item->partno1 != "")--}}
-{{--                            Part number: <span class="badge badge-dark">1. {{ $item->partno1 }}</span>--}}
-{{--                            @if($item->partno2 != "")--}}
-{{--                                <span class="badge badge-dark">2. {{ $item->partno2 }}</span>--}}
-{{--                            @endif--}}
-{{--                        @else--}}
-{{--                            Part number: <span class="badge badge-dark">1. {{ $item->partno2 }}</span>--}}
-{{--                        @endif--}}
-
-
-{{--                        @if($item->lokasi1 != "")--}}
-{{--                            <br>Lokasi: <span class="badge badge-dark">1. {{ $item->lokasi1 }}</span>--}}
-{{--                        @endif--}}
-{{--                        @if($item->lokasi2 != "")--}}
-{{--                            <span class="badge badge-dark">2. {{ $item->lokasi2 }}</span>--}}
-{{--                        @endif--}}
-{{--                        @if($item->lokasi3 != "")--}}
-{{--                            <span class="badge badge-dark">3. {{ $item->lokasi3 }}</span>--}}
-{{--                        @endif--}}
-
-{{--                        <br>--}}
-{{--                        Stok: {{number_format($item->stok)}}--}}
-
-{{--                </div>--}}
             </td>
-            <td class="text-right">
+            <td style="text-align: center">
                 {{number_format($item->qty)}}
+            </td>
+            <td style="text-align: center">
+                {{$item->satuan}}
             </td>
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}
@@ -83,7 +88,7 @@
         @endforeach
 
         </tbody>
-        <table class="table-sm table table-bordered">
+        <table class="table-sm table table-bordered table-nopadding">
             <tbody>
             <tr>
                 <th class="text-right" style="width:80%;">
@@ -98,8 +103,9 @@
     </table>
 </div>
 
-
-
+<p style="font-size:12px;"><b>*Stok barang dan harga tidak bersifat mengikat selama tidak ada Down Payment (DP) atau Konfirmasi pengambilan*</b></p>
+<p class="a">Demikian informasi yang kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terimakasih.</p>
+<p>Samarinda, {{$tanggal}}</p>
 
 </body>
 

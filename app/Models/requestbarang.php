@@ -45,7 +45,7 @@ class requestbarang extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'tanggal' => 'datetime:d-m-Y H;i;s ',
+        'tanggal' => 'datetime:d-m-Y H:i:s ',
         'nama' => 'string',
         'barcode' => 'string',
         'kd_supplier' => 'string',

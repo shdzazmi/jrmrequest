@@ -24,6 +24,8 @@ class ListOrder extends Model
         'harga',
         'qty',
         'subtotal',
-        'stok'
+        'stokTk',
+        'stokGd',
+        'satuan'
     ];
 }

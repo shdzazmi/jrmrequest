@@ -21,6 +21,7 @@
             <tr>
                 <th></th>
                 <th>Cust: {{ $salesOrder->nama }}</th>
+                <th></th>
                 <th>Tgl: {{ $salesOrder->tanggal }}</th>
                 <th></th>
                 <th></th>
@@ -32,6 +33,7 @@
             </tr>
             <tr>
                 <th>No.</th>
+                <th>Qty</th>
                 <th>Produk</th>
                 <th>Barcode</th>
                 <th>Supplier</th>
@@ -39,9 +41,9 @@
                 <th>Part number</th>
                 <th>Lokasi</th>
                 <th>Harga</th>
-                <th>Qty</th>
                 <th>Subtotal</th>
-                <th>Stok</th>
+                <th>Stok Toko</th>
+                <th>Stok Gudang</th>
             </tr>
 </thead>
 <tbody>
@@ -49,42 +51,47 @@
                 @foreach($listorder as $item)
                 <tr>
                     <td>{{ $i++ }}</td>
+                    <td>{{ number_format($item->qty) }} {{$item->satuan}}</td>
                     <td>{{ $item->nama }}</td>
                     <td>{{ $item->barcode }}</td>
                     <td>{{ $item->kd_supplier }}</td>
                     <td>{{ $item->kendaraan }}</td>
                     <td>
-                        @if($item->partno1 != "")
-                            1. {{ $item->partno1 }}
-                            @if($item->partno2 != "")
-                                <br>2. {{ $item->partno2 }}
-                            @endif
+                        @if($item->partno2 != "")
+                            {{ $item->partno2 }}
                         @else
-                            1. {{ $item->partno2 }}
+                            -
                         @endif
                     </td>
                     <td>@if($item->lokasi1 != "")
-                            1. {{ $item->lokasi1 }}
-                        @else
-                            1. -
+                            {{ $item->lokasi1 }},
                         @endif
                         @if($item->lokasi2 != "")
-                            <br>2. {{ $item->lokasi2 }}
-                        @else
-                            2. -
+                            {{ $item->lokasi2 }},
                         @endif
                         @if($item->lokasi3 != "")
-                            <br>3. {{ $item->lokasi3 }}
-                        @else
-                            3. -
+                            {{ $item->lokasi3 }}
                         @endif
                     </td>
-                    <td>{{ number_format($item->harga) }}</td>
-                    <td>{{ number_format($item->qty) }}</td>
-                    <td>{{ number_format($item->subtotal) }}</td>
-                    <td>{{ number_format($item->stok) }}</td>
+                    <td>{{ $item->harga }}</td>
+                    <td>{{ $item->subtotal }}</td>
+                    <td>{{ $item->stokTk }}</td>
+                    <td>{{ $item->stokGd }}</td>
                 </tr>
                 @endforeach
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><b>TOTAL</b></td>
+                    <td><b>{{ $totalharga }}</b></td>
+
+                </tr>
 </tbody>
  </table>
  </html>

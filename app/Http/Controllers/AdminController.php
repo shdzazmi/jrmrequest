@@ -40,6 +40,43 @@ class AdminController extends Controller
 
     }
 
+    public function update(Request $request){
+
+        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+        $output->writeln("Data =  $request->id");
+        if (Auth::user()->role == 'Master')
+        {
+            $user = User::find($request->id);
+            if ($user != ""){
+                $user->name = $request->name;
+                $user->email = $request->email;
+                $user->role = $request->role;
+                $user->save();
+            }
+            $userall = User::all();
+            return redirect('admin')->with('user', $userall);
+        } else {
+            return redirect('home');
+        }
+    }
+
+    public function show(Request $request){
+
+        if (Auth::user()->role == 'Master')
+
+        {
+            $user = User::firstWhere('id', $request->id);
+            if ($user != ""){
+                return $user;
+            } else {
+                return "user not find";
+            }
+
+        } else {
+            return redirect('home');
+        }
+    }
+
     public function create(Request $request)
     {
         User::create([

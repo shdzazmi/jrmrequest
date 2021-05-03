@@ -64,19 +64,19 @@
                     </td>
                     <td>
                         @if($item['lokasi1'] != "")
-                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
+                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['lokasi1'] }}<br/>
                         @else
                             <span class="badge badge-pill bg-secondary">1</span> -<br/>
                         @endif
 
                         @if($item['lokasi2'] != "")
-                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}
+                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['lokasi2'] }}
                         @else
                             <span class="badge badge-pill bg-secondary">2</span> -<br/>
                         @endif
 
                         @if($item['lokasi3'] != "")
-                            <span class="badge badge-pill bg-secondary">3</span> {{ $item['partno3'] }}
+                            <span class="badge badge-pill bg-secondary">3</span> {{ $item['lokasi3'] }}
                         @else
                             <span class="badge badge-pill bg-secondary">3</span> -<br/>
                         @endif

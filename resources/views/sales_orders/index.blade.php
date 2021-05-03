@@ -16,12 +16,12 @@
                             Tambah baru
                         </a>
                     </div>
-                    
+
                 </div>
                 <div class="alert alert-primary alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
-                        Ubah status Sales Order dengan cara klik Badge status, status hanya bisa diubah sekali.
+                        Ubah status Sales Order dengan cara klik Badge status, buat Sales Order baru dengan cara klik tombol Tambah Baru.
                     </div>
             </div>
         </section>

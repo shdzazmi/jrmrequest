@@ -27,7 +27,7 @@ class Produk extends Model
         'qty',
         'qtyTk',
         'qtyGd',
-        'subkategori',
+        'satuan',
     ];
 
 

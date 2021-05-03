@@ -103,7 +103,9 @@ class SalesOrderController extends AppBaseController
         $harga = $request->harga;
         $qty = $request->qty;
         $subtotal = $request->subtotal;
-        $stok = $produk->qty;
+        $stokTk = $produk->qtyTk;
+        $stokGd = $produk->qtyGd;
+        $satuan = $produk->satuan;
 
         $data = [
             'uid' => $uid,
@@ -119,7 +121,10 @@ class SalesOrderController extends AppBaseController
             'harga' => $harga,
             'qty' => $qty,
             'subtotal' => $subtotal,
-            'stok' => $stok
+            'stokTk' => $stokTk,
+            'stokGd' => $stokGd,
+            'satuan' => $satuan
+
         ];
 
         ListOrder::insert($data);
@@ -144,7 +149,9 @@ class SalesOrderController extends AppBaseController
         $harga = $request->harga;
         $qty = $request->qty;
         $subtotal = $request->subtotal;
-        $stok = $produk->qty;
+        $stokTk = $produk->qtyTk;
+        $stokGd = $produk->qtyGd;
+        $satuan = $produk->satuan;
 
         ListOrder::updateOrCreate(['id' => $id],
             [
@@ -161,7 +168,10 @@ class SalesOrderController extends AppBaseController
                 'harga' => $harga,
                 'qty' => $qty,
                 'subtotal' => $subtotal,
-                'stok' => $stok
+                'stokTk' => $stokTk,
+                'stokGd' => $stokGd,
+                'satuan' => $satuan
+
             ]);
 
         return false;
@@ -292,8 +302,11 @@ class SalesOrderController extends AppBaseController
         $uid = $salesOrder->uid;
         $listorder = ListOrder::all()->where('uid', $uid);
         $totalharga = $listorder->sum('subtotal');
-        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder, 'totalharga'=> $totalharga]);
-        return $pdf->download('Sales Order SO'.$id.'.pdf');
+        $date = new \DateTime($salesOrder->tanggal);
+        $tanggal = $date->format('d F Y');
+        $nama = $salesOrder->nama;
+        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder, 'totalharga'=> $totalharga, 'tanggal'=> $tanggal]);
+        return $pdf->download('Sales Order '.$nama.' SO'.$id.'.pdf');
     }
 
     public function export_excel($id)

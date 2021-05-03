@@ -31,7 +31,7 @@
                 <div class="card">
                     <div class="card-header pt-4">
                             <div class="row">
-                                <div class="col">
+                                <div class="col-sm-8">
                                     <h5><i class="fas fa-cog"></i> Jaya Raya Mobil</h5>
                                     {!! Form::label('nama', 'Customer: ') !!}
                                     {{ $salesOrder->nama }} &nbsp
@@ -55,7 +55,7 @@
                                         </div>
                                     @endif
                                     @if($salesOrder->status === "Void")
-                                        <div class="ribbon bg-secondary text-md">
+                                        <div class="badge badge-secondary text-md">
                                             {{ $salesOrder->status }}
                                         </div>
                                     @endif
@@ -77,3 +77,13 @@
     </div>
 
 @endsection
+
+@push('page_scripts')
+
+    <script>
+
+
+
+    </script>
+
+@endpush

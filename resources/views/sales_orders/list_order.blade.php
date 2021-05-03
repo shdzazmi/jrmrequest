@@ -2,19 +2,28 @@
 <div class="card card-outline card-primary">
     <div class="card-header">
         <h3 class="card-title">Daftar order</h3>
+        <div class="card-tools">
+            Tipe Harga:
+            <select style="width: 80px" id="tipeharga" class="form-control-sm">
+                <option value="harga">1</option>
+                <option value="harga2">2</option>
+                <option value="harga3">3</option>
+                <option value="hargamin">min</option>
+            </select>
+        </div>
     </div>
-    <div class="card-body table-responsive p-0" style="height: 250px;">
-        <table class="table table-head-fixed" id="orderlist">
+    <div class="card-body table-responsive p-0" style="height: 250px; font-size:14px;">
+        <table class="table table-sm" id="orderlist">
             <thead>
             <tr>
-                <th style="display:none;">Produk</th>
-                <th>Produk</th>
-                <th>Barcode</th>
-                <th>Kendaraan</th>
-                <th>Harga</th>
-                <th>Qty</th>
-                <th>Subtotal</th>
-                <th>
+                <th style="display:none;">ID</th>
+                <th style="text-align: center">Produk</th>
+                <th style="text-align: center">Barcode</th>
+                <th style="text-align: center">Kendaraan</th>
+                <th style="text-align: center">Harga</th>
+                <th style="text-align: center">Qty</th>
+                <th style="text-align: center">Subtotal</th>
+                <th style="text-align: center">
                     <a href="#" data-toggle="tooltip" data-placement="top" title="Hapus semua">
                         <span style="color: darkred" onclick="deleteAllRow()" >
                             <i class="fas fa-ban"></i>
@@ -39,7 +48,7 @@
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->harga}}"><span class="badge badge-pill bg-secondary" >1</span>{{$produks->firstWhere('barcode', $listorders->barcode)->harga}}</a>
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->harga2}}"><span class="badge badge-pill bg-secondary">2</span>{{$produks->firstWhere('barcode', $listorders->barcode)->harga2}}</a>
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->harga3}}"><span class="badge badge-pill bg-secondary">3</span>{{$produks->firstWhere('barcode', $listorders->barcode)->harga3}}</a>
-                                        <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->hargamin}}"><span class="badge badge-pill bg-secondary">4</span>{{$produks->firstWhere('barcode', $listorders->barcode)->hargamin}}</a>
+                                        <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->hargamin}}"><span class="badge badge-pill bg-secondary">min</span>{{$produks->firstWhere('barcode', $listorders->barcode)->hargamin}}</a>
                                     </div >
                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                             </div>
@@ -66,6 +75,7 @@
 </div>
 
 <script>
+
 
     function deleteRow(r, ids) {
         var i = r.parentNode.parentNode.rowIndex;
