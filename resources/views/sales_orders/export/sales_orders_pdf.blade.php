@@ -47,11 +47,13 @@
 <hr style="border-top: 2px solid black; margin-top: 0.1em; margin-bottom: 0.1em;">
 <br>
 
+<p>Customer: {{$salesOrder->nama}}<br>
+Tanggal: {{$salesOrder->tanggal}}</p>
 <p>Dengan hormat,</p>
 <p class="a">Bersama ini kami ingin memberikan penawaran harga dari kami sebagai berikut:</p>
 
 <div class="table-responsive table p-0">
-    <table class="table-sm table table-bordered table-nopadding" id="tbRequest">
+    <table style="font-size: 14px" class="table-sm table table-bordered table-nopadding" id="tbRequest">
         <thead>
         <tr>
             <th style="width:5%;">No</th>
@@ -69,7 +71,11 @@
             <tr>
             <td style="text-align: center">{{ $i++ }}</td>
             <td>
-                <strong>{{$item->nama}}</strong>
+                @if($item->ketnama != "")
+                <strong>{{$item->ketnama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif </strong>
+                @else
+                <strong>{{$item->nama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif </strong>
+                @endif
             </td>
             <td style="text-align: center">
                 {{number_format($item->qty)}}

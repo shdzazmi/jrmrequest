@@ -33,7 +33,7 @@
           integrity="sha512-aEe/ZxePawj0+G2R+AaIxgrQuKT68I28qh+wgLrcAJOz3rxCP+TwrK5SPN+E5I+1IQjNtcfvb96HDagwrKRdBw=="
           crossorigin="anonymous"/>
 
-{{--    Datatables--}}
+    {{--    Datatables--}}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
 
@@ -42,12 +42,12 @@
     @stack('page_css')
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse">
+<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse layout-navbar-fixed">
 <div class="se-pre-con"></div>
 
 <div class="wrapper">
     <!-- Main Header -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <nav class="main-header navbar navbar-expand navbar-dark">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -56,6 +56,26 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+            <!-- search -->
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-search" href="{{ route('search') }}" role="button">
+                    <i class="fas fa-search"></i>
+                </a>
+            </li>
+            <!-- notif -->
+{{--            <li class="nav-item dropdown">--}}
+{{--                <a class="nav-link" data-toggle="dropdown" href="javascript:void(0)">--}}
+{{--                    <i class="fas fa-bell"></i>--}}
+{{--                    --}}{{--jumlah notif--}}
+{{--                    <span class="badge badge-warning navbar-badge"></span>--}}
+{{--                </a>--}}
+{{--                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">--}}
+{{--                    <span class="dropdown-item dropdown-header">Notifications</span>--}}
+{{--                    <div class="dropdown-divider"></div>--}}
+{{--                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>--}}
+{{--                </div>--}}
+{{--            </li>--}}
+            <!-- user -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                     <img src="https://image.flaticon.com/icons/png/512/149/149071.png"
@@ -75,7 +95,7 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
+                        @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
                             <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
                         @endif
                         <a href="JavaScript:void(0)" class="btn btn-default btn-flat float-right"
@@ -113,17 +133,18 @@
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-{{--    Loading animation--}}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
-
 <script>
-    //paste this code under the head tag or in a separate js file.
-    // Wait for window load
-    $(window).load(function() {
-        // Animate loader off screen
-        $(".se-pre-con").fadeOut("slow");
-    });
+
+    function tampilLoading(title){
+        Swal.fire ({
+            title: title,
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+    }
+
 </script>
 
 
@@ -173,10 +194,6 @@
 
     $("input[data-bootstrap-switch]").each(function(){
         $(this).bootstrapSwitch('state', $(this).prop('checked'));
-    });
-
-    $(document).ready(function(){
-        $('[data-toggle="tooltip"]').tooltip();
     });
 
     function numberFormat($number){

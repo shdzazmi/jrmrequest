@@ -17,6 +17,7 @@ class CreateListOrdersTable extends Migration
             $table->increments('id');
             $table->string('uid');
             $table->string('nama');
+            $table->string('ketnama');
             $table->string('barcode');
             $table->string('kd_supplier');
             $table->string('kendaraan');
@@ -25,11 +26,12 @@ class CreateListOrdersTable extends Migration
             $table->string('lokasi1');
             $table->string('lokasi2');
             $table->string('lokasi3');
-            $table->string('harga');
-            $table->integer('qty');
-            $table->integer('subtotal');
+            $table->string('harga')->nullable();
+            $table->integer('qty')->nullable();
+            $table->integer('subtotal')->nullable();
             $table->integer('stokTk');
             $table->integer('stokGd');
+            $table->string('satuan');
             $table->timestamps();
         });
     }

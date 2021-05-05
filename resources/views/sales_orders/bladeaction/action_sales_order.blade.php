@@ -3,7 +3,7 @@
     <a href="{{ route('salesOrders.show', [$id]) }}" class='btn btn-default btn-xs'>
         <i class="far fa-eye"></i>
     </a>
-    @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
+    @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
         <a href="{{ route('salesOrders.edit', [$id]) }}" class='btn btn-default btn-xs'>
             <i class="far fa-edit"></i>
         </a>

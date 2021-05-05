@@ -3,18 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
+use Illuminate\Support\Facades\Auth;
 use Redirect,Response;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
 class LocationController extends Controller
 {
-
 //    Data server
     private string $server = '192.168.1.172\SQL2008';
     private string $database = 'JRM';
     private string $username = 'sa';
     private string $password = 'MasteR99';
+    private array $auth = array('Master', 'Dev', 'Admin');
 
     public function __construct()
     {
@@ -29,8 +30,13 @@ class LocationController extends Controller
      */
     public function index()
     {
-        $items = collect([]);
-        return view('location.index')->with('items', $items);
+        if (in_array(Auth::user()->role, $this->auth))
+        {
+            $items = collect([]);
+            return view('location.index')->with('items', $items);
+        } else {
+            return redirect('home');
+        }
     }
 
     public function store(Request $request)

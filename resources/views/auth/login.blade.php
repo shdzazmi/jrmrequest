@@ -32,7 +32,10 @@
     <![endif]-->
 
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page"
+      style="background-image: url('https://i.ibb.co/WHYgrkd/bg.jpg');
+        background-size: cover;
+">
 <div class="login-box">
     <div class="login-logo">
         <a href="{{ url('/home') }}">
@@ -95,12 +98,12 @@
                 </div>
             </form>
 
-{{--            <p class="mb-1">--}}
-{{--                <a href="{{ route('password.request') }}">Lupa password</a>--}}
-{{--            </p>--}}
-           <p class="mb-0">
-               <a href="{{ route('register') }}" class="text-center">Daftar baru</a>
-               </p>
+            {{--            <p class="mb-1">--}}
+            {{--                <a href="{{ route('password.request') }}">Lupa password</a>--}}
+            {{--            </p>--}}
+            <p class="mb-0">
+                <a href="{{ route('register') }}" class="text-center">Daftar baru</a>
+            </p>
         </div>
         <!-- /.login-card-body -->
     </div>

@@ -7,7 +7,7 @@
 </style>
 
 <div class="table-responsive">
-    <table class="table" id="tbAdmin">
+    <table class="table dataTable display" id="tbAdmin">
         <thead>
             <tr>
                 <th>#</th>
@@ -43,6 +43,15 @@
                 @elseif($users->role == 'Master')
                     <td>
                         <a href="javascript:void(0)" class="badge badge-pill badge-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
+                        </div>
+                    </td>
+                @elseif($users->role == 'Dev')
+                    <td>
+                        <a href="javascript:void(0)" class="badge badge-pill badge-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
@@ -90,7 +99,6 @@
         function edituser(id) {
             var url = '{{ route("admin.show", [":id"]) }}';
             url = url.replace(':id', id);
-            console.log(url);
 
             $.ajax({
                 url: url,
@@ -101,7 +109,7 @@
                 },
                 success: function (data){
                     $('#editModal').modal('show');
-                    $('#iduser').text(id);
+                    $('#iduser').text(data.name);
                     $('#name').val(data.name);
                     $('#username').val(data.email);
                     $('#role').val(data.role);

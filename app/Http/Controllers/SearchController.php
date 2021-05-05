@@ -34,12 +34,8 @@ class SearchController extends Controller
 
         //Koneksi data server
         if(request()->ajax()) {
-
-
                 return datatables()->of($items)
                     ->make(true);
-
-
         }
         return view('search_produk.index')->with('produks', $items);
     }

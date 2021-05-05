@@ -121,7 +121,12 @@
                     select: true,
                     bFilter: false,
                     lengthChange: false,
-                    pageLength: 50
+                    pageLength: 50,
+                    language: {
+                        searchPlaceholder: "Pencarian",
+                        search: "",
+                        lengthMenu: "Baris: _MENU_",
+                    }
                 })
                 $(function(){
                     var hide = true;

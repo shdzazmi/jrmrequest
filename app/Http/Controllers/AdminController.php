@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
+    private array $auth = array('Master', 'Dev');
 
     public function __construct()
     {
@@ -16,7 +17,7 @@ class AdminController extends Controller
     }
 
     public function index(){
-        if (Auth::user()->role == 'Master')
+        if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::all();
             return view('admin.index')->with('user', $user);
@@ -27,7 +28,7 @@ class AdminController extends Controller
     }
 
     public function edit($id, $newRole){
-        if (Auth::user()->role == 'Master')
+        if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::find($id);
             $user->role = $newRole;
@@ -44,7 +45,7 @@ class AdminController extends Controller
 
         $output = new \Symfony\Component\Console\Output\ConsoleOutput();
         $output->writeln("Data =  $request->id");
-        if (Auth::user()->role == 'Master')
+        if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::find($request->id);
             if ($user != ""){
@@ -62,8 +63,7 @@ class AdminController extends Controller
 
     public function show(Request $request){
 
-        if (Auth::user()->role == 'Master')
-
+        if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::firstWhere('id', $request->id);
             if ($user != ""){
@@ -79,14 +79,18 @@ class AdminController extends Controller
 
     public function create(Request $request)
     {
-        User::create([
+        if (in_array(Auth::user()->role, $this->auth))
+        {
+            User::create([
             'name' => $request['name'],
             'email' => $request['email'],
             'role' => $request['role'],
-            'password' => Hash::make($request['password']),
-        ]);
+            'password' => Hash::make($request['password']),]);
+            return redirect('admin');
+        } else {
+            return redirect('home');
+        }
 
-        return redirect('admin');
     }
 
 }

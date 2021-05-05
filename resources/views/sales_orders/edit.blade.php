@@ -19,7 +19,7 @@
 
     <div class = "row">
         <div class = "col-sm-3">
-            <div class="content px-3">
+            <div class="content px-3 pb-2">
                 {!! Form::model($salesOrder, ['route' => ['salesOrders.update', $salesOrder->id], 'method' => 'patch']) !!}
                 @include('sales_orders.fields')
                 {!! Form::close() !!}
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class = "col-sm-9">
-            <div class="content pr-3">
+            <div class="content px-3">
                 @include('sales_orders.list_order')
             </div>
         </div>
@@ -46,6 +46,9 @@
 @push('page_scripts')
 
     <script>
+
+        tampilLoading('Memuat...');
+
         getTotalPrice();
         function getTotalPrice() {
             var total = 0;
@@ -77,77 +80,78 @@
         }
 
         function updateSalesOrder() {
-                var td_content = $('#table-body td').text();
-                var table = document.getElementById( "table-body" );
-                var nama = document.getElementById( "nama_input" ).value;
-                var tanggal = document.getElementById( "tanggal_input" ).value;
-                var url = '{{ route("salesOrder.updateData") }}';
-                var urlOrder = '{{ route("salesOrders.update", ":id") }}';
-                urlOrder = urlOrder.replace(':id', document.getElementById('id_input').value);
-                if(td_content !== "" && nama !== "" && tanggal !== ""){
 
-                    // listorder
-                    for ( var i = 0; i < table.rows.length; i++ ) {
-                        var harga = table.rows[i].cells[4].children[0].children[0].value;
-                        var qty = table.rows[i].cells[5].children[0].value;
-                        var subtotal = harga*qty;
-                        var data = {
-                            id: table.rows[i].cells[0].innerHTML,
-                            uid : document.getElementById( "uid_input" ).value,
-                            produk: table.rows[i].cells[1].innerHTML,
-                            barcode: table.rows[i].cells[2].innerHTML,
-                            kendaraan: table.rows[i].cells[3].innerHTML,
-                            harga: harga,
-                            qty: qty,
-                            subtotal: subtotal.toString()
-                        };
-                        // console.log(data)
-                        $.ajax({
-                            url: url,
-                            method:"POST",
-                            data: data,
-                            cache: false,
-                            headers: {
-                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                            },
-                        });
-                    }
-
-                    var dataorder = {
+            var td_content = $('#table-body td').text();
+            var table = document.getElementById( "table-body" );
+            var nama = document.getElementById( "nama_input" ).value;
+            var tanggal = document.getElementById( "tanggal_input" ).value;
+            var url = '{{ route("salesOrder.updateData") }}';
+            var urlOrder = '{{ route("salesOrders.update", ":id") }}';
+            urlOrder = urlOrder.replace(':id', document.getElementById('id_input').value);
+            if(td_content !== "" && nama !== "" && tanggal !== ""){
+                tampilLoading('Menambahkan data...');
+                // listorder
+                for ( var i = 0; i < table.rows.length; i++ ) {
+                    var harga = table.rows[i].cells[4].children[0].children[0].value;
+                    var qty = table.rows[i].cells[5].children[0].value;
+                    var subtotal = harga*qty;
+                    var data = {
+                        id: table.rows[i].cells[0].innerHTML,
                         uid : document.getElementById( "uid_input" ).value,
-                        nama,
-                        tanggal,
-                        status : document.getElementById( "status_input" ).value,
-                        operator : document.getElementById( "operator_input" ).value,
-
+                        produk: table.rows[i].cells[1].innerHTML,
+                        barcode: table.rows[i].cells[2].innerHTML,
+                        kendaraan: table.rows[i].cells[3].innerHTML,
+                        harga: harga,
+                        qty: qty,
+                        subtotal: subtotal.toString()
                     };
-
-                    // salesorder
+                    // console.log(data)
                     $.ajax({
-                        url: urlOrder,
-                        method:"PATCH",
-                        data: dataorder,
+                        url: url,
+                        method:"POST",
+                        data: data,
                         cache: false,
                         headers: {
                             'X-CSRF-TOKEN': "{{ csrf_token() }}"
                         },
-                        success: function (data){
-                            toastSuccess("Sukses!", "Data berhasil diperbarui");
-                            var url = '{{ route("salesOrders.show", [":id"])}}';
-                            url = url.replace(':id', data.id);
-                            window.location.href = url;
-                        },
-                        error: function (data){
-                            toastSuccess("Sukses!", "Data berhasil diperbarui");
-                            window.location.href = '{{ route("salesOrders.index") }}';
-                        }
                     });
-
-                } else {
-                    toastError("Gagal!", "Lengkapi data.")
                 }
+
+                var dataorder = {
+                    uid : document.getElementById( "uid_input" ).value,
+                    nama,
+                    tanggal,
+                    status : document.getElementById( "status_input" ).value,
+                    operator : document.getElementById( "operator_input" ).value,
+
+                };
+
+                // salesorder
+                $.ajax({
+                    url: urlOrder,
+                    method:"PATCH",
+                    data: dataorder,
+                    cache: false,
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                    },
+                    success: function (data){
+                        toastSuccess("Sukses!", "Data berhasil diperbarui");
+                        var url = '{{ route("salesOrders.show", [":id"])}}';
+                        url = url.replace(':id', data.id);
+                        window.onbeforeunload = null
+                        window.location.href = url;
+                    },
+                    error: function (data){
+                        toastSuccess("Sukses!", "Data berhasil diperbarui");
+                        window.onbeforeunload = null
+                        window.location.href = '{{ route("salesOrders.index") }}';
+                    }
+                });
+
+            } else {
+                toastError("Gagal!", "Lengkapi data.")
             }
-
+        }
     </script>
-
 @endpush

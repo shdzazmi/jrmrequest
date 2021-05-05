@@ -30,7 +30,7 @@
     </ul>
 </li>
 
-@if(Auth::user()->role == "Master")
+@if(Auth::user()->role == "Dev")
 <li class="nav-item">
     <a href="{{ route('search') }}"
        class="nav-link {{ Request::is('search*') ? 'active' : '' }}">
@@ -40,7 +40,7 @@
 </li>
 @endif
 
-@if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
+@if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
     <li class="nav-item">
         <a href="{{ route('location') }}"
            class="nav-link {{ Request::is('location*') ? 'active' : '' }}">
@@ -50,7 +50,7 @@
     </li>
 @endif
 
-@if(Auth::user()->role == "Master")
+@if(Auth::user()->role == "Dev")
     <li class="nav-item">
         <a href="#"
            class="nav-link {{ Request::is('security*') ? 'active' : '' }}">
@@ -75,7 +75,7 @@
     </li>
 @endif
 
-@if(Auth::user()->role == "Master")
+@if(Auth::user()->role == "Dev")
     <li class="nav-item">
         <a href="{{ route('admin') }}"
            class="nav-link {{ Request::is('admin*') ? 'active' : '' }}">

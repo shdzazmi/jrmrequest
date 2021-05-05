@@ -55,7 +55,7 @@
                         </td>
                         <td><input type="number" value="{{ $listorders->qty }}" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td>
                         <td class="text">{{ $listorders->subtotal }}</td>
-                        <td><button class="btn btn-tool" type="button" onclick="deleteRow(this, {{$listorders->id}})"><i class="fas fa-trash"></i></button></td>
+                        <td><button class="btn btn-tool" type="button" data-value="{{$listorders->id}}" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>
                     </tr>
                     @endforeach
                     @endif
@@ -76,15 +76,15 @@
 
 <script>
 
-
-    function deleteRow(r, ids) {
+    function deleteRow(r) {
+        var ids = $(r).attr('data-value');
         var i = r.parentNode.parentNode.rowIndex;
         if (typeof ids !== 'undefined') {
             $.ajax({
                 url: '{{ route("listOrder.delete") }}',
                 method:"POST",
                 cache: false,
-                data: {id: id},
+                data: {id: ids},
                 headers: {
                     'X-CSRF-TOKEN': "{{ csrf_token() }}"
                 },
@@ -94,22 +94,40 @@
                         getTotalPrice();
                     } else {
                         toastError("Error!", "Terjadi kesalahan internal.")
-                        {{--window.location.href = '{{ route("salesOrders.index") }}';--}}
                     }
                 }
             });
         } else {
-            document.getElementById("table-body").deleteRow(i-1);//
+            document.getElementById("table-body").deleteRow(i-1);
+            getTotalPrice();
         }
     }
 
     function deleteAllRow() {
+        var uid = document.getElementById( "uid_input" ).value;
         var tableHeaderRowCount = 0;
         var table = document.getElementById('table-body');
         var rowCount = table.rows.length;
-        for (var i = tableHeaderRowCount; i < rowCount; i++) {
-            table.deleteRow(tableHeaderRowCount);
-        }
-        getTotalPrice()
+        var url = '{{ route("listOrder.deleteAll", [":uid"]) }}';
+        url = url.replace(':uid', uid);
+
+        $.ajax({
+            url: url,
+            method:"POST",
+            cache: false,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            success: function (data){
+                if (data === "success") {
+                    for (var i = tableHeaderRowCount; i < rowCount; i++) {
+                        table.deleteRow(tableHeaderRowCount);
+                    }
+                    getTotalPrice();
+                } else {
+                    toastError("Error!", "Terjadi kesalahan internal.")
+                }
+            }
+        });
     }
 </script>

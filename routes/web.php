@@ -31,7 +31,7 @@ Route::get('/requestbarangsall/{query?}', [App\Http\Controllers\requestbarangCon
 
 //Sales order
 Route::resource('salesOrders', App\Http\Controllers\SalesOrderController::class);
-Route::post('/salesOrders/put/{barcode}', [App\Http\Controllers\SalesOrderController::class, 'putItem'])->where('barcode', '(.*)')->name('salesOrder.put');
+Route::post('/salesOrders/put', [App\Http\Controllers\SalesOrderController::class, 'putItem'])->where('barcode', '(.*)')->name('salesOrder.put');
 Route::post('/salesOrders/postData', [App\Http\Controllers\SalesOrderController::class, 'storeData'])->name('salesOrder.storeData');
 Route::post('/salesOrders/updateData', [App\Http\Controllers\SalesOrderController::class, 'updateData'])->name('salesOrder.updateData');
 Route::post('/getdetails/{id}', [App\Http\Controllers\SalesOrderController::class, 'getdetails'])->name('salesOrder.getdetails');
@@ -41,6 +41,7 @@ Route::get('/getExcel/{id}', [App\Http\Controllers\SalesOrderController::class, 
 
 //List order
 Route::post('/salesOrders/deletelist', [App\Http\Controllers\ListOrderController::class, 'destroy'])->name('listOrder.delete');;
+Route::post('/salesOrders/deleteall/{uid}', [App\Http\Controllers\ListOrderController::class, 'destroyAll'])->name('listOrder.deleteAll');;
 
 //Search produk
 Route::get('/search/{query?}', [App\Http\Controllers\SearchController::class, 'index'])->name('search');

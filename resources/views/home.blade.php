@@ -31,7 +31,7 @@
                         </a>
                         <div class="list-group no-padding">
                             <a href="{{ route('salesOrders.index') }}" class="list-group-item text-gray">
-                                Proses <span class="float-right badge-pill bg-warning text-light">{{$prosescount}}</span>
+                                Proses <span class="float-right badge-pill badge-warning text-white">{{$prosescount}}</span>
                             </a>
                             <a href="{{ route('salesOrders.index') }}" class="list-group-item text-gray">
                                 Selesai <span class="float-right badge-pill bg-success">{{$selesaicount}}</span>
@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master")
+            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
                 <!-- small card -->
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-gradient-primary">
@@ -101,7 +101,7 @@
                 text:
                     'Sinkron data produk untuk request dan sales order?',
                 showLoaderOnConfirm: true,
-                showCancelButton: true,
+                allowOutsideClick: false,
                 preConfirm: () => {
                     return fetch(produkAjax).then(data => Swal.fire('Sukses!','Data telah tersinkron','success'))
                 }

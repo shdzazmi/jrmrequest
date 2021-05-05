@@ -87,91 +87,64 @@ class SalesOrderController extends AppBaseController
         return $id;
     }
 
-    public function storeData(Request $request){
+    public function putItem(Request $request){
         $barcode = $request->barcode;
-        $produk = Produk::where('barcode', $barcode)->first();
-
         $uid = $request->uid;
-        $nama = $produk->nama;
-        $kd_supplier = $produk->kd_supplier;
-        $kendaraan = $produk->kendaraan;
-        $partno1 = $produk->partno1;
-        $partno2 = $produk->partno2;
-        $lokasi1 = $produk->lokasi1;
-        $lokasi2 = $produk->lokasi2;
-        $lokasi3 = $produk->lokasi3;
-        $harga = $request->harga;
-        $qty = $request->qty;
-        $subtotal = $request->subtotal;
-        $stokTk = $produk->qtyTk;
-        $stokGd = $produk->qtyGd;
-        $satuan = $produk->satuan;
+        $produk = Produk::where('barcode', $barcode)->first();
+        $cekproduk = ListOrder::where('barcode', $barcode)->where('uid', $uid)->first();
 
-        $data = [
-            'uid' => $uid,
-            'nama' => $nama,
-            'barcode' => $barcode,
-            'kd_supplier' => $kd_supplier,
-            'kendaraan' => $kendaraan,
-            'partno1' => $partno1,
-            'partno2' => $partno2,
-            'lokasi1' => $lokasi1,
-            'lokasi2' => $lokasi2,
-            'lokasi3' => $lokasi3,
-            'harga' => $harga,
-            'qty' => $qty,
-            'subtotal' => $subtotal,
-            'stokTk' => $stokTk,
-            'stokGd' => $stokGd,
-            'satuan' => $satuan
+        if (empty($cekproduk)){
+            $listOrder = [
+                'uid' => $uid,
+                'nama' => $produk->nama,
+                'ketnama' => $produk->ketnama,
+                'barcode' => $barcode,
+                'kd_supplier' => $produk->kd_supplier,
+                'kendaraan' => $produk->kendaraan,
+                'partno1' => $produk->partno1,
+                'partno2' => $produk->partno2,
+                'lokasi1' => $produk->lokasi1,
+                'lokasi2' => $produk->lokasi2,
+                'lokasi3' => $produk->lokasi3,
+                'stokTk' => $produk->qtyTk,
+                'stokGd' => $produk->qtyGd,
+                'satuan' => $produk->satuan,
+            ];
+            ListOrder::insert($listOrder);
+            $dataOrder = ListOrder::where('barcode', $barcode)->where('uid', $uid)->first();
+            $data['a'] = $dataOrder;
+            $data['b'] = $produk;
 
-        ];
-
-        ListOrder::insert($data);
-
-        return false;
+            return $data;
+        } else {
+            return "added";
+        }
     }
 
     public function updateData(Request $request){
         $barcode = $request->barcode;
         $produk = Produk::where('barcode', $barcode)->first();
-
         $id = $request->id;
-        $uid = $request->uid;
-        $nama = $produk->nama;
-        $kd_supplier = $produk->kd_supplier;
-        $kendaraan = $produk->kendaraan;
-        $partno1 = $produk->partno1;
-        $partno2 = $produk->partno2;
-        $lokasi1 = $produk->lokasi1;
-        $lokasi2 = $produk->lokasi2;
-        $lokasi3 = $produk->lokasi3;
-        $harga = $request->harga;
-        $qty = $request->qty;
-        $subtotal = $request->subtotal;
-        $stokTk = $produk->qtyTk;
-        $stokGd = $produk->qtyGd;
-        $satuan = $produk->satuan;
 
         ListOrder::updateOrCreate(['id' => $id],
             [
-                'uid' => $uid,
-                'nama' => $nama,
+                'uid' => $request->uid,
+                'nama' => $produk->nama,
+                'ketnama' => $produk->ketnama,
                 'barcode' => $barcode,
-                'kd_supplier' => $kd_supplier,
-                'kendaraan' => $kendaraan,
-                'partno1' => $partno1,
-                'partno2' => $partno2,
-                'lokasi1' => $lokasi1,
-                'lokasi2' => $lokasi2,
-                'lokasi3' => $lokasi3,
-                'harga' => $harga,
-                'qty' => $qty,
-                'subtotal' => $subtotal,
-                'stokTk' => $stokTk,
-                'stokGd' => $stokGd,
-                'satuan' => $satuan
-
+                'kd_supplier' => $produk->kd_supplier,
+                'kendaraan' => $produk->kendaraan,
+                'partno1' => $produk->partno1,
+                'partno2' => $produk->partno2,
+                'lokasi1' => $produk->lokasi1,
+                'lokasi2' => $produk->lokasi2,
+                'lokasi3' => $produk->lokasi3,
+                'harga' => $request->harga,
+                'qty' => $request->qty,
+                'subtotal' => $request->subtotal,
+                'stokTk' => $produk->qtyTk,
+                'stokGd' => $produk->qtyGd,
+                'satuan' => $produk->satuan
             ]);
 
         return false;
@@ -292,10 +265,6 @@ class SalesOrderController extends AppBaseController
         return redirect(route('salesOrders.index'));
     }
 
-    public function putItem($barcode){
-        return Produk::where('barcode', $barcode)->first();
-    }
-
     public function export_pdf($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
@@ -305,7 +274,9 @@ class SalesOrderController extends AppBaseController
         $date = new \DateTime($salesOrder->tanggal);
         $tanggal = $date->format('d F Y');
         $nama = $salesOrder->nama;
-        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder, 'totalharga'=> $totalharga, 'tanggal'=> $tanggal]);
+        $produk = Produk::all();
+
+        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'produk'=>$produk, 'listorder'=>$listorder, 'totalharga'=> $totalharga, 'tanggal'=> $tanggal]);
         return $pdf->download('Sales Order '.$nama.' SO'.$id.'.pdf');
     }
 

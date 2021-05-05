@@ -1,13 +1,6 @@
-<style>
-    #tbRequestSum tbody tr:hover{
-        /*cursor: pointer;*/
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
-    }
 
-</style>
 <div class="table-responsive">
-    <table class="table dataTable table-striped" id="tbRequestSum">
+    <table class="table dataTable display" id="tbRequestSum">
         <thead>
             <tr>
                 <th>Produk</th>
@@ -31,6 +24,11 @@
                 order: [[3, "desc"]],
                 autoWidth: false,
                 pageLength: 50,
+                language: {
+                    searchPlaceholder: "Pencarian",
+                    search: "",
+                    lengthMenu: "Baris: _MENU_",
+                },
                 ajax: {
                     url: '{{URL::to('requestbarangs')}}'
                 },
@@ -40,8 +38,8 @@
                     {data: 'kendaraan', name: 'kendaraan'},
                     {data: 'amount', name: 'amount'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
-                ]
-            })
+                ],
+            });
             setInterval( function () {
                 $table.ajax.reload(null, false);
             }, 5000 );

@@ -35,12 +35,10 @@
     </div>
 </div>
 
-<!--Table hover and cursor style-->
+<!--Table hover-->
 <style>
     #requestbarangproduk tbody tr:hover{
         cursor: pointer;
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
     }
 </style>
 
@@ -61,7 +59,7 @@
                 <div class="content px-3">
                     <!-- Table Produk -->
                     <div class="table-responsive">
-                        <table class="table table-striped dataTable" id="requestbarangproduk">
+                        <table class="table dataTable display" id="requestbarangproduk">
                             <thead>
                             <tr>
                                 <th>Produk</th>
@@ -155,7 +153,12 @@
     <script>
         $(document).ready(function() {
             $('#requestbarangproduk').DataTable( {
-                select: true
+                select: true,
+                language: {
+                    searchPlaceholder: "Pencarian",
+                    search: "",
+                    lengthMenu: "Baris: _MENU_",
+                }
             } );
         } );
 

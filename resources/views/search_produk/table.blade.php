@@ -1,10 +1,4 @@
 <style>
-    #tbRequest tbody tr:hover{
-        /*cursor: pointer;*/
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
-    }
-
     #salesorderproduk{
         display:none;
     }
@@ -12,37 +6,34 @@
 </style>
 <!-- Table produk -->
     <div style="font-size:14px;" class="card-body">
-        <table style="font-size:14px;" class="table table-bordered dataTable table-striped"  id="salesorderproduk">
+        <table style="font-size:14px;" class="table table-bordered dataTable display"  id="salesorderproduk">
             <thead>
             <tr style="text-align:center">
-                <th>Barcode</th>
-                <th>Produk</th>
-                <th style="width: 75px">Kode Supplier</th>
-                <th>Kendaraan</th>
-                <th>Part Number</th>
-                <th>Lokasi</th>
-                <th>Harga</th>
-                <th>Qty</th>
+                <th style="width: 10%">Produk</th>
+                <th style="width: 5%">Kode Supplier</th>
+                <th style="width: 10%">Kendaraan</th>
+                <th style="width: 8%">Part Number</th>
+                <th style="width: 8%">Lokasi</th>
+                <th style="width: 5%">Harga</th>
+                <th style="width: 5%">Stok Total</th>
+                <th style="width: 5%">Stok</th>
             </tr>
             </thead>
             <tfoot style="display: table-header-group">
             <tr style="text-align:center">
-                <th>Barcode</th>
-                <th>Produk</th>
-                <th>Kode Supplier</th>
-                <th>Kendaraan</th>
-                <th>Part Number</th>
-                <th>Lokasi</th>
-                <th>Harga</th>
-                <th>Qty</th>
+                <th style="width: 15%">Produk</th>
+                <th style="width: 5%">Kode Supplier</th>
+                <th style="width: 10%">Kendaraan</th>
+                <th style="width: 5%">Part Number</th>
+                <th style="width: 5%">Lokasi</th>
+                <th style="width: 5%">Harga</th>
+                <th style="width: 2%">Stok Total</th>
+                <th style="width: 2%">Stok</th>
             </tr>
             </tfoot>
             <tbody id="tbsalesorder">
             @foreach($produks as $item)
                 <tr class='clickable-row'>
-                    <td>
-                        {{ $item['barcode'] }}
-                    </td>
                     <td>
                         {{ $item['nama'] }}<br/>
                         <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
@@ -88,7 +79,9 @@
                         <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
                     </td>
                     <td style="text-align:right">
-                        <span class="badge badge-pill bg-success">Semua:</span> {{ $item['qty'] }}<br/>
+                        {{ $item['qty'] }}
+                    </td>
+                    <td style="text-align:right">
                         <span class="badge badge-pill bg-success">Toko:</span> {{ $item['qtyTk'] }}<br/>
                         <span class="badge badge-pill bg-success">Gudang:</span> {{ $item['qtyGd'] }}<br/>
                     </td>
@@ -105,12 +98,12 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 <script>
-
+    tampilLoading('Memuat...');
     $(document).ready(function() {
         // Setup - add a text input to each footer cell
         $('#salesorderproduk tfoot th').each( function () {
             var title = $(this).text();
-            $(this).html( '<input style="width:75px" type="text"/>' );
+            $(this).html( '<input type="search" class="form-control"/>' );
         } );
 
         const tbProduk = $('#salesorderproduk').DataTable({
@@ -118,6 +111,7 @@
             processing: true,
             autoWidth: false,
             initComplete: function () {
+                Swal.close();
                 $("#salesorderproduk").show();
                 // Apply the
                 this.api().columns().every( function () {
@@ -132,12 +126,11 @@
                     } );
                 } );
             },
-            columnDefs: [
-                {
-                    targets: [ 0 ],
-                    visible: false,
-                }
-            ]
+            language: {
+                searchPlaceholder: "Pencarian",
+                search: "",
+                lengthMenu: "Baris: _MENU_",
+            }
         });
 
         // Onclick event

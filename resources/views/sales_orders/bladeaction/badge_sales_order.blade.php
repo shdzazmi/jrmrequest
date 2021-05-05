@@ -1,6 +1,6 @@
 @if( $status== 'Proses')
     <td>
-        <a href="javascript:void(0)" class="badge badge-pill badge-warning" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $status }}</a>
+        <a href="javascript:void(0)" class="badge badge-pill badge-warning text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $status }}</a>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" href="{{ route("salesOrder.editStatus", [$id, "Selesai"]) }}"><span class="badge badge-pill badge-success">Selesai</span></a>
             <a class="dropdown-item" href="{{ route("salesOrder.editStatus", [$id, "Batal"]) }}"><span class="badge badge-pill badge-danger">Batal</span></a>

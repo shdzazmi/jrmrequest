@@ -32,7 +32,7 @@
                     <span class="error invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
-<div class="input-group mb-3">
+                <div class="input-group mb-3">
                     <select name="role" id="role" class="form-control" required>
                         <option value="" disabled selected hidden>Role</option>
                         <option>User</option>
@@ -67,6 +67,11 @@
                     select: true,
                     pageLength: 25,
                     autoWidth: false,
+                    language: {
+                        searchPlaceholder: "Pencarian",
+                        search: "",
+                        lengthMenu: "Baris: _MENU_",
+                    }
                 });
             });
 

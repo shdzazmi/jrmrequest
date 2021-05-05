@@ -7,6 +7,7 @@ use App\Models\SalesOrder;
 use App\Models\requestbarang;
 use Carbon\Carbon;
 use Flash;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -16,6 +17,7 @@ class HomeController extends Controller
     private string $database = 'JRM';
     private string $username = 'sa';
     private string $password = 'MasteR99';
+    private array $auth = array('Master', 'Dev');
 
     public function __construct()
     {
@@ -58,15 +60,20 @@ class HomeController extends Controller
 
     public function synchronize()
     {
-        $this->fetchDataProduk();
+        if (in_array(Auth::user()->role, $this->auth))
+        {
+            $this->fetchDataProduk();
 
-        $lastupdate = Produk::first()->created_at;
-        $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
-        $requestdata = requestbarang::all();
-        $requestcount = $requestdata->count();
-        return redirect('/home')
-            ->with('time', $time)
-            ->with('requestcount', $requestcount);
+            $lastupdate = Produk::first()->created_at;
+            $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
+            $requestdata = requestbarang::all();
+            $requestcount = $requestdata->count();
+            return redirect('/home')
+                ->with('time', $time)
+                ->with('requestcount', $requestcount);
+        } else {
+            return redirect('home');
+        }
     }
 
     public function fetchDataProduk(){
@@ -77,6 +84,7 @@ class HomeController extends Controller
         $sqlquery = "SELECT ";
         $sqlquery .= "barcodeaktif AS barcode, ";
         $sqlquery .= "stock.nama AS nama, ";
+        $sqlquery .= "keterangan AS ketnama, ";
         $sqlquery .= "hjual AS harga, ";
         $sqlquery .= "hjual2 AS harga2, ";
         $sqlquery .= "hjual3 AS harga3, ";
@@ -91,7 +99,7 @@ class HomeController extends Controller
         $sqlquery .= "qtyAkhir + qtyGd AS qty, ";
         $sqlquery .= "qtyAkhir AS qtyTk, ";
         $sqlquery .= "qtyGd AS qtyGd, ";
-        $sqlquery .= "satb AS satuan ";
+        $sqlquery .= "satk AS satuan ";
         $sqlquery .= "FROM stock ";
         $sqlquery .= "LEFT JOIN kelproduk ON stock.kelproduk = kelproduk.id ";
         $sqlquery .= "LEFT JOIN supplier ON stock.kodesupp = supplier.kode ";
@@ -103,6 +111,7 @@ class HomeController extends Controller
             $itemAll = [
                 'barcode' => utf8_encode(odbc_result($process, 'barcode')),
                 'nama' => utf8_encode(odbc_result($process, 'nama')),
+                'ketnama' => utf8_encode(odbc_result($process, 'ketnama')),
                 'kd_supplier' => utf8_encode(odbc_result($process, 'supplier')),
                 'kendaraan' => utf8_encode(odbc_result($process, 'kendaraan')),
                 'harga' => floatval(odbc_result($process, 'harga')),

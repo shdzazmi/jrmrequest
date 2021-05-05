@@ -1,7 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Buat sales order')
-
+@section('style')
+<style>
+</style>
+@endsection
 @section('content')
+
 
     <div class = "row">
         <section class="content-header">
@@ -19,14 +23,14 @@
 
     <div class = "row">
         <div class = "col-sm-3">
-            <div class="content px-3">
+            <div class="content px-3 pb-2">
                 @include('sales_orders.fields')
                 <button class="btn btn-primary btn-block" onclick="uploadSalesOrder()">Check out</button>
                 <a href="{{ route('salesOrders.index') }}" class="btn btn-default btn-outline btn-block">Cancel</a>
             </div>
         </div>
         <div class = "col-sm-9">
-            <div class="content pr-3">
+            <div class="content px-3">
                 @include('sales_orders.list_order')
             </div>
         </div>
@@ -43,6 +47,8 @@
 @push('page_scripts')
 
     <script>
+        tampilLoading('Memuat...');
+
         var tbOrder = document.getElementById("table-body");
         function getTotalPrice() {
             var total = 0;
@@ -69,20 +75,22 @@
         }
 
         function uploadSalesOrder() {
+
             var td_content = $('#table-body td').text();
             var table = document.getElementById( "table-body" );
             var nama = document.getElementById( "nama_input" ).value;
             var tanggal = document.getElementById( "tanggal_input" ).value;
-            var url = '{{ route("salesOrder.storeData") }}';
+            var url = '{{ route("salesOrder.updateData") }}';
             var urlOrder = '{{ route("salesOrders.store") }}';
             if(td_content !== "" && nama !== "" && tanggal !== ""){
-
+                tampilLoading('Menambahkan data...');
                 // listorder
                 for ( var i = 0; i < table.rows.length; i++ ) {
                     var harga = table.rows[i].cells[4].children[0].children[0].value;
                     var qty = table.rows[i].cells[5].children[0].value;
                     var subtotal = harga*qty;
                     var data = {
+                        id: table.rows[i].cells[0].innerHTML,
                         uid : document.getElementById( "uid_input" ).value,
                         produk: table.rows[i].cells[1].innerHTML,
                         barcode: table.rows[i].cells[2].innerHTML,
@@ -121,13 +129,14 @@
                         'X-CSRF-TOKEN': "{{ csrf_token() }}"
                     },
                     success: function (data){
-                        toastSuccess("Sukses!", "Data berhasil ditambah");
                          var url = '{{ route("salesOrders.show", [":id"])}}';
                          url = url.replace(':id', data.id);
+                         window.onbeforeunload = null;
                          window.location.href = url;
                     },
                     error: function (data){
                         toastError("Gagal!", "Terjadi kesalahan internal.");
+                        window.onbeforeunload = null;
                         window.location.href = '{{ route("salesOrders.index") }}';
                     }
                 });
@@ -137,5 +146,12 @@
             }
         }
 
+        window.onbeforeunload = confirmExit;
+
+        function confirmExit()
+        {
+            deleteAllRow();
+            return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
+        }
     </script>
 @endpush

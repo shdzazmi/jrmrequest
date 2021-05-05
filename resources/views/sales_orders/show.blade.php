@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Sales order')
 @section('content')
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="col-sm-10 offset-md-1">
@@ -24,9 +25,14 @@
                     <a class="dropdown-item" href="{{ route('salesOrder.getPdf',[$salesOrder->id]) }}"><i class="fas fa-file-pdf" style="color: darkred;"></i> PDF</a>
                     <a class="dropdown-item" href="{{ route('salesOrder.export_excel',[$salesOrder->id]) }}"><i class="fas fa-file-excel" style="color: darkgreen;"></i> Excel</a>
                 </div>
+                @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
+                <a class="btn btn-outline-info float-right" href="{{ route('salesOrders.edit', [$salesOrder->id]) }}">
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </a>
+                @endif
             </div>
             <div class="position-relative" style="height: 180px">
-
 
                 <div class="card">
                     <div class="card-header pt-4">
@@ -40,7 +46,7 @@
                                 </div>
                                 <div class="col text-right">
                                     @if($salesOrder->status === "Proses")
-                                        <div class="badge badge-warning text-md">
+                                        <div class="badge badge-warning text-white text-md">
                                             {{ $salesOrder->status }}
                                         </div>
                                     @endif

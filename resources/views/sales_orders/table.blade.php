@@ -12,14 +12,32 @@ tr.shown td.details-control {
 
 </style>
 
-
 <div class="table-responsive">
-    <table class="table" id="salesOrders-table">
+
+    <!-- /.Filter group -->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Filter tanggal:</label>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                    <input class="form-control float-left" autocomplete="off" type="text" name="daterange" id="daterange" placeholder="Tanggal awal - tanggal akhir"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table dataTable display" id="salesOrders-table">
         <thead>
             <tr>
 {{--                <th>#</th>--}}
                 <th>UID</th>
-                <th style="text-align: center;">No. Order</th>
+                <th style="text-align: center;">No.</th>
                 <th>Nama Customer</th>
                 <th>Tanggal</th>
                 <th>Status</th>
@@ -33,10 +51,48 @@ tr.shown td.details-control {
 </div>
 
 @push('page_scripts')
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+
     <script>
 
-        $(document).each( function () {
+        var start_date;
+        var end_date;
+        var DateFilterFunction = (function (oSettings, aData, iDataIndex) {
+            var dateStart = ConvertDateFromDiv(start_date);
+            var dateEnd = ConvertDateFromDiv(end_date);
+            var evalDate= ConvertDateFromDiv(aData[3]);
+            console.log(dateStart);
+
+            if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
+                ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
+                ( dateStart <= evalDate && isNaN( dateEnd ) ) ||
+                ( dateStart <= evalDate && evalDate <= dateEnd ) )
+            {
+                return true;
+            }
+            return false;
+        });
+
+        //convert tanggal
+        //04-05-2021
+        function ConvertDateFromDiv(divTimeStr) {
+            var tmstr = divTimeStr.toString().split(' ');
+            var dt = tmstr[0].split('-');
+            var str = dt[2] + "/" + dt[1] + "/" + dt[0] + " " + tmstr[1]; //+ " " + tmstr[1]//'2013/01/20 3:20:24 pm'
+            var time = new Date(str);
+            if (time == "Invalid Date") {
+                time = new Date(divTimeStr);
+            }
+            return time;
+        }
+
+        $(document).ready( function () {
+
+            //Datatable init
             var table = $('#salesOrders-table').DataTable({
                 select: true,
                 order: [[1, "desc"]],
@@ -46,15 +102,6 @@ tr.shown td.details-control {
                     url: '{{URL::to('salesOrders')}}'
                 },
                 columns: [
-                    // {
-                    //     "className":      'details-control',
-                    //     "orderable":      false,
-                    //     "data":           null,
-                    //     "defaultContent": '',
-                    //     "render": function () {
-                    //      return '<i class="fa fa-plus-square" aria-hidden="true"></i>';
-                    //     },
-                    // },
                     {data: 'uid', name: 'uid', align:'center'},
                     {data: 'id', name: 'id'},
                     {data: 'nama', name: 'nama'},
@@ -68,8 +115,21 @@ tr.shown td.details-control {
                         targets: [ 0 ],
                         visible: false
                     }
-                ]
+                ],
+                language: {
+                    searchPlaceholder: "Pencarian",
+                    search: "",
+                    lengthMenu: "Baris: _MENU_",
+                }
             });
+
+
+            //apply date filter
+            $('#daterange').on('change', function () {
+                table.draw();
+            });
+
+            //auto refresh
             setInterval( function () {
                 table.ajax.reload(null, false);
             }, 5000 );
@@ -98,17 +158,60 @@ tr.shown td.details-control {
                                 // Open this row
                                 row.child( format(data) ).show();
                                 tr.addClass('shown');
-
                         },
                         error:
                             function (data) {
                                 console.log("eror");
-
                         }
                     })
-                };
+                }
 
             });
+
+            //menangani proses saat apply date range
+            $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                $(this).val(picker.startDate.format('MM/DD/YYYY H:mm:ss') + ' - ' + picker.endDate.format('MM/DD/YYYY H:mm:ss'));
+                start_date=picker.startDate.format('MM/DD/YYYY H:mm:ss');
+                end_date=picker.endDate.format('MM/DD/YYYY H:mm:ss');
+                $.fn.dataTableExt.afnFiltering.push(DateFilterFunction);
+                table.draw();
+            });
+
+            $('#daterange').on('cancel.daterangepicker', function(ev, picker) {
+                $(this).val('');
+                start_date='';
+                end_date='';
+                $.fn.dataTable.ext.search.splice($.fn.dataTable.ext.search.indexOf(DateFilterFunction, 1));
+                table.draw();
+            });
+
+            //daterangepicker
+            $(function() {
+                $('input[name="daterange"]').daterangepicker({
+                    timePicker24Hour: true,
+                    opens: 'right',
+                    autoUpdateInput: false,
+                    alwaysShowCalendars: true,
+                    locale: {
+                        format: 'DD/MM/YYYY H:mm:ss',
+                        cancelLabel: 'Clear'
+                    },
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, function(start, end, label) {
+                    // Create date inputs
+                    console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+                });
+
+            });
+
+
         });
 
         function format ( d ) {

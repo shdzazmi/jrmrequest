@@ -7,7 +7,7 @@
 
 </style>
 <div class="table-responsive">
-    <table class="table dataTable table-striped" id="tbRequest">
+    <table class="table dataTable display" id="tbRequest">
         <thead>
             <tr>
                 <th>Tanggal request</th>
@@ -49,7 +49,12 @@
                     {data: 'keterangan', name: 'keterangan'},
                     {data: 'user', name: 'user'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
-                ]
+                ],
+                language: {
+                    searchPlaceholder: "Pencarian",
+                    search: "",
+                    lengthMenu: "Baris: _MENU_",
+                }
             });
             setInterval( function () {
                 table.ajax.reload(null, false);
