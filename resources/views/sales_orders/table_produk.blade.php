@@ -153,141 +153,165 @@
             ]
         });
 
-
         var lastResult;
         tbProduk.on('click', 'tr', function (e, dt, type, indexes) {
             var rowData = tbProduk.row(this).data();
-            if (rowData !== lastResult) {
-                lastResult = rowData;
-                var url = '{{ route("salesOrder.put") }}';
-                var data = {
-                    uid : document.getElementById( "uid_input" ).value,
-                    barcode: rowData[0],
-                };
 
-                $.ajax({
-                    url: url,
-                    method: "POST",
-                    data: data,
-                    headers: {
-                        'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                    },
-                    success: function (data) {
-                        if (data != "added"){
-                            var tipeharga = $('#tipeharga').find(":selected").val();
-                            if (tipeharga === 'harga'){
-                                $('#table-body').append(
-                                    '<tr>' +
-                                    '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                    '<td>' + data['a'].nama + '</td>  ' +
-                                    '<td>' + data['a'].barcode + '</td> ' +
-                                    '<td>' + data['a'].kendaraan + '</td> ' +
-                                    '<td >' +
-                                    '<div class="input-group-append">'+
-                                    '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga +'">'+
-                                    '<div  class="dropdown-menu">'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
-                                    '</div >'+
-                                    '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
-                                    '</div>' +
-                                    '</td> ' +
-                                    '<td ><input type="number" value="1" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                    '<td class="text">' + data['b'].harga + '</td> ' +
-                                    '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
-                                    '</tr>'
-                                );
-                                toastSuccess("Produk berhasil ditambahkan!")
-                            } else if(tipeharga === 'harga2'){
-                                $('#table-body').append(
-                                    '<tr>' +
-                                    '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                    '<td>' + data['a'].nama + '</td>  ' +
-                                    '<td>' + data['a'].barcode + '</td> ' +
-                                    '<td>' + data['a'].kendaraan + '</td> ' +
-                                    '<td >' +
-                                    '<div class="input-group-append">'+
-                                    '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga2 +'">'+
-                                    '<div  class="dropdown-menu">'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
-                                    '</div >'+
-                                    '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
-                                    '</div>' +
-                                    '</td> ' +
-                                    '<td ><input type="number" value="1" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                    '<td class="text">' + data['b'].harga2 + '</td> ' +
-                                    '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
-                                    '</tr>'
-                                );
-                                toastSuccess("Produk berhasil ditambahkan!")
-                            } else if(tipeharga === 'harga3'){
-                                $('#table-body').append(
-                                    '<tr>' +
-                                    '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                    '<td>' + data['a'].nama + '</td>  ' +
-                                    '<td>' + data['a'].barcode + '</td> ' +
-                                    '<td>' + data['a'].kendaraan + '</td> ' +
-                                    '<td >' +
-                                    '<div class="input-group-append">'+
-                                    '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga3 +'">'+
-                                    '<div  class="dropdown-menu">'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
-                                    '</div >'+
-                                    '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
-                                    '</div>' +
-                                    '</td> ' +
-                                    '<td ><input type="number" value="1" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                    '<td class="text">' + data['b'].harga3 + '</td> ' +
-                                    '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
-                                    '</tr>'
-                                );
-                                toastSuccess("Produk berhasil ditambahkan!")
-                            } else if(tipeharga === 'hargamin'){
-                                $('#table-body').append(
-                                    '<tr>' +
-                                    '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                    '<td>' + data['a'].nama + '</td>  ' +
-                                    '<td>' + data['a'].barcode + '</td> ' +
-                                    '<td>' + data['a'].kendaraan + '</td> ' +
-                                    '<td >' +
-                                    '<div class="input-group-append">'+
-                                    '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].hargamin +'">'+
-                                    '<div  class="dropdown-menu">'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
-                                    '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
-                                    '</div >'+
-                                    '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
-                                    '</div>' +
-                                    '</td> ' +
-                                    '<td ><input type="number" value="1" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                    '<td class="text">' + data['b'].hargamin + '</td> ' +
-                                    '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
-                                    '</tr>'
+            swal.fire({
+                html: `
+                    <div class="field">
+                        Masukan Qty:
+                        <input class="input form-control" min="1" type="number" placeholder="Quantity" id="qty_input">
+                    </div>`,
+                confirmButtonText: 'Confirm',
+                onOpen: function () {
+                    $('#qty_input').focus()
+                },
+                preConfirm: function() {
+                    var qty= $('input[id="qty_input"]').val();
 
-                                );
-                                toastSuccess("Produk berhasil ditambahkan!")
-                            } else {
-                                toastError('Gagal!', 'Harga tidak ditemui')
+                    // your input data object will be usable from here
+                    if (rowData !== lastResult) {
+                        lastResult = rowData;
+                        var url = '{{ route("salesOrder.put") }}';
+                        var data = {
+                            uid : document.getElementById( "uid_input" ).value,
+                            barcode: rowData[0]
+                        };
+
+                        $.ajax({
+                            url: url,
+                            method: "POST",
+                            data: data,
+                            headers: {
+                                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                            },
+                            success: function (data) {
+                                if (data !== "added"){
+                                    var tipeharga = $('#tipeharga').find(":selected").val();
+                                    if (tipeharga === 'harga'){
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                            '<td style="display:none;">'+ data['a'].id+'</td>  ' +
+                                            '<td>' + data['a'].nama + '</td>  ' +
+                                            '<td>' + data['a'].barcode + '</td> ' +
+                                            '<td>' + data['a'].kendaraan + '</td> ' +
+                                            '<td >' +
+                                            '<div class="input-group-append">'+
+                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga +'">'+
+                                            '<div  class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
+                                            '</div >'+
+                                            '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
+                                            '</div>' +
+                                            '</td> ' +
+                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td class="text">' + data['b'].harga * qty + '</td> ' +
+                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '</tr>'
+                                        );
+
+                                        toastSuccess("Produk berhasil ditambahkan!")
+                                    } else if(tipeharga === 'harga2'){
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                            '<td style="display:none;">'+ data['a'].id+'</td>  ' +
+                                            '<td>' + data['a'].nama + '</td>  ' +
+                                            '<td>' + data['a'].barcode + '</td> ' +
+                                            '<td>' + data['a'].kendaraan + '</td> ' +
+                                            '<td >' +
+                                            '<div class="input-group-append">'+
+                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga2 +'">'+
+                                            '<div  class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
+                                            '</div >'+
+                                            '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
+                                            '</div>' +
+                                            '</td> ' +
+                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td class="text">' + data['b'].harga2 * qty + '</td> ' +
+                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '</tr>'
+                                        );
+                                        toastSuccess("Produk berhasil ditambahkan!")
+                                    } else if(tipeharga === 'harga3'){
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                            '<td style="display:none;">'+ data['a'].id+'</td>  ' +
+                                            '<td>' + data['a'].nama + '</td>  ' +
+                                            '<td>' + data['a'].barcode + '</td> ' +
+                                            '<td>' + data['a'].kendaraan + '</td> ' +
+                                            '<td >' +
+                                            '<div class="input-group-append">'+
+                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga3 +'">'+
+                                            '<div  class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
+                                            '</div >'+
+                                            '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
+                                            '</div>' +
+                                            '</td> ' +
+                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td class="text">' + data['b'].harga3 * qty + '</td> ' +
+                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '</tr>'
+                                        );
+                                        toastSuccess("Produk berhasil ditambahkan!")
+                                    } else if(tipeharga === 'hargamin'){
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                            '<td style="display:none;">'+ data['a'].id+'</td>  ' +
+                                            '<td>' + data['a'].nama + '</td>  ' +
+                                            '<td>' + data['a'].barcode + '</td> ' +
+                                            '<td>' + data['a'].kendaraan + '</td> ' +
+                                            '<td >' +
+                                            '<div class="input-group-append">'+
+                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].hargamin +'">'+
+                                            '<div  class="dropdown-menu">'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga3 +'"><span class="badge badge-pill bg-secondary">3</span> '+ data['b'].harga3 +'</a>'+
+                                            '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].hargamin +'"><span class="badge badge-pill bg-secondary">4</span> '+ data['b'].hargamin +'</a>'+
+                                            '</div >'+
+                                            '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
+                                            '</div>' +
+                                            '</td> ' +
+                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td class="text">' + data['b'].hargamin * qty + '</td> ' +
+                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '</tr>'
+
+                                        );
+                                        toastSuccess("Produk berhasil ditambahkan!")
+                                    } else {
+                                        toastError('Gagal!', 'Harga tidak ditemui')
+                                    }
+                                } else {
+                                    toastError('Produk sudah ada list order!', '')
+                                }
+                                getTotalPrice();
+                            },
+                            error: function (data) {
+                                toastError("Gagal!", "Terjadi kesalahan internal.")
                             }
-                        } else {
-                            toastError('Produk sudah ada list order!', '')
-                        }
-                        getTotalPrice();
-                    },
-                    error: function (data) {
-                        toastError("Gagal!", "Terjadi kesalahan internal.")
+                        })
                     }
-                })
+                }
+            });
+        });
+
+        document.getElementById('qty_input').addEventListener("keyup", function(event) {
+            if (event.keyCode === 13) {
+                Swal.clickConfirm();
+                event.preventDefault();
             }
         });
     });

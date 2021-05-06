@@ -27,7 +27,6 @@
     }
 </style>
 
-
 <div class="table-responsive table p-0">
     <table class="table-sm table table-striped table-nopadding " id="tbRequest">
         <thead>

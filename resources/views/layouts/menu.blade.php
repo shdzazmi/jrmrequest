@@ -30,7 +30,6 @@
     </ul>
 </li>
 
-@if(Auth::user()->role == "Dev")
 <li class="nav-item">
     <a href="{{ route('search') }}"
        class="nav-link {{ Request::is('search*') ? 'active' : '' }}">
@@ -38,7 +37,6 @@
         <p>Pencarian</p>
     </a>
 </li>
-@endif
 
 @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
     <li class="nav-item">
@@ -75,7 +73,7 @@
     </li>
 @endif
 
-@if(Auth::user()->role == "Dev")
+@if(Auth::user()->role == "Dev" || Auth::user()->role == "Master" )
     <li class="nav-item">
         <a href="{{ route('admin') }}"
            class="nav-link {{ Request::is('admin*') ? 'active' : '' }}">

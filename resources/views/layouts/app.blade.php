@@ -37,9 +37,20 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.3/css/select.dataTables.min.css"/>
 
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
     @yield('third_party_stylesheets')
 
     @stack('page_css')
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif !important;
+            font-size: 15px;
+        }
+
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed sidebar-collapse layout-navbar-fixed">
