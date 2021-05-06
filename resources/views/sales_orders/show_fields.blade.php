@@ -29,7 +29,7 @@
 
 
 <div class="table-responsive table p-0">
-    <table class="table-sm table row-border table-nopadding" id="tbRequest">
+    <table class="table-sm table table-striped table-nopadding " id="tbRequest">
         <thead>
         <tr>
             <th style="text-align: center; width:5%;">No</th>
