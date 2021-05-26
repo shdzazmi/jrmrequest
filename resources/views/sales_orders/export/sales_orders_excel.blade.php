@@ -38,7 +38,7 @@
                 <th>Barcode</th>
                 <th>Supplier</th>
                 <th>Kendaraan</th>
-                <th>Part number</th>
+                <th>Part number 2</th>
                 <th>Lokasi</th>
                 <th>Harga</th>
                 <th>Subtotal</th>
@@ -49,34 +49,35 @@
 <tbody>
                 @php $i=1 @endphp
                 @foreach($listorder as $item)
-                <tr>
+                    @php $produk = $produks->firstWhere('barcode', $item->barcode) @endphp
+                    <tr>
                     <td>{{ $i++ }}</td>
                     <td>{{ number_format($item->qty) }} {{$item->satuan}}</td>
-                    <td>{{ $item->nama }}</td>
-                    <td>{{ $item->barcode }}</td>
-                    <td>{{ $item->kd_supplier }}</td>
-                    <td>{{ $item->kendaraan }}</td>
+                    <td>{{ $produk->nama }} @if($produk['merek'] != "") ({{ $produk['merek'] }}) @endif</td>
+                    <td>{{ $produk->barcode }}</td>
+                    <td>{{ $produk->kd_supplier }}</td>
+                    <td>{{ $produk->kendaraan }}</td>
                     <td>
-                        @if($item->partno2 != "")
-                            {{ $item->partno2 }}
+                        @if($produk->partno2 != "")
+                            {{ $produk->partno2 }}
                         @else
                             -
                         @endif
                     </td>
-                    <td>@if($item->lokasi1 != "")
-                            {{ $item->lokasi1 }},
+                    <td>@if($produk->lokasi1 != "")
+                            {{ $produk->lokasi1 }},
                         @endif
-                        @if($item->lokasi2 != "")
-                            {{ $item->lokasi2 }},
+                        @if($produk->lokasi2 != "")
+                            {{ $produk->lokasi2 }},
                         @endif
-                        @if($item->lokasi3 != "")
-                            {{ $item->lokasi3 }}
+                        @if($produk->lokasi3 != "")
+                            {{ $produk->lokasi3 }}
                         @endif
                     </td>
                     <td>{{ $item->harga }}</td>
                     <td>{{ $item->subtotal }}</td>
-                    <td>{{ $item->stokTk }}</td>
-                    <td>{{ $item->stokGd }}</td>
+                    <td>{{ $produk->qtyTk }}</td>
+                    <td>{{ $produk->qtyGd }}</td>
                 </tr>
                 @endforeach
                 <tr>

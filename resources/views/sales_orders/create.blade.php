@@ -1,11 +1,31 @@
 @extends('layouts.app')
 @section('title', 'Buat sales order')
-@section('style')
 <style>
-</style>
-@endsection
-@section('content')
 
+    #myBtn {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 99;
+        font-size: 14px;
+        border: none;
+        outline: none;
+        background-color: royalblue;
+        color: white;
+        padding: 15px;
+        border-radius: 16px;
+        transition: background-color .3s, opacity .5s, visibility .5s;
+    }
+
+    #myBtn:hover {
+        cursor: pointer;
+        background-color: #333;
+    }
+
+</style>
+
+@section('content')
 
     <div class = "row">
         <section class="content-header">
@@ -43,6 +63,9 @@
             </div>
         </div>
     </div>
+
+    <button onclick="topFunction()" id="myBtn" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
 @endsection
 @push('page_scripts')
 
@@ -153,5 +176,26 @@
             deleteAllRow();
             return "You have attempted to leave this page.  If you have made any changes to the fields without clicking the Save button, your changes will be lost.  Are you sure you want to exit this page?";
         }
+
+        //Get the button
+        var mybutton = document.getElementById("myBtn");
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function() {scrollFunction()};
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                mybutton.style.display = "block";
+            } else {
+                mybutton.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
     </script>
 @endpush

@@ -42,16 +42,14 @@
 
         @php $i=1 @endphp
         @foreach($listorder as $item)
+            @php $produk = $produks->firstWhere('barcode', $item->barcode) @endphp
             <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
             <td>{{ $i++ }}</td>
             <td>
-                {{$item->nama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif
-                <div>
-
-                </div>
+                {{$produk->nama}} @if($produk->kendaraan != "") • {{$produk->kendaraan}} @endif
             </td>
             <td style="text-align: center">
-                {{number_format($item->qty)}} {{$item->satuan}}
+                {{number_format($item->qty)}} {{$produk->satuan}}
             </td>
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}
@@ -67,33 +65,36 @@
                     <div id="collapseOne" class="collapse in">
                         <p>
                             Barcode:&nbsp{{ $item->barcode }}&nbsp&nbsp
-                            Supplier:&nbsp{{ $item->kd_supplier }}&nbsp&nbsp
-                            @if($item->kendaraan != "")
-                                <br>Kendaraan:&nbsp{{ $item->kendaraan }}&nbsp&nbsp
+                            Supplier:&nbsp{{ $produk->kd_supplier }}&nbsp&nbsp
+                            @if($produk->kendaraan != "")
+                                <br>Kendaraan:&nbsp{{ $produk->kendaraan }}&nbsp&nbsp
                             @endif
                             <br>
-                            @if($item->partno1 != "")
-                                Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno1 }}</span>
-                                @if($item->partno2 != "")
-                                    <span class="badge badge-dark">2. {{ $item->partno2 }}</span>&nbsp&nbsp
+                            @if($produk->merek != "")
+                                Merek:&nbsp<span class="badge badge-dark">{{ $produk->merek }}</span>
+                            @endif
+                            @if($produk->partno1 != "")
+                                Part number:&nbsp<span class="badge badge-dark">1. {{ $produk->partno1 }}</span>
+                                @if($produk->partno2 != "")
+                                    <span class="badge badge-dark">2. {{ $produk->partno2 }}</span>&nbsp&nbsp
                                 @endif
                             @else
-                                Part number:&nbsp<span class="badge badge-dark">1. {{ $item->partno2 }}</span>
+                                @if($produk->partno2 != "")
+                                    <span class="badge badge-dark">1. {{ $produk->partno2 }}</span>&nbsp&nbsp
+                                @endif
                             @endif
 
-                            @if($item->lokasi1 != "")
-                                <br>Lokasi:&nbsp<span class="badge badge-dark">1. {{ $item->lokasi1 }}</span>
+                            @if($produk->lokasi1 != "")
+                                <br>Lokasi:&nbsp<span class="badge badge-dark">1. {{ $produk->lokasi1 }}</span>
                             @endif
-                            @if($item->lokasi2 != "")
-                                <span class="badge badge-dark">2. {{ $item->lokasi2 }}</span>&nbsp&nbsp
+                            @if($produk->lokasi2 != "")
+                                <span class="badge badge-dark">2. {{ $produk->lokasi2 }}</span>&nbsp&nbsp
                             @endif
-                            @if($item->lokasi3 != "")
-                                <span class="badge badge-dark">3. {{ $item->lokasi3 }}</span>&nbsp&nbsp
+                            @if($produk->lokasi3 != "")
+                                <span class="badge badge-dark">3. {{ $produk->lokasi3 }}</span>&nbsp&nbsp
                             @endif
 
-                            <br>
-                            Stok: {{number_format($item->stokTk+$item->stokGd)}}
-
+                            Stok: <span class="badge badge-dark">{{number_format($produk->qty)}}</span>
                         </p>
                     </div></td>
             </tr>

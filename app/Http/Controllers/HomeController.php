@@ -28,7 +28,6 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -55,7 +54,6 @@ class HomeController extends Controller
             ->with('selesaicount', $selesaicount)
             ->with('batalcount', $batalcount)
             ->with('salesordercount', $salesordercount);
-
     }
 
     public function synchronize()
@@ -99,6 +97,7 @@ class HomeController extends Controller
         $sqlquery .= "qtyAkhir + qtyGd AS qty, ";
         $sqlquery .= "qtyAkhir AS qtyTk, ";
         $sqlquery .= "qtyGd AS qtyGd, ";
+        $sqlquery .= "merek AS merek, ";
         $sqlquery .= "satk AS satuan ";
         $sqlquery .= "FROM stock ";
         $sqlquery .= "LEFT JOIN kelproduk ON stock.kelproduk = kelproduk.id ";
@@ -126,6 +125,7 @@ class HomeController extends Controller
                 'lokasi3' => utf8_encode(odbc_result($process, 'lokasi3')),
                 'partno1' => utf8_encode(odbc_result($process, 'partno1')),
                 'partno2' => utf8_encode(odbc_result($process, 'partno2')),
+                'merek' => utf8_encode(odbc_result($process, 'merek')),
                 'satuan' => utf8_encode(odbc_result($process, 'satuan')),
                 'created_at' => Carbon::now()->toDateTime(),
             ];

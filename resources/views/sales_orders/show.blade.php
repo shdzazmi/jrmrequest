@@ -22,8 +22,8 @@
                     Export
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="{{ route('salesOrder.getPdf',[$salesOrder->id]) }}"><i class="fas fa-file-pdf" style="color: darkred;"></i> PDF</a>
-                    <a class="dropdown-item" href="{{ route('salesOrder.export_excel',[$salesOrder->id]) }}"><i class="fas fa-file-excel" style="color: darkgreen;"></i> Excel</a>
+                    <a class="dropdown-item" href="{{ route('salesOrder.getPdf',[$salesOrder->uid]) }}"><i class="fas fa-file-pdf" style="color: darkred;"></i> PDF</a>
+                    <a class="dropdown-item" href="{{ route('salesOrder.export_excel',[$salesOrder->uid]) }}"><i class="fas fa-file-excel" style="color: darkgreen;"></i> Excel</a>
                 </div>
                 @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
                 <a class="btn btn-outline-info float-right" href="{{ route('salesOrders.edit', [$salesOrder->id]) }}">
@@ -67,7 +67,11 @@
                                     @endif
                                     <br>
                                     {!! Form::label('id', 'No. Order: ') !!}
-                                    SO{{ $salesOrder->id }} &nbsp
+                                    @if(substr($salesOrder->uid, 0, 1) === 'S')
+                                        {{$salesOrder->uid}}
+                                    @else
+                                        SO{{ $salesOrder->id }} &nbsp
+                                    @endif
                                 </div>
                             </div>
                     </div>

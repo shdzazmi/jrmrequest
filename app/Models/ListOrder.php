@@ -26,6 +26,7 @@ class ListOrder extends Model
         'subtotal',
         'stokTk',
         'stokGd',
-        'satuan'
+        'satuan',
+        'merek'
     ];
 }

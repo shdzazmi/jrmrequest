@@ -12,6 +12,7 @@ class Produk extends Model
 
     protected $fillable = [
         'nama',
+        'ketnama',
         'barcode',
         'kd_supplier',
         'kendaraan',
@@ -28,6 +29,7 @@ class Produk extends Model
         'qtyTk',
         'qtyGd',
         'satuan',
+        'merek',
     ];
 
 

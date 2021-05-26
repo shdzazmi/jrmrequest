@@ -32,6 +32,7 @@ class CreateListOrdersTable extends Migration
             $table->integer('stokTk');
             $table->integer('stokGd');
             $table->string('satuan');
+            $table->string('merek');
             $table->timestamps();
         });
     }

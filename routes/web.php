@@ -36,15 +36,18 @@ Route::post('/salesOrders/postData', [App\Http\Controllers\SalesOrderController:
 Route::post('/salesOrders/updateData', [App\Http\Controllers\SalesOrderController::class, 'updateData'])->name('salesOrder.updateData');
 Route::post('/getdetails/{id}', [App\Http\Controllers\SalesOrderController::class, 'getdetails'])->name('salesOrder.getdetails');
 Route::get('/salesOrders/{id}/{status}', [App\Http\Controllers\SalesOrderController::class, 'editStatus'])->name('salesOrder.editStatus');
-Route::get('/getPdf/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_pdf'])->name('salesOrder.getPdf');
-Route::get('/getExcel/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_excel'])->name('salesOrder.export_excel');
+Route::get('/salesOrdersShowAffari/{id}', [App\Http\Controllers\SalesOrderController::class, 'showAffari'])->name('salesOrder.showAffari');
+Route::get('/getPdf/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_pdf'])->name('salesOrder.getPdf')->where('id', '(.*)');
+Route::get('/getExcel/{id}', [App\Http\Controllers\SalesOrderController::class, 'export_excel'])->name('salesOrder.export_excel')->where('id', '(.*)');
+Route::get('/salesOrder/export_excel', [App\Http\Controllers\SalesOrderController::class, 'dashboard_export_excel'])->name('salesOrder.dashboard_excel');
 
 //List order
 Route::post('/salesOrders/deletelist', [App\Http\Controllers\ListOrderController::class, 'destroy'])->name('listOrder.delete');;
 Route::post('/salesOrders/deleteall/{uid}', [App\Http\Controllers\ListOrderController::class, 'destroyAll'])->name('listOrder.deleteAll');;
 
 //Search produk
-Route::get('/search/{query?}', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
+Route::get('/search/', [App\Http\Controllers\SearchController::class, 'index'])->name('search');
+Route::get('/searchdata', [App\Http\Controllers\SearchController::class, 'data'])->name('searchdata');
 
 //Lokasi produk
 Route::get('/location', [App\Http\Controllers\LocationController::class, 'index'])->name('location');
@@ -62,3 +65,16 @@ Route::get('/admin/edit/{id}/{role}', [App\Http\Controllers\AdminController::cla
 Route::get('/admin/show/{id}', [App\Http\Controllers\AdminController::class, 'show'])->name('admin.show');
 Route::post('/admin/create', [App\Http\Controllers\AdminController::class, 'create'])->name('admin.create');
 Route::post('/admin/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
+
+//Security
+Route::get('/security', [App\Http\Controllers\SecurityController::class, 'index'])->name('security');
+
+//Karyawan
+Route::resource('karyawans', App\Http\Controllers\KaryawanController::class);
+
+//Logbooks
+Route::resource('logbooks', App\Http\Controllers\LogbookController::class);
+Route::post('/logbooks/storedata', [App\Http\Controllers\LogbookController::class, 'storeajax'])->name('logbook.store');
+
+//Logbook barang keluar
+Route::resource('logbookBarangs', App\Http\Controllers\Logbook_barangController::class);

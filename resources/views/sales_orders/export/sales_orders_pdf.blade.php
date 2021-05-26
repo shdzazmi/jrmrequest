@@ -68,20 +68,21 @@ Tanggal: {{$salesOrder->tanggal}}</p>
 
         @php $i=1 @endphp
         @foreach($listorder as $item)
+            @php $produk = $produks->firstWhere('barcode', $item->barcode) @endphp
             <tr>
             <td style="text-align: center">{{ $i++ }}</td>
             <td>
-                @if($item->ketnama != "")
-                <strong>{{$item->ketnama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif </strong>
+                @if($produk->ketnama != "")
+                <strong>{{$produk->ketnama}} @if($produk->kendaraan != "") • {{$produk->kendaraan}} @endif </strong>
                 @else
-                <strong>{{$item->nama}} @if($item->kendaraan != "") • {{$item->kendaraan}} @endif </strong>
+                <strong>{{$produk->nama}} @if($produk->kendaraan != "") • {{$produk->kendaraan}} @endif </strong>
                 @endif
             </td>
             <td style="text-align: center">
                 {{number_format($item->qty)}}
             </td>
             <td style="text-align: center">
-                {{$item->satuan}}
+                {{$produk->satuan}}
             </td>
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}

@@ -1,16 +1,3 @@
-<style type="text/css">
-
-td.details-control {
-            text-align:center;
-            color:forestgreen;
-    cursor: pointer;
-}
-tr.shown td.details-control {
-    text-align:center;
-    color:red;
-}
-
-</style>
 
 <div class="table-responsive">
 
@@ -35,7 +22,6 @@ tr.shown td.details-control {
     <table class="table dataTable display" id="salesOrders-table">
         <thead>
             <tr>
-{{--                <th>#</th>--}}
                 <th>UID</th>
                 <th style="text-align: center;">No.</th>
                 <th>Nama Customer</th>
@@ -123,49 +109,9 @@ tr.shown td.details-control {
                 }
             });
 
-
             //apply date filter
             $('#daterange').on('change', function () {
                 table.draw();
-            });
-
-            //auto refresh
-            setInterval( function () {
-                table.ajax.reload(null, false);
-            }, 5000 );
-
-            // Add event listener for opening and closing details
-            $('#salesOrders-table').on('click', 'td.details-control', function () {
-                var tr = $(this).closest('tr');
-                var row = table.row( tr );
-                if ( row.child.isShown() ) {
-                    // This row is already open - close it
-                    row.child.hide();
-                    tr.removeClass('shown');
-                }else {
-                    var id = row.data().id;
-                    var url = '{{ route("salesOrder.getdetails", ":id") }}';
-                    url = url.replace(':id', id);
-                    $.ajax({
-                        url: url,
-                        method: "POST",
-                        contentType: 'application/json',
-                        headers: {
-                            'X-CSRF-TOKEN': "{{ csrf_token() }}"
-                        },
-                        success:
-                            function (data) {
-                                // Open this row
-                                row.child( format(data) ).show();
-                                tr.addClass('shown');
-                        },
-                        error:
-                            function (data) {
-                                console.log("eror");
-                        }
-                    })
-                }
-
             });
 
             //menangani proses saat apply date range

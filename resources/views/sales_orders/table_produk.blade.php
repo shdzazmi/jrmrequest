@@ -51,6 +51,7 @@
                         <td>
                             {{ $item['nama'] }}<br/>
                             <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
+                            <span class="badge bg-primary">{{ $item['merek'] }}</span>
                         </td>
                         <td>{{ $item['kd_supplier'] }}</td>
                         <td>{{ $item['kendaraan'] }}</td>
@@ -96,13 +97,35 @@
                             {{ $item['qty'] }}
                         </td>
                         <td style="text-align:right">
-                            <span class="badge badge-pill bg-success">Toko:</span> {{ $item['qtyTk'] }}<br/>
-                            <span class="badge badge-pill bg-success">Gudang:</span> {{ $item['qtyGd'] }}<br/>
+                            <span class="badge badge-pill bg-info">Toko:</span> {{ $item['qtyTk'] }}<br/>
+                            <span class="badge badge-pill bg-info">Gudang:</span> {{ $item['qtyGd'] }}<br/>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<!-- The Modal -->
+<div class="modal fade" id="qtyModal">
+    <div class="modal-dialog modal-dialog-centered modal-sm" style="text-align: center">
+        <div class="modal-content p-3">
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col">
+                    <label for="qty_input">Masukan Qty:</label><input class="form-control" min="1" type="number" placeholder="Quantity" id="qty_input" autofocus>
+                </div>
+                <div class="col pt-3">
+                    <button type="button" class="btn btn-primary" id="btnConfirm">Confirm</button>
+                </div>
+                <div class="col" style="font-size: 12px; color: gray">
+                    atau tekan enter pada keyboard
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -153,24 +176,22 @@
             ]
         });
 
+        // klik produk di table
+        var btnconfirm = $('#btnConfirm');
         var lastResult;
-        tbProduk.on('click', 'tr', function (e, dt, type, indexes) {
-            var rowData = tbProduk.row(this).data();
-
-            swal.fire({
-                html: `
-                    <div class="field">
-                        Masukan Qty:
-                        <input class="input form-control" min="1" type="number" placeholder="Quantity" id="qty_input">
-                    </div>`,
-                confirmButtonText: 'Confirm',
-                onOpen: function () {
-                    $('#qty_input').focus()
-                },
-                preConfirm: function() {
-                    var qty= $('input[id="qty_input"]').val();
-
-                    // your input data object will be usable from here
+        var qtyInput = document.getElementById('qty_input');
+        var rowData;
+        $('#salesorderproduk tbody ').on('click', 'tr', function (e, dt, type, indexes) {
+            rowData = null;
+            rowData = tbProduk.row(this).data();
+            qtyInput.value = '';
+            $("#qtyModal").modal("show");
+            $('body').on('shown.bs.modal', '#qtyModal', function () {
+                $('input:visible:enabled:first', this).focus();
+            });
+            btnconfirm.on('click', function (e, dt, type, indexes) {
+                var qty= $('input[id="qty_input"]').val();
+                if (qtyInput.value !== ''){
                     if (rowData !== lastResult) {
                         lastResult = rowData;
                         var url = '{{ route("salesOrder.put") }}';
@@ -193,10 +214,10 @@
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                            '<td>' + data['a'].nama + '</td>  ' +
-                                            '<td>' + data['a'].barcode + '</td> ' +
-                                            '<td>' + data['a'].kendaraan + '</td> ' +
-                                            '<td >' +
+                                            '<td style="vertical-align: middle;">' + data['a'].nama + '</td>  ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].barcode + '</td> ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
+                                            '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
                                             '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga +'">'+
                                             '<div  class="dropdown-menu">'+
@@ -208,9 +229,9 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                            '<td class="text">' + data['b'].harga * qty + '</td> ' +
-                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle;" class="text">' + data['b'].harga * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
 
@@ -219,10 +240,10 @@
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                            '<td>' + data['a'].nama + '</td>  ' +
-                                            '<td>' + data['a'].barcode + '</td> ' +
-                                            '<td>' + data['a'].kendaraan + '</td> ' +
-                                            '<td >' +
+                                            '<td style="vertical-align: middle;">' + data['a'].nama + '</td>  ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].barcode + '</td> ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
+                                            '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
                                             '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga2 +'">'+
                                             '<div  class="dropdown-menu">'+
@@ -234,9 +255,9 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                            '<td class="text">' + data['b'].harga2 * qty + '</td> ' +
-                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle;" class="text">' + data['b'].harga2 * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
@@ -244,10 +265,10 @@
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                            '<td>' + data['a'].nama + '</td>  ' +
-                                            '<td>' + data['a'].barcode + '</td> ' +
-                                            '<td>' + data['a'].kendaraan + '</td> ' +
-                                            '<td >' +
+                                            '<td style="vertical-align: middle;">' + data['a'].nama + '</td>  ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].barcode + '</td> ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
+                                            '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
                                             '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga3 +'">'+
                                             '<div  class="dropdown-menu">'+
@@ -259,9 +280,9 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                            '<td class="text">' + data['b'].harga3 * qty + '</td> ' +
-                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle;" class="text">' + data['b'].harga3 * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
@@ -269,10 +290,10 @@
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                            '<td>' + data['a'].nama + '</td>  ' +
-                                            '<td>' + data['a'].barcode + '</td> ' +
-                                            '<td>' + data['a'].kendaraan + '</td> ' +
-                                            '<td >' +
+                                            '<td style="vertical-align: middle;">' + data['a'].nama + '</td>  ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].barcode + '</td> ' +
+                                            '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
+                                            '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
                                             '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].hargamin +'">'+
                                             '<div  class="dropdown-menu">'+
@@ -284,36 +305,49 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td ><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                            '<td class="text">' + data['b'].hargamin * qty + '</td> ' +
-                                            '<td><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle;" class="text">' + data['b'].hargamin * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
 
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
+                                        console.log('sukses')
                                     } else {
                                         toastError('Gagal!', 'Harga tidak ditemui')
+                                        console.log('harga')
                                     }
                                 } else {
                                     toastError('Produk sudah ada list order!', '')
+                                    console.log('added')
                                 }
                                 getTotalPrice();
+                                console.log('get total')
                             },
                             error: function (data) {
                                 toastError("Gagal!", "Terjadi kesalahan internal.")
+                                console.log('internal')
                             }
                         })
+                    } else {
+                        toastError('Produk sudah ada list order!', '')
                     }
+                    $("#qtyModal").modal("hide");
+                } else {
+                    toastError('Gagal!', 'Isi angka quantity')
                 }
             });
+
         });
 
-        document.getElementById('qty_input').addEventListener("keyup", function(event) {
+        qtyInput.addEventListener("keyup", function(event) {
             if (event.keyCode === 13) {
-                Swal.clickConfirm();
+                btnconfirm.click();
+                // Cancel the default action, if needed
                 event.preventDefault();
             }
         });
+
     });
 </script>
 @endpush

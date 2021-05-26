@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repositories\karyawanRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -10,9 +11,11 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     private array $auth = array('Master', 'Dev');
+    private $karyawanRepository;
 
-    public function __construct()
+    public function __construct(karyawanRepository $karyawanRepo)
     {
+        $this->karyawanRepository = $karyawanRepo;
         $this->middleware('auth');
     }
 
@@ -20,7 +23,8 @@ class AdminController extends Controller
         if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::all();
-            return view('admin.index')->with('user', $user);
+            $karyawans = $this->karyawanRepository->all();
+            return view('admin.index')->with('user', $user)->with('karyawans', $karyawans);
         } else {
             return redirect('home');
         }

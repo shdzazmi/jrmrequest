@@ -50,26 +50,11 @@
 
 @if(Auth::user()->role == "Dev")
     <li class="nav-item">
-        <a href="#"
+        <a href="{{route('security')}}"
            class="nav-link {{ Request::is('security*') ? 'active' : '' }}">
             <i class="nav-icon fas fa-user-secret"></i>
-            <p>Security
-            <i class="right fas fa-angle-left"></i></p>
+            <p>Security</p>
         </a>
-        <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-user-friends nav-icon text-sm"></i>
-                    <p>Karyawan keluar</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-box nav-icon text-sm"></i>
-                    <p>Barang keluar</p>
-                </a>
-            </li>
-        </ul>
     </li>
 @endif
 
@@ -82,3 +67,4 @@
         </a>
     </li>
 @endif
+

@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SalesOrderDashboardExport;
 use App\Http\Requests\CreateSalesOrderRequest;
 use App\Http\Requests\UpdateSalesOrderRequest;
 use App\Models\ListOrder;
+use App\Models\ListOrderAffari;
 use App\Models\Produk;
 use App\Models\SalesOrder;
+use App\Models\SalesOrderAffari;
 use App\Repositories\SalesOrderRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -20,8 +24,15 @@ use App\Exports\SalesorderExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class SalesOrderController extends AppBaseController
-
 {
+    // Data server
+    private string $server = '192.168.1.172\SQL2008';
+    private string $database = 'JRM';
+    private string $username = 'sa';
+    private string $password = 'MasteR99';
+    private array $auth = array('Master', 'Dev');
+
+
     /** @var  SalesOrderRepository */
     private $salesOrderRepository;
 
@@ -37,11 +48,13 @@ class SalesOrderController extends AppBaseController
      *
      * @param Request $request
      *
-     * @return Response
      */
     public function index(Request $request)
     {
+        $this->refreshAffari();
+
         $salesOrders = $this->salesOrderRepository->all();
+        $salesOrderAffari = SalesOrderAffari::all();
         if(request()->ajax()) {
             return datatables()->of(SalesOrder::select('*'))
                 ->addColumn('action', 'sales_orders.bladeaction.action_sales_order')
@@ -50,13 +63,12 @@ class SalesOrderController extends AppBaseController
                 ->make(true);
         }
         return view('sales_orders.index')
-            ->with('salesOrders', $salesOrders);
+            ->with('salesOrders', $salesOrders)->with('salesOrderAffari', $salesOrderAffari);
     }
 
     /**
      * Show the form for creating a new SalesOrder.
      *
-     * @return Response
      */
 
     public function create()
@@ -72,7 +84,6 @@ class SalesOrderController extends AppBaseController
      *
      * @param CreateSalesOrderRequest $request
      *
-     * @return Response
      */
 
     public function store(CreateSalesOrderRequest $request)
@@ -109,6 +120,7 @@ class SalesOrderController extends AppBaseController
                 'stokTk' => $produk->qtyTk,
                 'stokGd' => $produk->qtyGd,
                 'satuan' => $produk->satuan,
+                'merek' => $produk->merek
             ];
             ListOrder::insert($listOrder);
             $dataOrder = ListOrder::where('barcode', $barcode)->where('uid', $uid)->first();
@@ -144,7 +156,8 @@ class SalesOrderController extends AppBaseController
                 'subtotal' => $request->subtotal,
                 'stokTk' => $produk->qtyTk,
                 'stokGd' => $produk->qtyGd,
-                'satuan' => $produk->satuan
+                'satuan' => $produk->satuan,
+                'merek' => $produk->merek
             ]);
 
         return false;
@@ -155,7 +168,6 @@ class SalesOrderController extends AppBaseController
      *
      * @param int $id
      *
-     * @return Response
      */
     public function show($id)
     {
@@ -163,6 +175,7 @@ class SalesOrderController extends AppBaseController
         $uid = $salesOrder->uid;
         $listorder = ListOrder::all()->Where('uid', $uid);
         $totalharga = $listorder->sum('subtotal');
+        $produks = Produk::all();
 
         if (empty($salesOrder)) {
             Flash::error('Sales Order not found');
@@ -170,7 +183,24 @@ class SalesOrderController extends AppBaseController
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder)->with('totalharga', $totalharga);
+        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder)->with('totalharga', $totalharga)->with('produks', $produks);
+    }
+
+    public function showAffari($id)
+    {
+        $salesOrderAffari = SalesOrderAffari::firstWhere('id', $id);
+        $uid = $salesOrderAffari->uid;
+        $listorderAffari = ListOrderAffari::all()->Where('uid', $uid);
+        $totalharga = $listorderAffari->sum('subtotal');
+        $produks = Produk::all();
+
+        if (empty($salesOrderAffari)) {
+            Flash::error('Sales Order not found');
+
+            return redirect(route('salesOrders.index'));
+        }
+
+        return view('sales_orders.show')->with('salesOrder', $salesOrderAffari)->with('listorder', $listorderAffari)->with('totalharga', $totalharga)->with('produks', $produks);
     }
 
     /**
@@ -178,7 +208,6 @@ class SalesOrderController extends AppBaseController
      *
      * @param int $id
      *
-     * @return Response
      */
 
     public function edit($id)
@@ -216,7 +245,6 @@ class SalesOrderController extends AppBaseController
      * @param int $id
      * @param UpdateSalesOrderRequest $request
      *
-     * @return Response
      */
     public function update($id, UpdateSalesOrderRequest $request)
     {
@@ -243,7 +271,6 @@ class SalesOrderController extends AppBaseController
      *
      * @throws \Exception
      *
-     * @return Response
      */
     public function destroy($id)
     {
@@ -265,24 +292,41 @@ class SalesOrderController extends AppBaseController
         return redirect(route('salesOrders.index'));
     }
 
-    public function export_pdf($id)
+    public function export_pdf($uid)
     {
-        $salesOrder = $this->salesOrderRepository->find($id);
-        $uid = $salesOrder->uid;
-        $listorder = ListOrder::all()->where('uid', $uid);
+        if(substr($uid, 0, 1) === 'S'){
+            $salesOrder = SalesOrderAffari::firstWhere('uid', $uid);
+            $listorder = ListOrderAffari::all()->where('uid', $uid);
+        } else {
+            $salesOrder = SalesOrder::firstWhere('uid', $uid);
+            $listorder = ListOrder::all()->where('uid', $uid);
+        }
         $totalharga = $listorder->sum('subtotal');
         $date = new \DateTime($salesOrder->tanggal);
         $tanggal = $date->format('d F Y');
         $nama = $salesOrder->nama;
-        $produk = Produk::all();
+        $produks = Produk::all();
+//        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+//        $output->writeln("listorder = $produk");
 
-        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'produk'=>$produk, 'listorder'=>$listorder, 'totalharga'=> $totalharga, 'tanggal'=> $tanggal]);
-        return $pdf->download('Sales Order '.$nama.' SO'.$id.'.pdf');
+        $pdf = PDF::loadView('sales_orders.export.sales_orders_pdf', ['salesOrder'=>$salesOrder, 'listorder'=>$listorder, 'totalharga'=> $totalharga, 'tanggal'=> $tanggal, 'produks'=> $produks]);
+        return $pdf->download('Sales Order '.$nama.'.pdf');
     }
 
-    public function export_excel($id)
+    public function export_excel($uid)
     {
-        return Excel::download(new SalesorderExport($id), 'Sales Order SO'.$id.'.xlsx');
+        if(substr($uid, 0, 1) === 'S'){
+            $sales_orders = SalesOrderAffari::firstWhere('uid', $uid);
+            return Excel::download(new SalesorderExport($uid), 'Sales Order SO '.$sales_orders->nama.'.xlsx');
+        } else {
+            $sales_orders = SalesOrder::firstWhere('uid', $uid);
+            return Excel::download(new SalesorderExport($uid), 'Sales Order SO'.$sales_orders->id.'.xlsx');
+        }
+    }
+
+    public function dashboard_export_excel()
+    {
+        return Excel::download(new SalesOrderDashboardExport(), 'Dashboard Sales Order.xlsx');
     }
 
     public function getdetails($id)
@@ -295,4 +339,85 @@ class SalesOrderController extends AppBaseController
         return $listOrder;
     }
 
+    public function refreshAffari(){
+        $this->fetchSalesOrderAffari();
+        $this->fetchListOrderAffari();
+        return null;
+    }
+
+    public function fetchSalesOrderAffari(){
+
+        //Koneksi data server
+        $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
+
+        $sqlquery = "SELECT ";
+        $sqlquery .= "NoTrans as uid, ";
+        $sqlquery .= "Nama as nama, ";
+        $sqlquery .= "waktu as tanggal, ";
+        $sqlquery .= "Operator as operator ";
+        $sqlquery .= "FROM SOM ";
+
+        $process = odbc_exec($sqlconnect, $sqlquery);
+        $items = collect([]);
+        SalesOrderAffari::truncate();
+        while(odbc_fetch_row($process)) {
+            $itemAll = [
+                'uid' => utf8_encode(odbc_result($process, 'uid')),
+                'nama' => utf8_encode(odbc_result($process, 'nama')),
+                'tanggal' => \Carbon\Carbon::parse(utf8_encode(odbc_result($process, 'tanggal')))->format('d-m-Y H:i:s') ,
+                'operator' => utf8_encode(odbc_result($process, 'operator')),
+                'status' => 'Proses',
+                'created_at' => \Carbon\Carbon::now()->toDateTime(),
+            ];
+            $items->push($itemAll);
+        }
+        odbc_close($sqlconnect);
+        if ($items->isEmpty()){
+            Flash::error('Gagal sinkron data');
+        } else {
+            SalesOrderAffari::truncate();
+            foreach (array_chunk($items->toArray(),1000)as $data)
+            {
+                SalesOrderAffari::insert($data);
+            }
+        }
+
+    }
+
+    public function fetchListOrderAffari(){
+        //Koneksi data server
+        $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
+
+        $sqlquery = "SELECT ";
+        $sqlquery .= "NoTrans as uid, ";
+        $sqlquery .= "stock.BarcodeAktif as barcode, ";
+        $sqlquery .= "SOD.HJual as harga, ";
+        $sqlquery .= "qty as qty, ";
+        $sqlquery .= "jumlah as subtotal ";
+        $sqlquery .= "from SOD ";
+        $sqlquery .= "LEFT JOIN stock ON SOD.IdItem = stock.id ";
+        ListOrderAffari::truncate();
+        $process = odbc_exec($sqlconnect, $sqlquery);
+        $items = collect([]);
+        while(odbc_fetch_row($process)) {
+            $itemAll = [
+                'uid' => utf8_encode(odbc_result($process, 'uid')),
+                'barcode' => utf8_encode(odbc_result($process, 'barcode')),
+                'harga' => floatval(odbc_result($process, 'harga')),
+                'qty' => floatval(odbc_result($process, 'qty')),
+                'subtotal' => floatval(odbc_result($process, 'subtotal')),
+            ];
+            $items->push($itemAll);
+        }
+        odbc_close($sqlconnect);
+        if ($items->isEmpty()){
+            Flash::error('Gagal sinkron data');
+        } else {
+            ListOrderAffari::truncate();
+            foreach (array_chunk($items->toArray(),1000)as $data)
+            {
+                ListOrderAffari::insert($data);
+            }
+        }
+    }
 }

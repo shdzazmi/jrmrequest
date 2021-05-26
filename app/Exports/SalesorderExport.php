@@ -2,8 +2,11 @@
 
 namespace App\Exports;
 
+use App\Models\ListOrderAffari;
+use App\Models\Produk;
 use App\Models\SalesOrder;
 use App\Models\ListOrder;
+use App\Models\SalesOrderAffari;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -15,19 +18,23 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColumnWidths
 {
-    public $uid;
     public $sales_orders;
     public $listorder;
     public $totalharga;
+    public $produks;
 
-    function __construct($id) {
-        $this->id = $id;
-        $this->sales_orders = SalesOrder::firstWhere('id', $this->id);
-        $this->uid = $this->sales_orders->uid;
-        $this->listorder = ListOrder::all()->where('uid', $this->uid);
+    function __construct($uid) {
+        if(substr($uid, 0, 1) === 'S'){
+            $this->sales_orders = SalesOrderAffari::firstWhere('uid', $uid);
+            $this->listorder = ListOrderAffari::all()->where('uid', $uid);
+        } else {
+            $this->sales_orders = SalesOrder::firstWhere('uid', $uid);
+            $this->listorder = ListOrder::all()->where('uid', $uid);
+        }
         $this->totalharga = $this->listorder->sum('subtotal');
-        // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        // $output->writeln("listorder = $this->listorder");
+        $this->produks = Produk::all();
+//         $output = new \Symfony\Component\Console\Output\ConsoleOutput();
+//         $output->writeln("listorder = $this->sales_orders");
     }
 
     /**
@@ -39,7 +46,8 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
         return view('sales_orders.export.sales_orders_excel')
             ->with('salesOrder', $this->sales_orders)
             ->with('listorder', $this->listorder)
-            ->with('totalharga', $this->totalharga);
+            ->with('totalharga', $this->totalharga)
+            ->with('produks', $this->produks);
     }
 
     public function styles(Worksheet $sheet)
@@ -60,6 +68,8 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
         $sheet->getStyle('2')->getAlignment()->setWrapText(true);
         $sheet->getStyle('I')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
         $sheet->getStyle('J')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
+        $sheet->getStyle('D')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
 
         return [
             // Style

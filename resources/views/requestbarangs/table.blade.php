@@ -56,9 +56,6 @@
                     lengthMenu: "Baris: _MENU_",
                 }
             });
-            setInterval( function () {
-                table.ajax.reload(null, false);
-            }, 5000 );
         })
 
     </script>

@@ -40,9 +40,6 @@
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ],
             });
-            setInterval( function () {
-                $table.ajax.reload(null, false);
-            }, 5000 );
         })
 
     </script>

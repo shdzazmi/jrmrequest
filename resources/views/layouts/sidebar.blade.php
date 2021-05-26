@@ -3,7 +3,7 @@
         <img src="/jrm/public/storage/logo.png"
              alt="Logo"
              class="brand-image img-circle">
-        <span class="brand-text font-weight-light">{{ config('app.name') }}</span>
+        <span class="brand-text"><b>JRM</b>Portal</span>
     </a>
 
     <div class="sidebar">

@@ -39,6 +39,38 @@
                 </div>
 
             </div>
+
+            <div class="row">
+
+                <div class="col-sm-12">
+                    <div class="card card-outline card-red">
+                        <div class="card-header">
+                            <h3 class="card-title"><b>Data Karyawan</b></h3>
+                            <div class="card-tools">
+                                <a type="button" href="{{ route('karyawans.create') }}" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-user"></i> Tambah karyawan
+                                </a>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-subtitle m-0 text-muted">Digunakan untuk scan pada security</h6>
+                        </div>
+                        <div class="card-body p-0">
+                            @include('karyawans.table')
+                            <div class="card-footer clearfix float-right">
+                                <div class="float-right">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             </div>
 
         <!--Modal-->
@@ -77,9 +109,15 @@
                 });
             });
         });
+
+
+
     </script>
 
     <script type="text/javascript">
         $("#btnModal").click(function(){});
     </script>
+
+
+
 @endpush

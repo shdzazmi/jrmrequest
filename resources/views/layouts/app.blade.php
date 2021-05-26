@@ -106,9 +106,6 @@
                     </li>
                     <!-- Menu Footer-->
                     <li class="user-footer">
-                        @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
-                            <a href="JavaScript:void(0)" class="btn btn-primary btn-flat" onclick="synchronize()">Synchronize</a>
-                        @endif
                         <a href="JavaScript:void(0)" class="btn btn-default btn-flat float-right"
                            onclick="document.getElementById('logout-form').submit();">
                             Sign out
