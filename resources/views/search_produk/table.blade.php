@@ -38,6 +38,11 @@
                         {{ $item['nama'] }}<br/>
                         <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
                         <span class="badge bg-primary">{{ $item['merek'] }}</span>
+                        @if($item['status'] == 'Aktif')
+                            <span class="badge bg-success">{{ $item['status'] }}</span>
+                        @else
+                            <span class="badge bg-danger">{{ $item['status'] }}</span>
+                        @endif
                     </td>
                     <td style="width: 5%">{{ $item['kd_supplier'] }}</td>
                     <td style="width: 10%">{{ $item['kendaraan'] }}</td>
@@ -111,6 +116,7 @@
             processing: true,
             fixedColumns: true,
             deferRender: true,
+            cache: true,
             initComplete: function () {
                 $("#salesorderproduk").show();
                 // Apply the

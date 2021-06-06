@@ -96,6 +96,19 @@
 
     <script>
 
+        $(document).ready(function() {
+            const table = $('#tbAdmin').DataTable({
+                select: true,
+                pageLength: 25,
+                autoWidth: false,
+                language: {
+                    searchPlaceholder: "Pencarian",
+                    search: "",
+                    lengthMenu: "Baris: _MENU_",
+                }
+            });
+        });
+
         function edituser(id) {
             var url = '{{ route("admin.show", [":id"]) }}';
             url = url.replace(':id', id);
@@ -110,6 +123,7 @@
                 success: function (data){
                     $('#editModal').modal('show');
                     $('#iduser').text(data.name);
+                    $('#ids').val(data.id);
                     $('#name').val(data.name);
                     $('#username').val(data.email);
                     $('#role').val(data.role);

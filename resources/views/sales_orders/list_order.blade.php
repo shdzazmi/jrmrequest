@@ -4,7 +4,7 @@
         <h3 class="card-title">Daftar order</h3>
         <div class="card-tools">
             Tipe Harga:
-            <select style="width: 80px" id="tipeharga" class="form-control-sm">
+            <select style="width: 80px" id="tipeharga" class="form-control form-control-sm">
                 <option value="harga">1</option>
                 <option value="harga2">2</option>
                 <option value="harga3">3</option>
@@ -43,7 +43,7 @@
                         <td>{{ $listorders->kendaraan }}</td>
                         <td>
                             <div class="input-group-append">
-                                <input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listorders->harga}}">
+                                <input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listorders->harga}}">
                                     <div  class="dropdown-menu">
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->harga}}"><span class="badge badge-pill bg-secondary" >1</span>{{$produks->firstWhere('barcode', $listorders->barcode)->harga}}</a>
                                         <a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="{{$produks->firstWhere('barcode', $listorders->barcode)->harga2}}"><span class="badge badge-pill bg-secondary">2</span>{{$produks->firstWhere('barcode', $listorders->barcode)->harga2}}</a>

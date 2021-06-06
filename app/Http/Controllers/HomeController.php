@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Produk;
 use App\Models\SalesOrder;
 use App\Models\requestbarang;
+use App\Models\Service;
 use Carbon\Carbon;
 use Flash;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,14 @@ class HomeController extends Controller
     {
         //Initialize data
         $produks = Produk::all();
+        $services = Service::all();
+
         if ($produks->isEmpty()) {
             $this->fetchDataProduk();
+        }
+
+        if ($services->isEmpty()) {
+            $this->fetchDataService();
         }
 
         $lastupdate = Produk::first()->created_at;
@@ -42,7 +49,6 @@ class HomeController extends Controller
         $requestdata = requestbarang::all();
         $requestcount = $requestdata->count();
         $prosescount = SalesOrder::all()->where('status', 'Proses')->count();
-        $void = SalesOrder::all()->where('status', 'Void')->count();
         $selesaicount = SalesOrder::all()->where('status', 'Selesai')->count();
         $batalcount = SalesOrder::all()->where('status', 'Batal')->count();
         $salesordercount = $prosescount + $selesaicount;
@@ -61,6 +67,7 @@ class HomeController extends Controller
         if (in_array(Auth::user()->role, $this->auth))
         {
             $this->fetchDataProduk();
+            $this->fetchDataService();
 
             $lastupdate = Produk::first()->created_at;
             $time = \Carbon\Carbon::parse($lastupdate)->format('d-m-Y H:i:s');
@@ -70,7 +77,7 @@ class HomeController extends Controller
                 ->with('time', $time)
                 ->with('requestcount', $requestcount);
         } else {
-            return redirect('home');
+            return route('home');
         }
     }
 
@@ -98,7 +105,8 @@ class HomeController extends Controller
         $sqlquery .= "qtyAkhir AS qtyTk, ";
         $sqlquery .= "qtyGd AS qtyGd, ";
         $sqlquery .= "merek AS merek, ";
-        $sqlquery .= "satk AS satuan ";
+        $sqlquery .= "satk AS satuan, ";
+        $sqlquery .= "stock.Status AS status ";
         $sqlquery .= "FROM stock ";
         $sqlquery .= "LEFT JOIN kelproduk ON stock.kelproduk = kelproduk.id ";
         $sqlquery .= "LEFT JOIN supplier ON stock.kodesupp = supplier.kode ";
@@ -127,6 +135,7 @@ class HomeController extends Controller
                 'partno2' => utf8_encode(odbc_result($process, 'partno2')),
                 'merek' => utf8_encode(odbc_result($process, 'merek')),
                 'satuan' => utf8_encode(odbc_result($process, 'satuan')),
+                'status' => utf8_encode(odbc_result($process, 'status')),
                 'created_at' => Carbon::now()->toDateTime(),
             ];
             $items->push($itemAll);
@@ -139,6 +148,45 @@ class HomeController extends Controller
             foreach (array_chunk($items->toArray(),1000)as $data)
             {
                 Produk::insert($data);
+            }
+        }
+
+    }
+
+    public function fetchDataService(){
+
+        //Koneksi data server
+        $sqlconnect = odbc_connect("Driver={SQL Server};Server=$this->server;Database=$this->database;", $this->username, $this->password);
+
+        $sqlquery = "SELECT ";
+        $sqlquery .= "Kode, ";
+        $sqlquery .= "Nama, ";
+        $sqlquery .= "Lama, ";
+        $sqlquery .= "Harga, ";
+        $sqlquery .= "Status ";
+        $sqlquery .= "FROM JasaService; ";
+
+        $process = odbc_exec($sqlconnect, $sqlquery);
+        $items = collect([]);
+        while(odbc_fetch_row($process)) {
+            $itemAll = [
+                'barcode' => utf8_encode(odbc_result($process, 'Kode')),
+                'nama' => utf8_encode(odbc_result($process, 'Nama')),
+                'lama' => utf8_encode(odbc_result($process, 'Lama')),
+                'harga' => floatval(odbc_result($process, 'Harga')),
+                'status' => utf8_encode(odbc_result($process, 'Status')),
+                'created_at' => Carbon::now()->toDateTime(),
+            ];
+            $items->push($itemAll);
+        }
+        odbc_close($sqlconnect);
+        if ($items->isEmpty()){
+            Flash::error('Gagal sinkron data');
+        } else {
+            Service::truncate();
+            foreach (array_chunk($items->toArray(),1000)as $data)
+            {
+                Service::insert($data);
             }
         }
 

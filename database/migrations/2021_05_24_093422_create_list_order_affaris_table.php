@@ -15,6 +15,7 @@ class CreateListOrderAffarisTable extends Migration
     {
         Schema::create('list_order_affaris', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nourut');
             $table->string('uid');
             $table->string('nama');
             $table->string('barcode');

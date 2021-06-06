@@ -3,24 +3,41 @@
 <style>
 
     #myBtn {
-        display: none;
-        position: fixed;
         bottom: 20px;
-        right: 20px;
-        z-index: 99;
-        font-size: 14px;
         border: none;
         outline: none;
-        background-color: royalblue;
         color: white;
         padding: 15px;
-        border-radius: 16px;
-        transition: background-color .3s, opacity .5s, visibility .5s;
-    }
+        border-radius: 50%;
 
+        display: inline-block;
+        background-color: #007afe;
+        text-align: center;
+        position: fixed;
+        right: 20px;
+        transition: background-color .3s,
+        opacity .5s, visibility .5s;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+    }
+    #myBtn:active {
+        background-color: #555;
+    }
+    #myBtn.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    #myBtn::after {
+        font-weight: normal;
+        font-style: normal;
+        font-size: 2em;
+        line-height: 50px;
+        color: #fff;
+    }
     #myBtn:hover {
         cursor: pointer;
-        background-color: #333;
+        background-color: #509fff;
     }
 
 </style>
@@ -178,16 +195,15 @@
         }
 
         //Get the button
-        var mybutton = document.getElementById("myBtn");
+        var mybutton = $('#myBtn');
 
         // When the user scrolls down 200px from the top of the document, show the button
         window.onscroll = function() {scrollFunction()};
-
         function scrollFunction() {
             if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-                mybutton.style.display = "block";
+                mybutton.addClass('show');
             } else {
-                mybutton.style.display = "none";
+                mybutton.removeClass('show');
             }
         }
 

@@ -11,6 +11,7 @@ class ListOrderAffari extends Model
 
     protected $fillable = [
         'id',
+        'nourut',
         'uid',
         'barcode',
         'harga',

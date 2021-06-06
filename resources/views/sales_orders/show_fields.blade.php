@@ -43,7 +43,7 @@
         @php $i=1 @endphp
         @foreach($listorder as $item)
             @php $produk = $produks->firstWhere('barcode', $item->barcode) @endphp
-            <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
+            <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapse-{{$item->id}}">
             <td>{{ $i++ }}</td>
             <td>
                 {{$produk->nama}} @if($produk->kendaraan != "") • {{$produk->kendaraan}} @endif
@@ -62,7 +62,7 @@
             <tr class="hide-table-padding">
                 <td></td>
                 <td colspan="4">
-                    <div id="collapseOne" class="collapse in">
+                    <div id="collapse-{{$item->id}}" class="collapse in">
                         <p>
                             Barcode:&nbsp{{ $item->barcode }}&nbsp&nbsp
                             Supplier:&nbsp{{ $produk->kd_supplier }}&nbsp&nbsp

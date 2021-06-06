@@ -89,7 +89,6 @@ class SalesOrderController extends AppBaseController
     public function store(CreateSalesOrderRequest $request)
     {
         $input = $request->all();
-
         $salesOrder = $this->salesOrderRepository->create($input);
         Flash::success('Sukses tambah data.');
         $id = SalesOrder::firstWhere('uid', $request->uid);
@@ -159,7 +158,6 @@ class SalesOrderController extends AppBaseController
                 'satuan' => $produk->satuan,
                 'merek' => $produk->merek
             ]);
-
         return false;
     }
 
@@ -169,6 +167,7 @@ class SalesOrderController extends AppBaseController
      * @param int $id
      *
      */
+
     public function show($id)
     {
         $salesOrder = $this->salesOrderRepository->find($id);
@@ -183,14 +182,18 @@ class SalesOrderController extends AppBaseController
             return redirect(route('salesOrders.index'));
         }
 
-        return view('sales_orders.show')->with('salesOrder', $salesOrder)->with('listorder', $listorder)->with('totalharga', $totalharga)->with('produks', $produks);
+        return view('sales_orders.show')
+            ->with('salesOrder', $salesOrder)
+            ->with('listorder', $listorder)
+            ->with('totalharga', $totalharga)
+            ->with('produks', $produks);
     }
 
     public function showAffari($id)
     {
         $salesOrderAffari = SalesOrderAffari::firstWhere('id', $id);
         $uid = $salesOrderAffari->uid;
-        $listorderAffari = ListOrderAffari::all()->Where('uid', $uid);
+        $listorderAffari = ListOrderAffari::orderBy('nourut', 'ASC')->Where('uid', $uid)->get();
         $totalharga = $listorderAffari->sum('subtotal');
         $produks = Produk::all();
 
@@ -296,7 +299,7 @@ class SalesOrderController extends AppBaseController
     {
         if(substr($uid, 0, 1) === 'S'){
             $salesOrder = SalesOrderAffari::firstWhere('uid', $uid);
-            $listorder = ListOrderAffari::all()->where('uid', $uid);
+            $listorder = ListOrderAffari::orderBy('nourut', 'ASC')->Where('uid', $uid)->get();
         } else {
             $salesOrder = SalesOrder::firstWhere('uid', $uid);
             $listorder = ListOrder::all()->where('uid', $uid);
@@ -327,16 +330,6 @@ class SalesOrderController extends AppBaseController
     public function dashboard_export_excel()
     {
         return Excel::download(new SalesOrderDashboardExport(), 'Dashboard Sales Order.xlsx');
-    }
-
-    public function getdetails($id)
-    {
-        $salesOrder = $this->salesOrderRepository->find($id);
-        $uid = $salesOrder->uid;
-        $listOrder = ListOrder::all()->where('uid', $uid);
-        // $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        // $output->writeln("listorder = $listOrder");
-        return $listOrder;
     }
 
     public function refreshAffari(){
@@ -381,7 +374,6 @@ class SalesOrderController extends AppBaseController
                 SalesOrderAffari::insert($data);
             }
         }
-
     }
 
     public function fetchListOrderAffari(){
@@ -390,6 +382,7 @@ class SalesOrderController extends AppBaseController
 
         $sqlquery = "SELECT ";
         $sqlquery .= "NoTrans as uid, ";
+        $sqlquery .= "NoUrut as nourut, ";
         $sqlquery .= "stock.BarcodeAktif as barcode, ";
         $sqlquery .= "SOD.HJual as harga, ";
         $sqlquery .= "qty as qty, ";
@@ -402,6 +395,7 @@ class SalesOrderController extends AppBaseController
         while(odbc_fetch_row($process)) {
             $itemAll = [
                 'uid' => utf8_encode(odbc_result($process, 'uid')),
+                'nourut' => utf8_encode(odbc_result($process, 'nourut')),
                 'barcode' => utf8_encode(odbc_result($process, 'barcode')),
                 'harga' => floatval(odbc_result($process, 'harga')),
                 'qty' => floatval(odbc_result($process, 'qty')),

@@ -48,7 +48,7 @@
     </li>
 @endif
 
-@if(Auth::user()->role == "Dev")
+@if(Auth::user()->role == "Dev" || Auth::user()->role == "Master" )
     <li class="nav-item">
         <a href="{{route('security')}}"
            class="nav-link {{ Request::is('security*') ? 'active' : '' }}">
@@ -68,3 +68,18 @@
     </li>
 @endif
 
+<li class="nav-item">
+    <a href="{{ route('fileCatalogues.index') }}"
+       class="nav-link {{ Request::is('fileCatalogues*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-file-alt"></i>
+        <p>File</p>
+    </a>
+</li>
+
+<li class="nav-item">
+    <a href="{{ route('serviceOrders.index') }}"
+       class="nav-link {{ Request::is('serviceOrders*') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-tools"></i>
+        <p>Service Order</p>
+    </a>
+</li>

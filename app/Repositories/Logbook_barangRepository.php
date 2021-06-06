@@ -17,6 +17,7 @@ class Logbook_barangRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
+        'id',
         'tanggal',
         'nama',
         'driver',

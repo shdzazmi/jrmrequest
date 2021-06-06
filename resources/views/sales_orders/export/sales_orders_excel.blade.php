@@ -52,7 +52,7 @@
                     @php $produk = $produks->firstWhere('barcode', $item->barcode) @endphp
                     <tr>
                     <td>{{ $i++ }}</td>
-                    <td>{{ number_format($item->qty) }} {{$item->satuan}}</td>
+                    <td>{{ number_format($item->qty) }} {{$produk->satuan}}</td>
                     <td>{{ $produk->nama }} @if($produk['merek'] != "") ({{ $produk['merek'] }}) @endif</td>
                     <td>{{ $produk->barcode }}</td>
                     <td>{{ $produk->kd_supplier }}</td>

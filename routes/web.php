@@ -78,3 +78,20 @@ Route::post('/logbooks/storedata', [App\Http\Controllers\LogbookController::clas
 
 //Logbook barang keluar
 Route::resource('logbookBarangs', App\Http\Controllers\Logbook_barangController::class);
+
+//Katalog
+Route::resource('fileCatalogues', App\Http\Controllers\FileCatalogueController::class);
+Route::get('fileCatalogues-daihatsu', [App\Http\Controllers\FileCatalogueController::class, 'index_daihatsu'])->name('fileCatalogues.index_daihatsu');
+Route::get('fileCatalogues-isuzu', [App\Http\Controllers\FileCatalogueController::class, 'index_isuzu'])->name('fileCatalogues.index_isuzu');
+Route::get('/fileCatalogues/show/{id}', [App\Http\Controllers\FileCatalogueController::class, 'show'])->name('fileCatalogues.show');;
+
+//Service orders
+Route::resource('serviceOrders', App\Http\Controllers\ServiceOrderController::class);
+Route::post('/serviceOrders/put', [App\Http\Controllers\ServiceOrderController::class, 'putItemS'])->where('barcode', '(.*)')->name('serviceOrders.put');
+Route::post('/serviceOrders/puts', [App\Http\Controllers\ServiceOrderController::class, 'putService'])->where('barcode', '(.*)')->name('serviceOrders.puts');
+Route::post('/serviceOrders/updateData', [App\Http\Controllers\ServiceOrderController::class, 'updateDataS'])->name('serviceOrders.updateData');
+Route::get('/getServicePdf/{id}', [App\Http\Controllers\ServiceOrderController::class, 'export_pdf'])->name('serviceOrders.getPdf')->where('id', '(.*)');
+
+//List order
+Route::post('/listServiceOrders/deletelist', [App\Http\Controllers\ListServiceOrderController::class, 'destroy'])->name('listServiceOrder.delete');;
+Route::post('/listServiceOrders/deleteall/{uid}', [App\Http\Controllers\ListServiceOrderController::class, 'destroyAll'])->name('listServiceOrder.deleteAll');;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 25, 2021 at 04:12 AM
+-- Generation Time: Jun 05, 2021 at 10:26 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 8.0.3
 
@@ -24,20 +24,23 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `logbook_barangs`
+-- Table structure for table `list_service_orders`
 --
 
-CREATE TABLE `logbook_barangs` (
+CREATE TABLE `list_service_orders` (
   `id` int(10) UNSIGNED NOT NULL,
-  `tanggal` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `nama` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `driver` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `plat` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tujuan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nourut` int(11) DEFAULT NULL,
+  `type` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `barcode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ketnama` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `harga` int(11) DEFAULT NULL,
+  `qty` int(11) DEFAULT NULL,
+  `subtotal` int(11) DEFAULT NULL,
+  `discount` float DEFAULT NULL,
+  `keterangan` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -45,9 +48,9 @@ CREATE TABLE `logbook_barangs` (
 --
 
 --
--- Indexes for table `logbook_barangs`
+-- Indexes for table `list_service_orders`
 --
-ALTER TABLE `logbook_barangs`
+ALTER TABLE `list_service_orders`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -55,9 +58,9 @@ ALTER TABLE `logbook_barangs`
 --
 
 --
--- AUTO_INCREMENT for table `logbook_barangs`
+-- AUTO_INCREMENT for table `list_service_orders`
 --
-ALTER TABLE `logbook_barangs`
+ALTER TABLE `list_service_orders`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
 COMMIT;
 

@@ -47,8 +47,6 @@ class AdminController extends Controller
 
     public function update(Request $request){
 
-        $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $output->writeln("Data =  $request->id");
         if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::find($request->id);
@@ -60,6 +58,7 @@ class AdminController extends Controller
             }
             $userall = User::all();
             return redirect('admin')->with('user', $userall);
+            return null;
         } else {
             return redirect('home');
         }

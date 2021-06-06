@@ -52,6 +52,11 @@
                             {{ $item['nama'] }}<br/>
                             <span class="badge bg-secondary">{{ $item['barcode'] }}</span>
                             <span class="badge bg-primary">{{ $item['merek'] }}</span>
+                            @if($item['status'] == 'Aktif')
+                                <span class="badge bg-success">{{ $item['status'] }}</span>
+                            @else
+                                <span class="badge bg-danger">{{ $item['status'] }}</span>
+                            @endif
                         </td>
                         <td>{{ $item['kd_supplier'] }}</td>
                         <td>{{ $item['kendaraan'] }}</td>
@@ -219,7 +224,7 @@
                                             '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
                                             '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
-                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga +'">'+
+                                            '<input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga +'">'+
                                             '<div  class="dropdown-menu">'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
@@ -245,7 +250,7 @@
                                             '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
                                             '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
-                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga2 +'">'+
+                                            '<input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga2 +'">'+
                                             '<div  class="dropdown-menu">'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
@@ -270,7 +275,7 @@
                                             '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
                                             '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
-                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga3 +'">'+
+                                            '<input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].harga3 +'">'+
                                             '<div  class="dropdown-menu">'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+
@@ -295,7 +300,7 @@
                                             '<td style="vertical-align: middle;">' + data['a'].kendaraan + '</td> ' +
                                             '<td style="vertical-align: middle;">' +
                                             '<div class="input-group-append">'+
-                                            '<input type="number" class="form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].hargamin +'">'+
+                                            '<input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="'+ data['b'].hargamin +'">'+
                                             '<div  class="dropdown-menu">'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga +'"><span class="badge badge-pill bg-secondary" >1</span> '+ data['b'].harga +'</a>'+
                                             '<a class="dropdown-item" href="javascript:void(0)" onclick="updateInputHarga(this)" data-value="'+ data['b'].harga2 +'"><span class="badge badge-pill bg-secondary">2</span> '+ data['b'].harga2 +'</a>'+

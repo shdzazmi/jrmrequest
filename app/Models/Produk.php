@@ -30,6 +30,7 @@ class Produk extends Model
         'qtyGd',
         'satuan',
         'merek',
+        'status',
     ];
 
 

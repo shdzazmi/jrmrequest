@@ -2,6 +2,15 @@
     <div class="card">
         <div class="card-body register-card-body">
 
+                <div class="input-group mb-3" hidden>
+                    <input type="text"
+                           name="id"
+                           id="ids"
+                           class="form-control "
+                           placeholder="Nama lengkap"
+                           required>
+                </div>
+
                 <div class="input-group mb-3">
                     <input type="text"
                            name="name"
@@ -50,7 +59,7 @@
                 <div class="row">
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block" onclick="updateuser({{$users->id}})">Save</button>
+                        <button type="submit" class="btn btn-primary btn-block" onclick="updateuser()">Save</button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -59,27 +68,12 @@
     </div><!-- /.card -->
 
     @push('page_scripts')
-        <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
-        <script>
-            $(document).ready(function() {
-                const table = $('#tbAdmin').DataTable({
-                    select: true,
-                    pageLength: 25,
-                    autoWidth: false,
-                    language: {
-                        searchPlaceholder: "Pencarian",
-                        search: "",
-                        lengthMenu: "Baris: _MENU_",
-                    }
-                });
-            });
 
-            function updateuser(ids) {
-                var url = '{{ route("admin.update", [":id"]) }}';
-                url = url.replace(':id', ids);
+            function updateuser() {
+                var url = '{{ route("admin.update") }}';
                 var data = {
-                    id : document.getElementById("iduser").innerHTML,
+                    id : document.getElementById("ids").value,
                     name : document.getElementById("name").value,
                     email : document.getElementById("username").value,
                     role : document.getElementById("role").value

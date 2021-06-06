@@ -26,7 +26,7 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     function __construct($uid) {
         if(substr($uid, 0, 1) === 'S'){
             $this->sales_orders = SalesOrderAffari::firstWhere('uid', $uid);
-            $this->listorder = ListOrderAffari::all()->where('uid', $uid);
+            $this->listorder = ListOrderAffari::orderBy('nourut', 'ASC')->Where('uid', $uid)->get();
         } else {
             $this->sales_orders = SalesOrder::firstWhere('uid', $uid);
             $this->listorder = ListOrder::all()->where('uid', $uid);
