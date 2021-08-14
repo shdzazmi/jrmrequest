@@ -29,6 +29,7 @@ class SalesOrder extends Model
         'nama',
         'tanggal',
         'status',
+        'tipeharga',
         'operator'
     ];
 

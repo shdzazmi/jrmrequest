@@ -22,8 +22,6 @@
     }
     #tbRequest tbody tr:hover{
         cursor: pointer;
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
     }
 </style>
 
@@ -35,6 +33,7 @@
             <th style="width:50%;">Produk</th>
             <th style="text-align: center; width:10%;">Qty</th>
             <th style="text-align: center; width:15%;">Harga</th>
+            <th style="text-align: center; width:15%;">Ket</th>
             <th style="text-align: center; width:20%;">Subtotal</th>
         </tr>
         </thead>
@@ -54,6 +53,9 @@
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}
             </td>
+            <td>
+                {{$item->keterangan}}
+            </td>
             <td class="text-right">
                  {{number_format($item->subtotal,0,",",".")}}
             </td>
@@ -61,7 +63,7 @@
 
             <tr class="hide-table-padding">
                 <td></td>
-                <td colspan="4">
+                <td colspan="5">
                     <div id="collapse-{{$item->id}}" class="collapse in">
                         <p>
                             Barcode:&nbsp{{ $item->barcode }}&nbsp&nbsp
@@ -93,10 +95,14 @@
                             @if($produk->lokasi3 != "")
                                 <span class="badge badge-dark">3. {{ $produk->lokasi3 }}</span>&nbsp&nbsp
                             @endif
-
                             Stok: <span class="badge badge-dark">{{number_format($produk->qty)}}</span>
+                            @if($item->keterangan != '')
+                                <br>Ket: {{$item->keterangan}}
+                            @endif
+
                         </p>
-                    </div></td>
+                    </div>
+                </td>
             </tr>
 
         @endforeach

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>{{ config('app.name') }} | @yield('title')</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <link rel="shortcut icon" type="image/png" href="/jrm/public/favicon.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{asset('storage/logo.png')}}"/>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
           integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
@@ -14,10 +14,7 @@
           rel="stylesheet">
 
     <!-- AdminLTE -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/3.0.5/css/adminlte.min.css"
-          integrity="sha512-rVZC4rf0Piwtw/LsgwXxKXzWq3L0P6atiQKBNuXYRbg2FoRbSTIY0k2DxuJcs7dk4e/ShtMzglHKBOJxW8EQyQ=="
-          crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://adminlte.io/themes/v3/dist/css/adminlte.min.css">
+    <link rel="stylesheet" href="{{asset('css/adminlte.css')}}">
 
     <!-- iCheck -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/icheck-bootstrap/3.0.1/icheck-bootstrap.min.css"
@@ -41,6 +38,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
+    <!-- Animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
     @yield('third_party_stylesheets')
 
     @stack('page_css')
@@ -48,17 +48,24 @@
         body {
             font-family: 'Roboto', sans-serif !important;
             font-size: 15px;
+            transition: background 0.2s linear;
         }
-
     </style>
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed sidebar-collapse layout-navbar-fixed">
+    <body id="mainbody"
+          @if(Auth::user()->dark_theme == 1)
+            class="hold-transition sidebar-mini layout-fixed sidebar-collapse layout-navbar-fixed dark-mode"
+          @else
+            class="hold-transition sidebar-mini layout-fixed sidebar-collapse layout-navbar-fixed"
+          @endif
+          >
 <div class="se-pre-con"></div>
 
 <div class="wrapper">
+
     <!-- Main Header -->
-    <nav class="main-header navbar navbar-expand navbar-dark">
+    <nav class="main-header navbar navbar-expand navbar-dark border-bottom-0">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -68,10 +75,39 @@
 
         <ul class="navbar-nav ml-auto">
             <!-- search -->
-            <li class="nav-item">
-                <a class="nav-link" data-widget="navbar-search" href="{{ route('search') }}" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
+{{--            <li class="nav-item">--}}
+{{--                <a class="nav-link" data-widget="navbar-search" href="{{ route('search') }}" role="button">--}}
+{{--                    <i class="fas fa-search"></i>--}}
+{{--                </a>--}}
+{{--            </li>--}}
+            <li class="nav-item form-inline ml-3">
+                <div class="input-group input-group-sm">
+                    <input id="cariproduk" class="form-control form-control-navbar rounded-pill border-0 pr-4" type="search" placeholder="Cari produk" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-navbar rounded-pill border-0 ml-n4" id="cariproduksubmit" style="z-index: 3;" onclick="submitpencarian()">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item pt-2 pl-2">
+                @if(Auth::user()->dark_theme == 1)
+                    <input type="checkbox" class="checkboxz" id="darkmodeicon" onchange="toggle_darkmode()" checked/>
+                    <label class="labelz" for="darkmodeicon">
+                        <i class="fas fa-moon" style="color: #FFFF00FF"></i>
+                        <i class="fas fa-sun" style="color: #ccd2d9"></i>
+                        <div class="ball"></div>
+                    </label>
+                @else
+                    <input type="checkbox" class="checkboxz" onchange="toggle_darkmode()" id="darkmodeicon"/>
+                    <label class="labelz" for="darkmodeicon">
+                        <i class="fas fa-moon" style="color: #FFFF00FF"></i>
+                        <i class="fas fa-sun" style="color: #ccd2d9"></i>
+                        <div class="ball"></div>
+                    </label>
+                @endif
+
             </li>
             <!-- notif -->
 {{--            <li class="nav-item dropdown">--}}
@@ -89,14 +125,14 @@
             <!-- user -->
             <li class="nav-item dropdown user-menu">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                    <img src="https://image.flaticon.com/icons/png/512/149/149071.png"
+                    <img src="{{asset('storage/logo.png')}}"
                          class="user-image img-circle elevation-1" alt="User Image">
                     <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                     <!-- User image -->
                     <li class="user-header">
-                        <img src="https://image.flaticon.com/icons/png/512/149/149071.png"
+                        <img src="{{asset('storage/logo.png')}}"
                              class="img-circle elevation-2"
                              alt="User Image">
                         <p>
@@ -143,6 +179,44 @@
 
 <script>
 
+    function toggle_darkmode() {
+        $.ajax({
+            url: '{{route('darkmode')}}',
+            method: "GET",
+            cache: false,
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}"
+            },
+            success: function (data){
+                // console.log(data)
+                var icon = document.getElementById("darkmodeicon");
+                var element = document.getElementById("mainbody");
+                element.classList.toggle("dark-mode");
+                if (data === 1){
+                    icon.classList.toggle("fas fa-moon");
+                } else if (data === 0){
+                    icon.classList.toggle("fas fa-adjust");
+                }
+            }
+        });
+    }
+
+    var cariprodukinput = document.getElementById("cariproduk")
+    cariprodukinput.addEventListener("keyup", function(event) {
+        if (event.keyCode === 13) {
+            submitpencarian();
+            event.preventDefault();
+        }
+    });
+
+    function submitpencarian(){
+        var query = cariprodukinput.value;
+        var url = '{{ route("search", [":q"]) }}';
+        console.log(query);
+        url = url.replace(':q', query);
+        window.location.href = url;
+    }
+
     function tampilLoading(title){
         Swal.fire ({
             title: title,
@@ -153,8 +227,8 @@
         });
     }
 
-</script>
 
+</script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
         integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg=="
@@ -195,6 +269,7 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="//cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.js"></script>
 
+
 <script>
     $(function () {
         bsCustomFileInput.init();
@@ -230,6 +305,14 @@
             showConfirmButton: false,
             position: 'top'
         });
+    }
+
+    function addzeros(number) {
+        var num = '' + number;
+        while (num.length < 3) {
+            num = '0' + num;
+        }
+        return num;
     }
 
 </script>

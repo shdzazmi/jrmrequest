@@ -34,6 +34,7 @@ class CreateProduksTable extends Migration
             $table->integer('qtyGd');
             $table->string('satuan');
             $table->string('merek')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

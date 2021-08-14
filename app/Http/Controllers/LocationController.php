@@ -15,7 +15,7 @@ class LocationController extends Controller
     private string $database = 'JRM';
     private string $username = 'sa';
     private string $password = 'MasteR99';
-    private array $auth = array('Master', 'Dev', 'Admin');
+    private array $auth = array('Master', 'Head', 'Dev', 'Admin');
 
     public function __construct()
     {
@@ -34,6 +34,16 @@ class LocationController extends Controller
         {
             $items = collect([]);
             return view('location.index')->with('items', $items);
+        } else {
+            return redirect('home');
+        }
+    }
+
+    public function index_denah()
+    {
+        if (in_array(Auth::user()->role, $this->auth))
+        {
+            return view('location.index_denah');
         } else {
             return redirect('home');
         }

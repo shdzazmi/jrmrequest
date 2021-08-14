@@ -26,11 +26,21 @@ class ServiceOrder extends Model
 
     public $fillable = [
         'uid',
+        'nourut',
+        'no_penawaran',
         'nama',
         'mobil',
         'nopol',
+        'status',
         'tanggal',
-        'operator'
+        'outlet',
+        'ppn',
+        'tanpabongkar',
+        'operator',
+        'approve_service',
+        'approve_produk',
+        'times_updated',
+        'updated_by',
     ];
 
     /**
@@ -41,11 +51,22 @@ class ServiceOrder extends Model
     protected $casts = [
         'id' => 'integer',
         'uid' => 'string',
+        'nourut' => 'integer',
+        'no_penawaran' => 'string',
         'nama' => 'string',
         'mobil' => 'string',
         'nopol' => 'string',
+        'status' => 'string',
         'tanggal' => 'string',
-        'operator' => 'string'
+        'outlet' => 'string',
+        'operator' => 'string',
+        'ppn' => 'boolean',
+        'tanpabongkar' => 'boolean',
+        'approve_service' => 'string',
+        'approve_produk' => 'string',
+        'times_updated' => 'integer',
+        'times_printed' => 'integer',
+        'updated_by' => 'string'
     ];
 
     /**

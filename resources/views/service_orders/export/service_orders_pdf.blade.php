@@ -21,15 +21,23 @@
     .a {
         text-indent: 50px;
     }
+
+    tr td{
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
 </style>
-<body style="font-size: 14px">
-<table class="table table-nopadding" >
+<body style="font-size: 12px">
+<table class="table table-nopadding">
     <tr>
+        @if($serviceOrder->ppn!=1)
         <td class="pl-3" style="width: 20%; text-align: center; vertical-align: middle; border-color: white">
             <img src="D:\xampp74\htdocs\jrm\public\storage\JRM.png>" alt="logo" style="width:100px;height:100px;">
         </td>
-        <td class="pr-3" style="width: 80%; border-color: white">
-            <h2 style="padding-bottom: 0; margin-bottom: 0;">JAYA RAYA MOBIL</h2>
+        @endif
+        <td class="pr-3 text-center" style="width: 80%; border-color: white">
+            <h2 style="padding-bottom: 0; margin-bottom: 0;">@if($serviceOrder->ppn==1)BUMI MANUNGGAL GRACIA @else JAYA RAYA MOBIL @endif</h2>
             JL. A. Yani No. 25, Samarinda<br>
             Telp: 0541-747168, HP: 0821 5711 9456<br>
             <div class="box">
@@ -49,70 +57,79 @@
 
 <p>Kepada Yth:<br>
     {{$serviceOrder->nama}}<br>
-Tanggal: {{$serviceOrder->tanggal}}</p>
+No: {{$serviceOrder->no_penawaran}}</p>
 <div>Dengan hormat,</div>
-<p class="a">Bersama ini kami ingin memberikan penawaran harga mengenai Service mobil <b>{{$serviceOrder->mobil}}</b> sebagai berikut:</p>
+<p class="a">Bersama ini kami ingin memberikan penawaran harga mengenai Service mobil <b>{{$serviceOrder->mobil}} - {{$serviceOrder->nopol}}</b> sebagai berikut:
+    @if($serviceOrder->tanpabongkar == 1)
+         (penawaran ini dibuat tanpa membongkar kendaraan, penawaran dapat berubah apabila telah dilakukan pengecekan saat kendaraan dibongkar)
+    @endif
+</p>
 
-<div class="table-responsive table p-0">
-    <table style="font-size: 14px" class="table-sm table table-bordered table-nopadding" id="tbRequest">
-        <thead>
-        <tr>
-            <th style="text-align: center; width:5%;">No</th>
-            <th style="width:40%;">Produk</th>
-            <th style="width:10%;">Keterangan</th>
-            <th style="text-align: center; width:10%;">Qty</th>
-            <th style="text-align: center; width:15%;">Harga</th>
-            @if($totaldiscount != 0) <th style="text-align: center; width:15%;">Discount</th> @endif
-            <th style="text-align: center; width:20%;">Jumlah</th>
-        </tr>
-        </thead>
-        <tbody>
+<div class="table-responsive table p-0" style="font-size: 12px">
 
-        @php $i=1 @endphp
-        @foreach($listorder as $item)
-            @php
-                $produk = $produks->firstWhere('barcode', $item->barcode);
-            @endphp
+    @if(count($listorder) != 0)
+        <table style="font-size: 12px" class="table-sm table table-bordered table-nopadding" id="tbRequest">
+            <thead>
             <tr>
-                <td>{{ $i++ }}</td>
-                <td>
-                    {{$item->ketnama}}
-                </td>
-                <td>
-                    {{$item->keterangan}}
-                </td>
-                <td style="text-align: center">
-                    {{number_format($item->qty)}} {{$produk->satuan}}
-                </td>
-                <td class="text-right">
-                    {{number_format($item->harga,0,",",".")}}
-                </td>
-                @if($totaldiscount != 0)
-                    <td class="text-right">
-                        {{$item->discount}}%
-                    </td>
-                @endif
-                <td class="text-right">
-                    {{number_format($item->subtotal,0,",",".")}}
-                </td>
+                <th style="text-align: center; width:5%;">No</th>
+                <th style="width:40%;">Produk</th>
+                <th style="width:10%;">Keterangan</th>
+                <th style="text-align: center; width:10%;">Qty</th>
+                <th style="text-align: center; width:15%;">Harga</th>
+                @if($totaldiscount != 0) <th style="text-align: center; width:15%;">Discount</th> @endif
+                <th style="text-align: center; width:20%;">Jumlah</th>
             </tr>
+            </thead>
+            <tbody>
 
-        @endforeach
+            @php $i=1 @endphp
+            @foreach($listorder as $item)
+                @php
+                    $produk = $produks->firstWhere('barcode', $item['barcode'])
+                @endphp
+                <tr>
+                    <td style="text-align: center">{{ $i++ }}</td>
+                    <td>
+                        {{$item['ketnama']}}
+                    </td>
+                    <td>
+                        {{$item['keterangan']}}
+                    </td>
+                    <td style="text-align: center">
+                        {{number_format($item['qty'])}} {{$produk->satuan}}
+                    </td>
+                    <td class="text-right">
+                        {{number_format($item['harga'],0,",",".")}}
+                    </td>
+                    @if($totaldiscount != 0)
+                        <td class="text-right">
+                            @if($item['discount'] != 0)
+                                {{$item['discount']}}%
+                            @endif
+                        </td>
+                    @endif
+                    <td class="text-right">
+                        {{number_format($item['subtotal'],0,",",".")}}
+                    </td>
+                </tr>
 
-        </tbody>
-    </table>
+            @endforeach
 
-    <table class="table table-sm table-nopadding p-0" style="font-size: 14px">
-        <tbody>
-        <tr>
-            <td class="text-right" style="width:80%;"><b>Subtotal Produk:</b></td>
-            <td class="text-right" style="width:20%;"><b>{{number_format($totalproduk)}}</b></td>
-        </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+
+        <table class="table table-sm table-nopadding p-0" style="font-size: 12px">
+            <tbody>
+            <tr>
+                <td class="text-right" style="width:80%;"><b>Subtotal Produk:</b></td>
+                <td class="text-right" style="width:20%;"><b>{{number_format($totalproduk)}}</b></td>
+            </tr>
+            </tbody>
+        </table>
+    @endif
 
     @if(count($listjasa) != 0)
-        <table class="table-sm table table-nopadding dataTable display mt-3" id="tbRequest">
+        <table class="table-sm table table-nopadding table-bordered dataTable display mt-3" id="tbRequest" style="font-size: 12px">
             <thead>
             <tr>
                 <th style="text-align: center; width:5%;">No</th>
@@ -128,29 +145,31 @@ Tanggal: {{$serviceOrder->tanggal}}</p>
             @php $i=1 @endphp
             @foreach($listjasa as $item)
                 @php
-                    $produk = $services->firstWhere('barcode', $item->barcode);
+                    $produk = $services->firstWhere('barcode', $item['barcode'])
                 @endphp
                 <tr>
-                    <td>{{ $i++ }}</td>
+                    <td style="text-align: center">{{ $i++ }}</td>
                     <td>
-                        {{$produk->ketnama}}
+                        {{$item['ketnama']}}
                     </td>
                     <td>
-                        {{$produk->keterangan}}
+                        {{$item['keterangan']}}
                     </td>
                     <td style="text-align: center">
-                        {{number_format($item->qty)}} {{$produk->satuan}}
+                        {{number_format($item['qty'])}}
                     </td>
                     <td class="text-right">
-                        {{number_format($item->harga,0,",",".")}}
+                        {{number_format($item['harga'],0,",",".")}}
                     </td>
                     @if($totaldiscount != 0)
                         <td class="text-right">
-                            {{$item->discount}}%
+                            @if($item['discount'] != 0)
+                                {{$item['discount']}}%
+                            @endif
                         </td>
                     @endif
                     <td class="text-right">
-                        {{number_format($item->subtotal,0,",",".")}}
+                        {{number_format($item['subtotal'],0,",",".")}}
                     </td>
                 </tr>
 
@@ -159,7 +178,7 @@ Tanggal: {{$serviceOrder->tanggal}}</p>
 
         </table>
 
-        <table class="table table-sm table-nopadding" style="font-size: 14px">
+        <table class="table table-sm table-nopadding" style="font-size: 12px">
             <tbody>
             <tr>
                 <td class="text-right" style="width:80%;"><b>Subtotal Jasa:</b></td>
@@ -169,16 +188,44 @@ Tanggal: {{$serviceOrder->tanggal}}</p>
         </table>
     @endif
 
-    <table class="table table-sm table-nopadding" style="font-size: 14px">
+    <table class="table table-borderless table-sm table-nopadding" style="font-size: 12px">
         <tbody>
-        <tr>
-            <td class="text-right" style="width:80%;">
-                <b>Grand total:</b>
-            </td>
-            <td  class="text-right" style="width:20%;">
-                <b>{{number_format($grandtotal)}}</b>
-            </td>
-        </tr>
+        @if($serviceOrder->ppn == 1)
+            <tr>
+                <td class="text-right" style="width:80%; font-size: 12px">
+                    <b>Total:</b>
+                </td>
+                <td  class="text-right" style="width:20%; font-size: 12px">
+                    <b>{{number_format($grandtotal)}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="width:80%; font-size: 12px">
+                    <b>PPN 10%:</b>
+                </td>
+                <td  class="text-right" style="width:20%; font-size: 12px">
+                    <b>{{number_format(0.1*$grandtotal)}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="width:80%; font-size: 12px">
+                    <b>Grand total:</b>
+                </td>
+                <td  class="text-right" style="width:20%; font-size: 12px">
+                    <b>{{number_format(0.1*$grandtotal+$grandtotal)}}</b>
+                </td>
+            </tr>
+        @else
+            <tr>
+                <td class="text-right" style="width:80%; font-size: 12px">
+                    <b>Grand total:</b>
+                </td>
+                <td  class="text-right" style="width:20%; font-size: 12px">
+                    <b>{{number_format($grandtotal)}}</b>
+                </td>
+            </tr>
+        @endif
+
         </tbody>
     </table>
 </div>
@@ -189,8 +236,45 @@ Tanggal: {{$serviceOrder->tanggal}}</p>
     - Apabila tidak diambil kami tidak bertanggung jawab apabila terdapat kehilangan atau kerusakan<br>
     - Garansi barang dan pekerjaan yang terkait diberikan maksimal 2 minggu atau 500 km dari km terakhir setelah dilakukan pengecekan bersama</b></p>
 <div class="a">Demikian informasi yang kami sampaikan, atas perhatian dan kerjasamanya kami ucapkan terimakasih.</div>
+<br>
+<br>
 <div class="p-0">Samarinda, {{$tanggal}}</div>
-
+<br>
+<table class="table-sm table table-nopadding" style="font-size: 12px; border-top: 0 solid white;">
+    <thead>
+    <tr>
+        <td style="text-align: center">Administrasi</td>
+        <td style="text-align: center">Kepala Bengkel</td>
+        <td style="text-align: center">Sparepart Manager</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="text-align: center"><b>{{$serviceOrder->operator}}</b></td>
+        <td style="text-align: center">
+            <b>
+                @if($serviceOrder->approve_service==false)
+                    -
+                @else
+                    {{$serviceOrder->approve_service}}
+                @endif
+            </b>
+        </td>
+        <td style="text-align: center">
+            <b>
+                @if($serviceOrder->approve_produk==false)
+                    -
+                @else
+                    {{$serviceOrder->approve_produk}}
+                @endif
+            </b>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+<div class="p-0">*Surat penawaran ini diterbitkan secara digital dan merupakan penawaran resmi yang telah disetujui oleh pihak Jaya Raya Mobil.</div>
+<div class="p-0">Cetakan ke: {{$serviceOrder->times_printed}}</p></div>
 </body>
-
 </html>

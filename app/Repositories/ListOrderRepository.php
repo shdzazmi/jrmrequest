@@ -23,6 +23,7 @@ class ListOrderRepository extends BaseRepository
         'partno1',
         'lokasi',
         'harga',
+        'keterangan',
         'qty'
     ];
 

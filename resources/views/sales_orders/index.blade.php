@@ -44,6 +44,11 @@
 
 @section('content')
 
+    <div class="animate__animated animate__fadeIn preloader flex-column justify-content-center align-items-center">
+        <img class="animate__animated animate__rubberBand animate__infinite" src="{{asset('storage/logo.png')}}" alt="AdminLTELogo" height="60" width="60">
+        <h3>Memuat . . .</h3>
+    </div>
+
     <div class="col-md-10 offset-md-1" >
         <section class="content-header">
             <div class="container-fluid">
@@ -68,10 +73,10 @@
 
                 </div>
                 <div class="alert alert-primary alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
-                        Ubah status Sales Order dengan cara klik Badge status, buat Sales Order baru dengan cara klik tombol Tambah Baru.
-                    </div>
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
+                    Ubah status Sales Order dengan cara klik Badge status, buat Sales Order baru dengan cara klik tombol Tambah Baru.
+                </div>
             </div>
         </section>
 
@@ -82,28 +87,8 @@
             <div class="clearfix"></div>
 
             <div class="card card-outline card-primary">
-                <div class="card-header p-0 pt-1">
-                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><i class="fas fa-cog"></i> JRMPortal</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false"><i class="fas fa-dollar-sign"></i> Affari</a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="card-body">
-                    <div class="tab-content" id="custom-tabs-one-tabContent">
-                        <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
-                            @include('sales_orders.table')
-                            <div class="card-footer clearfix float-right"><div class="float-right"></div></div>
-                        </div>
-                        <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
-                            @include('sales_orders.table_affari')
-                            <div class="card-footer clearfix float-right"><div class="float-right"></div></div>
-                        </div>
-                    </div>
-
+                    @include('sales_orders.table')
                 </div>
             </div>
         </div>

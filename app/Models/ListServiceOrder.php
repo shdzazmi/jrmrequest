@@ -56,7 +56,7 @@ class ListServiceOrder extends Model
         'qty' => 'integer',
         'subtotal' => 'integer',
         'keterangan' => 'string',
-        'discount' => 'integer'
+        'discount' => 'float'
     ];
 
     /**

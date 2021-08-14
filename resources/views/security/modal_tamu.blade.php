@@ -131,7 +131,7 @@
                         id: qrCodeMessage,
                         status : document.getElementById('status').value,
                     };
-                    console.log(data);
+                    // console.log(data);
                     $.ajax({
                         url: url,
                         method: "POST",

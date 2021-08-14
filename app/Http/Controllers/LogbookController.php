@@ -10,6 +10,7 @@ use App\Models\Logbook;
 use App\Repositories\LogbookRepository;
 use App\Http\Controllers\AppBaseController;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -150,7 +151,7 @@ class LogbookController extends AppBaseController
      *
      * @param int $id
      *
-     * @throws \Exception
+     * @throws Exception
      *
      */
     public function destroy($id)

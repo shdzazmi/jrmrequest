@@ -27,6 +27,7 @@ class ListOrder extends Model
         'stokTk',
         'stokGd',
         'satuan',
+        'keterangan',
         'merek'
     ];
 }

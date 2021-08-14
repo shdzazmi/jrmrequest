@@ -3,6 +3,9 @@
     #jasaservice tbody tr:hover{
         cursor: pointer;
     }
+     div.dataTables_wrapper {
+         width:100% !important;
+     }
     #jasaservice{
         display:none;
     }
@@ -14,21 +17,22 @@
         <thead>
         <tr style="text-align:center">
             <th>Barcode</th>
-            <th>Jasa</th>
-            <th>Harga</th>
+            <th>Nama</th>
+            <th style="width: 80%">Jasa</th>
+            <th style="width: 20%">Harga</th>
         </tr>
         </thead>
         <tbody id="tbsalesorder">
-        @foreach($services as $item)
-            <tr class='clickable-row'>
-                <td>{{ $item['barcode'] }}</td>
-                <td>
-                    {{ $item['nama'] }}
-                    <span class="badge bg-dark">{{ $item['barcode'] }}</span>
-                </td>
-                <td style="text-align:right">{{ number_format($item['harga']) }}</td>
-            </tr>
-        @endforeach
+{{--        @foreach($services as $item)--}}
+{{--            <tr class='clickable-row'>--}}
+{{--                <td>{{ $item['barcode'] }}</td>--}}
+{{--                <td>--}}
+{{--                    {{ $item['nama'] }}--}}
+{{--                    <span class="badge bg-dark">{{ $item['barcode'] }}</span>--}}
+{{--                </td>--}}
+{{--                <td style="text-align:right">{{ number_format($item['harga']) }}</td>--}}
+{{--            </tr>--}}
+{{--        @endforeach--}}
         </tbody>
     </table>
 </div>
@@ -69,7 +73,11 @@
         } );
 
         const tbProduk = $('#jasaservice').DataTable({
+            ajax: {
+                url: '{{URL::to('getservicesOrders')}}'
+            },
             select: true,
+            serverSide: true,
             order: [[1, "asc"]],
             autoWidth: false,
             language: {
@@ -78,12 +86,17 @@
                 lengthMenu: "Baris: _MENU_",
             },
             initComplete: function () {
-                Swal.close();
                 $("#jasaservice").show();
             },
+            columns: [
+                {data: 'barcode', name: 'barcode'},
+                {data: 'nama', name: 'nama'},
+                {data: 'service', name: 'service'},
+                {data: 'harga', name: 'harga', render: $.fn.dataTable.render.number('.', ',', 0, '')},
+            ],
             columnDefs: [
                 {
-                    targets: [ 0 ],
+                    targets: [ 0,1 ],
                     visible: false,
                 }
             ]
@@ -103,8 +116,7 @@
                 var url = '{{ route("serviceOrders.puts") }}';
                 var data = {
                     uid : document.getElementById( "uid_input" ).value,
-                    type : 'service',
-                    barcode: rowData[0]
+                    barcode: rowData.barcode
                 };
 
                 $.ajax({
@@ -116,30 +128,51 @@
                     },
                     success: function (data) {
                         if (data !== "added"){
-                            $('#table-body').append(
-                                '<tr>' +
-                                '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                '<td style="display:none;">'+ data['a'].barcode+'</td>  ' +
-                                '<td style="display:none;">service</td>  ' +
-                                '<td style="vertical-align: middle"><input type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].nama + '"></td>  ' +
-                                '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="'+data['b'].harga+'" style="width: 100px" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
-                                '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="1" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
-                                '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                '<td style="vertical-align: middle" class="text">' + data['b'].harga * 1 + '</td> ' +
-                                '<td style="vertical-align: middle"><input type="text" class="form-control form-control-sm" id="ketInput"/></td> ' +
-                                '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
-                                '</tr>'
-                            );
+                            if (data['c'] === "master"||data['c'] === "admin"){
+                                $('#table-body').append(
+                                    '<tr>' +
+                                    '<td style="display:none;"></td>  ' +
+                                    '<td style="display:none;">'+ rowData.barcode +'</td>  ' +
+                                    '<td style="display:none;">service</td>  ' +
+                                    '<td style="vertical-align: middle"><input style="font-size: 12px; width: 220px" type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].nama + '"></td>  ' +
+                                    '<td style="vertical-align: middle"></td>  ' +
+                                    '<td style="vertical-align: middle"><input style="width: 120px; font-size: 12px" type="number" class="form-control form-control-sm" value="'+data['b'].harga+'" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="1" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle; text-align: right;" class="text">' + data['b'].harga * 1 + '</td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" id="ketInput"/></td> ' +
+                                    '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
+                                    '<td style="display:none;">'+ data['a'] +'</td>  ' +
+                                    '</tr>'
+                                );
+                            } else {
+                                $('#table-body').append(
+                                    '<tr>' +
+                                    '<td style="display:none;"></td>  ' +
+                                    '<td style="display:none;">'+ rowData.barcode +'</td>  ' +
+                                    '<td style="display:none;">service</td>  ' +
+                                    '<td style="vertical-align: middle"><input style="font-size: 12px; width: 220px" type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].nama + '"></td>  ' +
+                                    '<td style="vertical-align: middle"></td>  ' +
+                                    '<td style="vertical-align: middle"><input style="width: 120px; font-size: 12px" type="number" class="form-control form-control-sm" value="'+data['b'].harga+'" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="1" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" onchange="updateSubtotal(this);"/></td> ' +
+                                    '<td style="vertical-align: middle; text-align: right;" class="text">' + data['b'].harga * 1 + '</td> ' +
+                                    '<td style="vertical-align: middle"><input style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" id="ketInput"/></td> ' +
+                                    '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
+                                    '<td style="display:none;">'+ data['a'] +'</td>  ' +
+                                    '</tr>'
+                                );
+                            }
                             toastSuccess("Produk berhasil ditambahkan!")
                         } else {
                             toastError('Produk sudah ada list order!', '')
-                            console.log('added')
+                            // console.log('added')
                         }
                         getTotalPrice();
                     },
                     error: function (data) {
                         toastError("Gagal!", "Terjadi kesalahan internal.")
-                        console.log('internal')
+                        // console.log('internal')
                     }
                 })
             } else {

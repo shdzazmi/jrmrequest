@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\requestbarang;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
@@ -14,7 +15,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class RequestbarangExport implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize, WithColumnWidths
 {
     /**
-    * @return \Illuminate\Support\Collection
+    * @return Collection
      * @var requestbarang $row
     */
     public function collection()

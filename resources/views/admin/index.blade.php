@@ -62,7 +62,7 @@
                             @include('karyawans.table')
                             <div class="card-footer clearfix float-right">
                                 <div class="float-right">
-
+                                    @include('adminlte-templates::common.paginate', ['records' => $karyawans])
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
 
 @endsection
 
-@push('page_scripts')
+@push('page_scripts')f
     {{--Modal Script--}}
     <script>
         $(document).ready(function(){
@@ -109,8 +109,6 @@
                 });
             });
         });
-
-
 
     </script>
 

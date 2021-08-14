@@ -1,7 +1,17 @@
 @extends('layouts.app')
-@section('title', 'Ubah service order')
-
+@section('title', 'Ubah service order SV'. $serviceOrder->id)
+<style>
+    div.dataTables_wrapper {
+        width:100% !important;
+    }
+</style>
 @section('content')
+
+    <div class="animate__animated animate__fadeIn preloader flex-column justify-content-center align-items-center">
+        <img class="animate__animated animate__rubberBand animate__infinite" src="{{asset('storage/logo.png')}}" alt="AdminLTELogo" height="60" width="60">
+        <h3>Memuat . . .</h3>
+    </div>
+
     <div class = "row">
         <section class="content-header">
             <div class="container-fluid">
@@ -12,7 +22,7 @@
     </div>
 
     <div class = "row">
-        <div class = "col-sm-5 pl-5 pb-5">
+        <div class = "col-sm-4 pl-5 pb-5">
             <div class="content">
                 <div class="card card-primary card-outline card-tabs">
                     <div class="card-header p-0 pt-1">
@@ -39,7 +49,7 @@
                 </div>
             </div>
         </div>
-        <div class = "col-sm-7 pr-5 pb-5">
+        <div class = "col-sm-8 pr-5 pb-5">
             <div class="content" style="font-size: 12px">
                 {!! Form::model($serviceOrder, ['route' => ['serviceOrders.update', $serviceOrder->id], 'method' => 'patch']) !!}
                 @include('service_orders.fields')
@@ -54,8 +64,12 @@
 @push('page_scripts')
 
     <script>
-        tampilLoading('Memuat...');
 
+        $(document).ready(function() {
+            $('.preloader').addClass('animate__animated animate__fadeOutUpBig');
+        });
+
+        getTotalPrice();
         var tbOrder = document.getElementById("table-body");
         function getTotalPrice() {
             var total = 0;
@@ -63,19 +77,19 @@
             var totaltext = document.getElementById("total-text");
             for(var i = 0; i < table.rows.length; i++)
             {
-                total = total + parseFloat(table.rows[i].cells[7].innerHTML);
+                total = total + parseInt(table.rows[i].cells[8].innerHTML.replaceAll([".",","],""));
             }
-            totaltext.innerHTML = numberFormat(total);
+            totaltext.innerHTML = numberFormat(total) ;
         }
 
         function updateSubtotal(id) {
-            var qty =  Number($(id).closest("tr").find("input[id*='qtyInput']").val());
-            var price = Number($(id).closest("tr").find("input[id*='hargaInput']").val());
-            var disc = Number($(id).closest("tr").find("input[id*='discInput']").val()) / 100;
+            var qty =  ($(id).closest("tr").find("input[id*='qtyInput']").val()) ;
+            var price = ($(id).closest("tr").find("input[id*='hargaInput']").val()) ;
+            var disc = ($(id).closest("tr").find("input[id*='discInput']").val()) / 100;
             var jumlah = qty*price;
             var discprice = jumlah*disc;
             var afterdisc = jumlah-discprice;
-            $(id).closest("tr").find('td:eq(7)').text(afterdisc);
+            $(id).closest("tr").find('td:eq(8)').text(afterdisc);
 
             getTotalPrice();
             return false;
@@ -94,25 +108,36 @@
             let tanggal = document.getElementById("tanggal_input").value;
             let mobil = document.getElementById("mobil_input").value;
             let nopol = document.getElementById("nopol_input").value;
+            let status = document.getElementById("status_input").value;
             let td_content = $('#table-body td').text();
             let table = document.getElementById( "table-body" );
+            let outlet = document.getElementById( "outlet_input" ).value;
+            var ppn = 0;
+            if(document.getElementById( "ppn_input" ).checked === true){
+                ppn = 1;
+            }
+            var tanpabongkar = 0;
+            if(document.getElementById( "tanpabongkar_input" ).checked === true){
+                tanpabongkar = 1;
+            }
             let url = '{{ route("serviceOrders.updateData") }}';
             let urlOrder = '{{ route("serviceOrders.update", ":id") }}';
             urlOrder = urlOrder.replace(':id', document.getElementById('id_input').value);
             if (td_content !== "" && nama !== "" && tanggal !== "" && mobil !== "" && nopol !== ""){
-                tampilLoading('Menambahkan data...');
+                // tampilLoading('Menambahkan data...');
                 // listorder
                 for ( let i = 0; i < table.rows.length; i++ ) {
-                    let harga = table.rows[i].cells[4].children[0].value;
-                    let qty = table.rows[i].cells[5].children[0].value;
-                    let disc = table.rows[i].cells[6].children[0].value;
-                    let subtotal = table.rows[i].cells[7].innerHTML;
+                    let harga = table.rows[i].cells[5].children[0].value;
+                    let qty = table.rows[i].cells[6].children[0].value;
+                    let disc = table.rows[i].cells[7].children[0].value;
+                    let subtotal = table.rows[i].cells[8].innerHTML;
                     let id = table.rows[i].cells[0].innerHTML;
                     let uid = document.getElementById( "uid_input" ).value;
                     let barcode = table.rows[i].cells[1].innerHTML;
                     let ketnama = table.rows[i].cells[3].children[0].value;
                     let type = table.rows[i].cells[2].innerHTML;
-                    let ket = table.rows[i].cells[8].children[0].value;
+                    let ket = table.rows[i].cells[9].children[0].value;
+                    let nourut = table.rows[i].cells[11].innerHTML;
 
                     let data = {
                         id: id,
@@ -124,7 +149,8 @@
                         discount: disc,
                         type: type,
                         keterangan: ket,
-                        subtotal: subtotal
+                        subtotal: subtotal,
+                        nourut: nourut
                     };
                     // console.log(data);
                     $.ajax({
@@ -144,7 +170,11 @@
                     tanggal,
                     operator : document.getElementById( "operator_input" ).value,
                     mobil,
+                    status,
                     nopol,
+                    ppn,
+                    tanpabongkar,
+                    outlet
                 };
 
                 // Serviceorder

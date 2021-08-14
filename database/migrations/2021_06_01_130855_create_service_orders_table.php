@@ -17,10 +17,18 @@ class CreateServiceOrdersTable extends Migration
         Schema::create('service_orders', function (Blueprint $table) {
             $table->increments('id');
             $table->string('uid');
+            $table->integer('nourut');
+            $table->string('no_penawaran');
+            $table->string('uid');
             $table->string('nama');
             $table->string('mobil');
+            $table->string('nopol');
+            $table->string('status');
             $table->string('tanggal');
             $table->string('operator');
+            $table->string('outlet');
+            $table->string('approve_service');
+            $table->string('approve_produk');
             $table->timestamps();
             $table->softDeletes();
         });

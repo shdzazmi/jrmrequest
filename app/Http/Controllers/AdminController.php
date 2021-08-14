@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\karyawan;
 use App\Models\User;
 use App\Repositories\karyawanRepository;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,8 @@ class AdminController extends Controller
         if (in_array(Auth::user()->role, $this->auth))
         {
             $user = User::all();
-            $karyawans = $this->karyawanRepository->all();
+//            $karyawans = $this->karyawanRepository->paginate(25);
+            $karyawans = karyawan::paginate(20);
             return view('admin.index')->with('user', $user)->with('karyawans', $karyawans);
         } else {
             return redirect('home');
@@ -54,6 +56,7 @@ class AdminController extends Controller
                 $user->name = $request->name;
                 $user->email = $request->email;
                 $user->role = $request->role;
+                $user->divisi = $request->divisi;
                 $user->save();
             }
             $userall = User::all();

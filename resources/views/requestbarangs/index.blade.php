@@ -4,7 +4,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"/>
 
 @section('content')
-    <div class="col-md-10 offset-md-1" >
+    <div class="col-md-12" >
         <section class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
@@ -19,6 +19,11 @@
                         <a href="{{ route('showAll') }}" class='btn btn-outline-info'>
                             Semua request
                         </a>
+                        @if(Auth::user()->divisi == 'Purchasing' || Auth::user()->role == 'Dev')
+                        <a href="{{ route('requestbarang.index_approval') }}" class='btn btn-outline-info'>
+                            Approval
+                        </a>
+                        @endif
                         <a class="btn btn-info"
                            href="{{ route('requestbarangs.create') }}">
                             Tambah baru
@@ -30,6 +35,7 @@
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                     <h5><i class="icon fas fa-info"></i> Petunjuk</h5>
                     Request barang berisi data barang kosong yang pernah diminta oleh customer, klik tombol Tambah baru untuk menambahkan data.
+                    Berikut data Request yang telah disetujui oleh Purchasing.
                 </div>
 
             </div>

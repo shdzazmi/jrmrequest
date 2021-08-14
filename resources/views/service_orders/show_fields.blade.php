@@ -2,7 +2,9 @@
     tr.hide-table-padding td {
         padding: 0;
     }
-
+     div.dataTables_wrapper {
+         width:100% !important;
+     }
     .table-nopadding{
         padding-bottom: 0;
         margin-bottom: 0;
@@ -30,29 +32,40 @@
             @php $i=1 @endphp
             @foreach($listorder as $item)
                 @php
-                    $produk = $produks->firstWhere('barcode', $item->barcode);
+                    $produk = $produks->firstWhere('barcode', $item['barcode'])
                 @endphp
-                <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapse-{{$item->id}}">
+                <tr>
                     <td>{{ $i++ }}</td>
                     <td>
-                        {{$item->ketnama}}
+                        {{$item['ketnama']}}<br>
+                        <span class="badge badge-pill bg-primary">{{$produk->barcode}}</span>
+                        <span class="badge badge-pill bg-primary">{{$produk->kd_supplier}}</span>
+                        <span class="badge badge-pill bg-primary">{{$produk->merek}}</span>
+                        @if($produk->partno1 != "")
+                            <br/>PN1: {{$produk->partno1 }}
+                        @endif
+                        @if($produk->partno2 != "")
+                            <br/>PN2: {{$produk->partno2 }}
+                        @endif
                     </td>
                     <td>
-                        {{$item->keterangan}}
+                        {{$item['keterangan']}}
                     </td>
                     <td style="text-align: center">
-                        {{number_format($item->qty)}} {{$produk->satuan}}
+                        {{number_format($item['qty'])}} {{$produk->satuan}}
                     </td>
                     <td class="text-right">
-                        {{number_format($item->harga,0,",",".")}}
+                        {{number_format($item['harga'],0,",",".")}}
                     </td>
                     @if($totaldiscount != 0)
                         <td class="text-right">
-                            {{$item->discount}}%
+                            @if($item['discount'] != 0)
+                                {{floatval($item['discount'])}}%
+                            @endif
                         </td>
                     @endif
                     <td class="text-right">
-                        {{number_format($item->subtotal,0,",",".")}}
+                        {{number_format($item['subtotal'],0,",",".")}}
                     </td>
                 </tr>
 
@@ -64,7 +77,7 @@
             <td></td>
             <td></td>
             @if($totaldiscount != 0) <td></td> @endif
-            <td style="text-align: right"><b>Subtotal Produk:</b></td>
+            <td style="text-align: right; font-size: 14px"><b>Subtotal Produk:</b></td>
             <td style="text-align: right"><b>{{number_format($totalproduk)}}</b></td>
             </tfoot>
         </table>
@@ -87,29 +100,37 @@
             @php $i=1 @endphp
             @foreach($listjasa as $item)
                 @php
-                    $produk = $services->firstWhere('barcode', $item->barcode);
+                global $barcode;
+                $barcode = $item['barcode'];
+                if($barcode == null){
+                    $barcode = $item['bcodejasa'];
+                }
+                    $produk = $services->firstWhere('barcode', $barcode)
                 @endphp
-                <tr class="accordion-toggle collapsed" id="accordion1" data-toggle="collapse" data-parent="#accordion1" href="#collapse-{{$item->id}}">
+                <tr>
                     <td>{{ $i++ }}</td>
                     <td>
-                        {{$item->ketnama}}
+                        {{$item['ketnama']}} <span class="badge badge-pill bg-primary">{{$produk->barcode}}</span>
+
                     </td>
                     <td>
-                        {{$item->keterangan}}
+                        {{$item['keterangan']}}
                     </td>
                     <td style="text-align: center">
-                        {{number_format($item->qty)}}
+                        {{number_format($item['qty'])}}
                     </td>
                     <td class="text-right">
-                        {{number_format($item->harga,0,",",".")}}
+                        {{number_format($item['harga'],0,",",".")}}
                     </td>
                     @if($totaldiscount != 0)
                         <td class="text-right">
-                            {{$item->discount}}%
+                            @if($item['discount'] != 0)
+                                {{floatval($item['discount'])}}%
+                            @endif
                         </td>
                     @endif
                     <td class="text-right">
-                        {{number_format($item->subtotal,0,",",".")}}
+                        {{number_format($item['subtotal'],0,",",".")}}
                     </td>
                 </tr>
 
@@ -122,22 +143,50 @@
             <td></td>
             <td></td>
             @if($totaldiscount != 0) <td></td> @endif
-            <td style="text-align: right"><b>Subtotal Jasa:</b></td>
+            <td style="text-align: right; font-size: 14px"><b>Subtotal Jasa:</b></td>
             <td style="text-align: right"><b>{{number_format($totaljasa)}}</b></td>
             </tfoot>
         </table>
     @endif
 
-    <table class="table">
+    <table class="table table-condensed table-borderless pb-0 mb-0">
         <tbody>
-        <tr>
-            <td class="text-right" style="width:80%;">
-                <h5>Grand total:</h5>
-            </td>
-            <td  class="text-right" style="width:20%;">
-                <h5>{{number_format($grandtotal)}}</h5>
-            </td>
-        </tr>
+        @if($serviceOrder->ppn == 1)
+            <tr>
+                <td class="text-right" style="width:80%;">
+                    <b>Total:</b>
+                </td>
+                <td  class="text-right" style="width:20%;">
+                    <b>{{number_format($grandtotal)}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="width:80%;">
+                    <b>PPN 10%:</b>
+                </td>
+                <td  class="text-right" style="width:20%;">
+                    <b>{{number_format(0.1*$grandtotal)}}</b>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-right" style="width:80%;">
+                    <h5>Grand total:</h5>
+                </td>
+                <td  class="text-right" style="width:20%;">
+                    <h5>{{number_format(0.1*$grandtotal+$grandtotal)}}</h5>
+                </td>
+            </tr>
+        @else
+            <tr>
+                <td class="text-right" style="width:80%;">
+                    <h5>Grand total:</h5>
+                </td>
+                <td  class="text-right" style="width:20%;">
+                    <h5>{{number_format($grandtotal)}}</h5>
+                </td>
+            </tr>
+        @endif
+
         </tbody>
     </table>
 

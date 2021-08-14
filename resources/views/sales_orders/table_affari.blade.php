@@ -12,23 +12,6 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($salesOrderAffari as $item)
-            <tr>
-                <td>{{$item->uid}}</td>
-                <td>{{$item->nama}}</td>
-                <td>{{$item->tanggal}}</td>
-                <td>{{$item->operator}}</td>
-                <td>
-                    {!! Form::open() !!}
-                    <div class='btn-group'>
-                        <a href="{{ route('salesOrder.showAffari', [$item->id]) }}" class='btn btn-default btn-xs'>
-                            <i class="far fa-eye"></i>
-                        </a>
-                    </div>
-                    {!! Form::close() !!}
-                </td>
-            </tr>
-        @endforeach
         </tbody>
     </table>
 </div>
@@ -48,7 +31,7 @@
             var dateStart = ConvertDateFromDiv(start_date);
             var dateEnd = ConvertDateFromDiv(end_date);
             var evalDate= ConvertDateFromDiv(aData[3]);
-            console.log(dateStart);
+            // console.log(dateStart);
 
             if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
                 ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
@@ -81,6 +64,9 @@
                 order: [[0, "desc"]],
                 pageLength: 50,
                 autoWidth: false,
+                ajax: {
+                    url: '{{URL::to('salesOrdersAffari')}}'
+                },
                 columns: [
                     {data: 'uid', name: 'uid', align:'center'},
                     {data: 'nama', name: 'nama'},
@@ -92,7 +78,10 @@
                     searchPlaceholder: "Pencarian",
                     search: "",
                     lengthMenu: "Baris: _MENU_",
-                }
+                },
+                initComplete: function () {
+                    $('.preloader').addClass('animate__animated animate__fadeOutUpBig');
+                },
             });
 
 
@@ -139,7 +128,7 @@
                     }
                 }, function(start, end, label) {
                     // Create date inputs
-                    console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+                    // console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
                 });
 
             });

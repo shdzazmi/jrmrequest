@@ -1,9 +1,4 @@
 <style>
-    #tbRequestSum tbody tr:hover{
-        /*cursor: pointer;*/
-        transition: all .15s ease-in-out;
-        background-color: #ddd;
-    }
 </style>
 
 <div class="table-responsive">
@@ -13,6 +8,7 @@
                 <th>#</th>
                 <th>Nama</th>
                 <th>Role</th>
+                <th>Divisi</th>
                 <th style="width: 80px">Action</th>
             </tr>
         </thead>
@@ -20,45 +16,54 @@
             @php $i = 1 @endphp
         @foreach($user as $users)
             <tr>
-                <th>{{$i++}}</th>
+                <td>{{$i++}}</td>
                 <td>{{ $users->name }}</td>
-                @if($users->role == 'Admin')
-                    <td>
+                <td>
+                    @if($users->role == 'Admin')
                         <a href="javascript:void(0)" class="badge badge-pill badge-primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Head"]) }}">Head</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
-                    </td>
-                @elseif($users->role == 'User')
-                    <td>
+                    @elseif($users->role == 'User')
                         <a href="javascript:void(0)" class="badge badge-pill badge-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Head"]) }}">Head</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
-                    </td>
-                @elseif($users->role == 'Master')
-                    <td>
+                    @elseif($users->role == 'Master')
                         <a href="javascript:void(0)" class="badge badge-pill badge-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Head"]) }}">Head</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
-                    </td>
-                @elseif($users->role == 'Dev')
-                    <td>
+                    @elseif($users->role == 'Dev')
                         <a href="javascript:void(0)" class="badge badge-pill badge-success" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Head"]) }}">Head</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
                             <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
                         </div>
-                    </td>
+                    @elseif($users->role == 'Head')
+                        <a href="javascript:void(0)" class="badge badge-pill badge-warning text-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ $users->role }}</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Master"]) }}">Master</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Head"]) }}">Head</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "Admin"]) }}">Admin</a>
+                            <a class="dropdown-item" href="{{ route("admin.edit", [$users->id, "User"]) }}">User</a>
+                        </div>
                 @endif
+                </td>
+                <td>
+                    {{$users->divisi}}
+                </td>
                 <td>
                     <button type="button" class="btn btn-xs btn-default" onclick="edituser({{$users->id}})">
                         <i class="fas fa-edit"></i> Edit
@@ -127,6 +132,7 @@
                     $('#name').val(data.name);
                     $('#username').val(data.email);
                     $('#role').val(data.role);
+                    $('#divisi').val(data.divisi);
                 },
                 error: function (data) {
                     toastError("Error", data);

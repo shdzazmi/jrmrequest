@@ -41,15 +41,9 @@
                 </div>
             @endif
             <!-- Operator Field -->
-            @if(Auth::user()->name == "Dev")
-                <div>
-                    {!! Form::hidden('user', null, ['id'=>'operator_input','style'=>'width=1px']) !!}
-                </div>
-            @else
-                <div>
-                    {!! Form::hidden('user', Auth::user()->name, ['id'=>'operator_input','style'=>'width=1px']) !!}
-                </div>
-            @endif
+            <div>
+                {!! Form::hidden('user', Auth::user()->name, ['id'=>'operator_input','style'=>'width=1px']) !!}
+            </div>
         </div>
     </div>
 </div>
@@ -69,6 +63,5 @@
                 next: "fas fa-chevron-right"
             }
         })
-
     </script>
 @endpush

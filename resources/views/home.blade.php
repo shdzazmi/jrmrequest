@@ -1,162 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Home')
-<style>
-    body {
-        background: #f2f4f8;
-        justify-content: space-around;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .kembali {
-        --bg-color: #c6e6c7;
-        --text-color-hover: #4C5656;
-        --box-shadow-color: rgba(98, 249, 129, 0.48);
-    }
-
-    .kuning {
-        --bg-color: #f8ffc0;
-        --text-color-hover: #4C5656;
-        --box-shadow-color: rgba(255, 191, 0, 0.48);
-    }
-
-    .biru {
-        --bg-color: #dce9ff;
-        --text-color-hover: #4C5656;
-        --box-shadow-color: rgba(172, 205, 255, 0.48);
-    }
-
-    .cardz {
-        background: #fff;
-        height: 321px;
-        border-radius: 30px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        box-shadow: 0 14px 26px rgba(0,0,0,0.1);
-        transition: all 0.3s ease-out;
-        text-decoration: none;
-    }
-
-    .cardz:hover {
-        transform: translateY(-5px) scale(1.005) translateZ(0);
-        box-shadow: 0 24px 36px rgba(0,0,0,0.11),
-        0 24px 46px var(--box-shadow-color);
-    }
-
-    .cardz:hover .overlayz {
-        transform: scale(6) translateZ(0);
-    }
-
-    .cardz:hover .circle {
-        border-color: var(--bg-color-light);
-        background: var(--bg-color);
-    }
-
-    .cardz:hover .circle:after {
-        background: var(--bg-color-light);
-    }
-
-    .cardz:hover p {
-        color: var(--text-color-hover);
-    }
-
-    .cardz:active {
-        transform: scale(1) translateZ(0);
-        box-shadow: 0 15px 24px rgba(0,0,0,0.11),
-        0 15px 24px var(--box-shadow-color);
-    }
-
-    .cardz p {
-        font-size: 17px;
-        color: #4C5656;
-        margin-top: 30px;
-        z-index: 1000;
-        transition: color 0.3s ease-out;
-    }
-
-    .circlez {
-        width: 131px;
-        height: 131px;
-        border-radius: 50%;
-        background: #fff;
-        border: 2px solid var(--bg-color);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        z-index: 1;
-        transition: all 0.3s ease-out;
-    }
-
-    .circlez:after {
-        content: "";
-        width: 118px;
-        height: 118px;
-        display: block;
-        position: absolute;
-        background: var(--bg-color);
-        border-radius: 50%;
-        transition: opacity 0.3s ease-out;
-    }
-
-    .circlez svg {
-        z-index: 10000;
-        transform: translateZ(0);
-    }
-
-    .overlayz {
-        width: 118px;
-        position: absolute;
-        height: 118px;
-        top: 50px;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        background: var(--bg-color);
-        z-index: 0;
-        transition: transform 0.3s ease-out;
-    }
-
-    .cardz-footer {
-        font-weight: 700;
-        border-bottom-left-radius: 14px;
-        border-bottom-right-radius: 14px;
-    }
-
-    .one-third {
-        width: 33%;
-        float: left;
-        padding: 10px 20px;
-        text-align: center;
-    }
-
-    .one-full {
-        width: 100%;
-        float: left;
-        padding: 10px 20px;
-        text-align: center;
-    }
-
-    .stat {
-        position: relative;
-        font-size: 24px;
-    }
-
-    .stat-value {
-        font-weight: 400;
-        font-size: 14px;
-        position: relative;
-        align-items: center;
-    }
-
-    .no-border {
-        border-right: none;
-    }
-
-</style>
+<link rel="stylesheet" type="text/css" href="{{asset('css/home.css')}}"/>
 @section('content')
 
     <section class="content-header">
@@ -171,6 +15,7 @@
 
     <div class="content px-3">
         <div class="row mb-2">
+
             <div class="col-lg-3 col-sm-3 p-3">
                 <a href="{{ route('salesOrders.index') }}" class="cardz kembali" style="align-items: center; height: 380px;">
                     <div class="overlayz"></div>
@@ -196,6 +41,29 @@
                             <div class="stat-value text-dark">Batal</div>
                         </div>
 
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-lg-3 col-sm-3 p-3">
+                <a href="{{ route('serviceOrders.index') }}" class="cardz merah" style="align-items: center; height: 380px;">
+                    <div class="overlayz"></div>
+                    <div class="circlez" style="margin-top: 50px">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(0.65,0,0,0.65,89.59999465942374,89.6)"><path xmlns="http://www.w3.org/2000/svg" d="m422.07 32h-332.14a29.639 29.639 0 0 0 -29.93 29.64v403.36a29.945 29.945 0 0 0 29.93 30h332.14a29.945 29.945 0 0 0 29.93-30v-403.36a29.639 29.639 0 0 0 -29.93-29.64z" fill="#ff7373" data-original="#c79a83" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m103 65h305v388h-305z" fill="#ffffff" data-original="#a5e2fb" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m168.41 192.88h26.9v26.89h-26.9z" fill="#85b9c9" data-original="#85b9c9" style=""/><path xmlns="http://www.w3.org/2000/svg" d="m361.98 311h-211.98a17 17 0 0 0 -17 17.02v47.98h246v-47.98a17.013 17.013 0 0 0 -17.02-17.02z" fill="#ffa2a2" data-original="#5fcda4" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m343.16 327.45a14.335 14.335 0 1 1 0 28.67h-30.65l5.54-28.67z" fill="#ff7373" data-original="#e87187" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m291.66 355.36 11.84 20.38h-99.39l11.83-20.38z" fill="#ccd3df" data-original="#ccd3df" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m190.15 327.45 5.55 28.67h-30.66a14.335 14.335 0 1 1 0-28.67z" fill="#ff7373" data-original="#e87187" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m343.69 263.18 17.35 47.8h-210.08l17.35-47.8a17.965 17.965 0 0 1 16.89-11.84h141.6a17.965 17.965 0 0 1 16.89 11.84z" fill="#ededed" data-original="#adf0e5" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m376.71 426.06a8.386 8.386 0 0 1 -8.32 8.45l-22.71.15a8.378 8.378 0 0 1 -8.44-8.32l-.19-25.86v-.34h39.48v.06z" fill="#5c5c5c" data-original="#6d7486" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m174.95 426.06a8.4 8.4 0 0 1 -8.33 8.45l-22.7.15a8.386 8.386 0 0 1 -8.45-8.32l-.18-25.86v-.34h39.47v.06z" fill="#5c5c5c" data-original="#6d7486" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m382.77 376h-253.54a2.026 2.026 0 0 0 -2.23 1.98v20.92a2.119 2.119 0 0 0 2.23 2.1h253.54a2.119 2.119 0 0 0 2.23-2.1v-20.92a2.026 2.026 0 0 0 -2.23-1.98z" fill="#a3a3a3" data-original="#978cac" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m90 465v-403.36a29.639 29.639 0 0 1 29.93-29.64h-30a29.639 29.639 0 0 0 -29.93 29.64v403.36a29.945 29.945 0 0 0 29.93 30h30a29.945 29.945 0 0 1 -29.93-30z" fill="#bf6161" data-original="#897268" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m174 17h164v61h-164z" fill="#ffa2a2" data-original="#798795" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m174 17h30v61h-30z" fill="#bf6161" data-original="#535d66" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m79.167 226.181a6 6 0 0 1 -6-6v-101.756a6 6 0 1 1 12 0v101.756a6 6 0 0 1 -6 6z" fill="#f4f8fc" data-original="#f4f8fc" style=""/><path xmlns="http://www.w3.org/2000/svg" d="m79.167 105.741a6 6 0 0 1 -6-6v-4.884a6 6 0 0 1 12 0v4.884a6 6 0 0 1 -6 6z" fill="#f4f8fc" data-original="#f4f8fc" style=""/><g xmlns="http://www.w3.org/2000/svg" id="_Path_9" data-name=" Path 9"><path d="m293.6 343.3h-79a6 6 0 0 1 0-12h79a6 6 0 0 1 0 12z" fill="#a3a3a3" data-original="#4ca987" style="" class=""/></g><path xmlns="http://www.w3.org/2000/svg" d="m343.585 121.816h-109.353a6 6 0 0 1 0-12h109.353a6 6 0 0 1 0 12z" fill="#77a0ad" data-original="#77a0ad" style="" class=""/><path xmlns="http://www.w3.org/2000/svg" d="m180.9 145.312a5.98 5.98 0 0 1 -4.016-1.544l-11.367-10.246a6 6 0 0 1 8.034-8.913l7.136 6.432 19.467-19.468a6 6 0 0 1 8.485 8.486l-23.495 23.5a5.984 5.984 0 0 1 -4.244 1.753z" fill="#49c160" data-original="#49c160" style="" class=""/><g xmlns="http://www.w3.org/2000/svg" fill="#77a0ad"><path d="m260.889 146.473h-26.657a6 6 0 0 1 0-12h26.657a6 6 0 0 1 0 12z" fill="#77a0ad" data-original="#77a0ad" style="" class=""/><path d="m343.585 201.117h-109.353a6 6 0 0 1 0-12h109.353a6 6 0 0 1 0 12z" fill="#77a0ad" data-original="#77a0ad" style="" class=""/><path d="m260.889 225.774h-26.657a6 6 0 1 1 0-12h26.657a6 6 0 0 1 0 12z" fill="#77a0ad" data-original="#77a0ad" style="" class=""/></g></g></svg>
+
+                    </div>
+                    <p style="margin-top: 30px"><b>Services Order</b></p>
+
+                    <div class="cardz-footer clearfix">
+                        <div class="one-half border-right">
+                            <div class="stat text-dark">{{$serviceOrderCount}}</div>
+                            <div class="stat-value text-dark">Total</div>
+                        </div>
+
+                        <div class="one-half">
+                            <div class="stat text-warning">{{$serviceOrderProses}}</div>
+                            <div class="stat-value text-dark">Proses</div>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -228,19 +96,19 @@
                 </a>
             </div>
 
-            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
+            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev" || Auth::user()->role == "Head")
                 <div class="col-lg-3 col-sm-3 p-3">
                     <a onclick="synchronize()" href="javascript:void(0)" class="cardz biru" style="align-items: center; height: 380px;">
                         <div class="overlayz"></div>
                         <div class="circlez" style="margin-top: 50px">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 497 497" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(0.65,0,0,0.65,86.97499999999997,96.97500000000002)"><g xmlns="http://www.w3.org/2000/svg"><g><path d="m307.26 415.971-58.758 10-58.762-10 10-53.333 48.76-10 48.76 10z" fill="#968d97" data-original="#968d97" style="" class=""/></g><g><path d="m297.26 362.638-13.246-10-16.754 10 10 53.333 14.254 10 15.746-10z" fill="#877f87" data-original="#877f87" style=""/></g><g><path d="m497 305.392v-247.867c0-11.046-8.954-20-20-20h-457c-11.046 0-20 8.954-20 20v247.867l248.5 10.845z" fill="#fbfbfb" data-original="#fbfbfb" style="" class=""/></g><g><path d="m477 37.525h-30c11.046 0 20 8.954 20 20v285.113c0 11.046-8.954 20-20 20h30c11.046 0 20-8.954 20-20v-285.113c0-11.046-8.954-20-20-20z" fill="#e6e6e6" data-original="#e6e6e6" style=""/></g><g><path d="m338.774 415.971h-180.548c-12.886 0-23.331 10.446-23.331 23.331v12.673h227.21v-12.673c0-12.886-10.446-23.331-23.331-23.331z" fill="#d4cfd5" data-original="#d4cfd5" style="" class=""/></g><g><path d="m0 305.393v37.245c0 11.046 8.954 20 20 20h457c11.046 0 20-8.954 20-20v-37.245z" fill="#d4cfd5" data-original="#d4cfd5" style="" class=""/></g><g><path d="m338.774 415.971h-30c12.885 0 23.331 10.446 23.331 23.331v12.673h30v-12.673c0-12.886-10.446-23.331-23.331-23.331z" fill="#c5bec6" data-original="#c5bec6" style="" class=""/></g><g><path d="m467 305.392v37.245c0 11.046-8.954 20-20 20h30c11.046 0 20-8.954 20-20v-37.245z" fill="#c5bec6" data-original="#c5bec6" style="" class=""/></g><g><circle cx="248.5" cy="333.483" fill="#b5adb7" r="7.5" data-original="#b5adb7" style="" class=""/></g><g><circle cx="248.5" cy="168.088" fill="#d1eaff" r="95.828" data-original="#d3fae3" style="" class=""/></g><g><path d="m248.5 72.26c-5.104 0-10.112.403-15 1.172 45.798 7.2 80.828 46.836 80.828 94.657s-35.03 87.457-80.828 94.657c4.888.768 9.896 1.172 15 1.172 52.924 0 95.828-42.904 95.828-95.828 0-52.926-42.904-95.83-95.828-95.83z" fill="#afdbff" data-original="#b1f8d3" style="" class=""/></g><g><path d="m405.995 459.475h-314.991c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h314.991c4.143 0 7.5 3.358 7.5 7.5s-3.357 7.5-7.5 7.5z" fill="#b5adb7" data-original="#b5adb7" style="" class=""/></g><g fill="#77d1b3"><path d="m270.074 197.072c-6.268 4.675-13.728 7.146-21.574 7.146-16.818 0-30.988-11.551-34.996-27.136l4.407 4.407c1.464 1.464 3.384 2.197 5.303 2.197s3.839-.732 5.303-2.197c2.929-2.929 2.929-7.678 0-10.607l-17.749-17.749c-2.929-2.929-7.678-2.929-10.607 0l-17.749 17.749c-2.929 2.929-2.929 7.678 0 10.607s7.678 2.929 10.606 0l5.045-5.045c4.001 24.231 25.089 42.774 50.436 42.774 11.103 0 21.664-3.5 30.543-10.122 3.32-2.477 4.004-7.176 1.527-10.496-2.475-3.319-7.172-4.003-10.495-1.528z" fill="#51a0e1" data-original="#77d1b3" style="" class=""/><path d="m314.587 154.687c-2.93-2.929-7.678-2.929-10.607 0l-5.044 5.044c-4.002-24.23-25.089-42.773-50.435-42.773-11.316 0-22.041 3.623-31.013 10.477-3.291 2.514-3.922 7.221-1.407 10.513 2.514 3.292 7.221 3.921 10.513 1.407 6.334-4.839 13.91-7.396 21.907-7.396 16.818 0 30.988 11.551 34.996 27.136l-4.407-4.408c-2.93-2.929-7.678-2.929-10.608 0-2.929 2.929-2.929 7.677 0 10.607l17.749 17.749c1.407 1.407 3.314 2.197 5.304 2.197 1.989 0 3.897-.79 5.304-2.197l17.749-17.749c2.928-2.93 2.928-7.678-.001-10.607z" fill="#51a0e1" data-original="#77d1b3" style="" class=""/></g></g></g></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.com/svgjs" version="1.1" width="512" height="512" x="0" y="0" viewBox="0 0 497 497" style="enable-background:new 0 0 512 512" xml:space="preserve" class=""><g transform="matrix(0.65,0,0,0.65,86.97499999999997,96.97500000000002)"><g xmlns="http://www.w3.org/2000/svg"><g><path d="m307.26 415.971-58.758 10-58.762-10 10-53.333 48.76-10 48.76 10z" fill="#968d97" data-original="#968d97" style="" class=""/></g><g><path d="m297.26 362.638-13.246-10-16.754 10 10 53.333 14.254 10 15.746-10z" fill="#877f87" data-original="#877f87" style=""/></g><g><path d="m497 305.392v-247.867c0-11.046-8.954-20-20-20h-457c-11.046 0-20 8.954-20 20v247.867l248.5 10.845z" fill="#fbfbfb" data-original="#fbfbfb" style="" class=""/></g><g><path d="m477 37.525h-30c11.046 0 20 8.954 20 20v285.113c0 11.046-8.954 20-20 20h30c11.046 0 20-8.954 20-20v-285.113c0-11.046-8.954-20-20-20z" fill="#e6e6e6" data-original="#e6e6e6" style=""/></g><g><path d="m338.774 415.971h-180.548c-12.886 0-23.331 10.446-23.331 23.331v12.673h227.21v-12.673c0-12.886-10.446-23.331-23.331-23.331z" fill="#d4cfd5" data-original="#d4cfd5" style="" class=""/></g><g><path d="m0 305.393v37.245c0 11.046 8.954 20 20 20h457c11.046 0 20-8.954 20-20v-37.245z" fill="#d4cfd5" data-original="#d4cfd5" style="" class=""/></g><g><path d="m338.774 415.971h-30c12.885 0 23.331 10.446 23.331 23.331v12.673h30v-12.673c0-12.886-10.446-23.331-23.331-23.331z" fill="#c5bec6" data-original="#c5bec6" style="" class=""/></g><g><path d="m467 305.392v37.245c0 11.046-8.954 20-20 20h30c11.046 0 20-8.954 20-20v-37.245z" fill="#c5bec6" data-original="#c5bec6" style="" class=""/></g><g><circlez cx="248.5" cy="333.483" fill="#b5adb7" r="7.5" data-original="#b5adb7" style="" class=""/></g><g><circlez cx="248.5" cy="168.088" fill="#d1eaff" r="95.828" data-original="#d3fae3" style="" class=""/></g><g><path d="m248.5 72.26c-5.104 0-10.112.403-15 1.172 45.798 7.2 80.828 46.836 80.828 94.657s-35.03 87.457-80.828 94.657c4.888.768 9.896 1.172 15 1.172 52.924 0 95.828-42.904 95.828-95.828 0-52.926-42.904-95.83-95.828-95.83z" fill="#afdbff" data-original="#b1f8d3" style="" class=""/></g><g><path d="m405.995 459.475h-314.991c-4.142 0-7.5-3.358-7.5-7.5s3.358-7.5 7.5-7.5h314.991c4.143 0 7.5 3.358 7.5 7.5s-3.357 7.5-7.5 7.5z" fill="#b5adb7" data-original="#b5adb7" style="" class=""/></g><g fill="#77d1b3"><path d="m270.074 197.072c-6.268 4.675-13.728 7.146-21.574 7.146-16.818 0-30.988-11.551-34.996-27.136l4.407 4.407c1.464 1.464 3.384 2.197 5.303 2.197s3.839-.732 5.303-2.197c2.929-2.929 2.929-7.678 0-10.607l-17.749-17.749c-2.929-2.929-7.678-2.929-10.607 0l-17.749 17.749c-2.929 2.929-2.929 7.678 0 10.607s7.678 2.929 10.606 0l5.045-5.045c4.001 24.231 25.089 42.774 50.436 42.774 11.103 0 21.664-3.5 30.543-10.122 3.32-2.477 4.004-7.176 1.527-10.496-2.475-3.319-7.172-4.003-10.495-1.528z" fill="#51a0e1" data-original="#77d1b3" style="" class=""/><path d="m314.587 154.687c-2.93-2.929-7.678-2.929-10.607 0l-5.044 5.044c-4.002-24.23-25.089-42.773-50.435-42.773-11.316 0-22.041 3.623-31.013 10.477-3.291 2.514-3.922 7.221-1.407 10.513 2.514 3.292 7.221 3.921 10.513 1.407 6.334-4.839 13.91-7.396 21.907-7.396 16.818 0 30.988 11.551 34.996 27.136l-4.407-4.408c-2.93-2.929-7.678-2.929-10.608 0-2.929 2.929-2.929 7.677 0 10.607l17.749 17.749c1.407 1.407 3.314 2.197 5.304 2.197 1.989 0 3.897-.79 5.304-2.197l17.749-17.749c2.928-2.93 2.928-7.678-.001-10.607z" fill="#51a0e1" data-original="#77d1b3" style="" class=""/></g></g></g></svg>
 
                         </div>
                         <p style="margin-top: 30px"><b>Sinkron Data</b></p>
 
                         <div class="one-full no-border">
-                            <div class="stat text-dark" style="font-size: 20px;">{{$time}}</div>
-                            <div class="stat-value text-dark">Last update</div>
+                            <div id="last_update" class="stat-value text-dark">Last update</div>
+                            <div class="stat text-dark" style="font-size: 20px;">{{$timeago}}</div>
                         </div>
                     </a>
                 </div>

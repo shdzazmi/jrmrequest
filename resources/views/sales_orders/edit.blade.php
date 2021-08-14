@@ -3,6 +3,11 @@
 
 @section('content')
 
+    <div class="animate__animated animate__fadeIn preloader flex-column justify-content-center align-items-center">
+        <img class="animate__animated animate__rubberBand animate__infinite" src="{{asset('storage/logo.png')}}" alt="AdminLTELogo" height="60" width="60">
+        <h3>Memuat . . .</h3>
+    </div>
+
     <div class = "row">
         <section class="content-header">
             <div class="container-fluid">
@@ -46,8 +51,6 @@
 @push('page_scripts')
 
     <script>
-
-        tampilLoading('Memuat...');
 
         getTotalPrice();
         function getTotalPrice() {
@@ -101,6 +104,7 @@
                         produk: table.rows[i].cells[1].innerHTML,
                         barcode: table.rows[i].cells[2].innerHTML,
                         kendaraan: table.rows[i].cells[3].innerHTML,
+                        keterangan: table.rows[i].cells[7].children[0].value,
                         harga: harga,
                         qty: qty,
                         subtotal: subtotal.toString()
@@ -117,16 +121,18 @@
                     });
                 }
 
+                // salesorder
                 var dataorder = {
                     uid : document.getElementById( "uid_input" ).value,
                     nama,
                     tanggal,
+                    tipeharga : $('#tipeharga').find(":selected").val(),
                     status : document.getElementById( "status_input" ).value,
                     operator : document.getElementById( "operator_input" ).value,
 
                 };
+                // console.log(data)
 
-                // salesorder
                 $.ajax({
                     url: urlOrder,
                     method:"PATCH",

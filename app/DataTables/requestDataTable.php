@@ -3,6 +3,8 @@
 namespace App\DataTables;
 
 use App\Models\request;
+use Yajra\DataTables\DataTableAbstract;
+use Yajra\DataTables\Html\Builder;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\EloquentDataTable;
 
@@ -12,7 +14,7 @@ class requestDataTable extends DataTable
      * Build DataTable class.
      *
      * @param mixed $query Results from query() method.
-     * @return \Yajra\DataTables\DataTableAbstract
+     * @return DataTableAbstract
      */
     public function dataTable($query)
     {
@@ -24,7 +26,7 @@ class requestDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\request $model
+     * @param request $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query(request $model)
@@ -35,7 +37,7 @@ class requestDataTable extends DataTable
     /**
      * Optional method if you want to use html builder.
      *
-     * @return \Yajra\DataTables\Html\Builder
+     * @return Builder
      */
     public function html()
     {

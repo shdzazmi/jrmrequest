@@ -48,6 +48,14 @@
 
                         {{--==FOLDER==--}}
                         <div class="card shadow">
+                            <a href="{{ route('fileCatalogues.index_produkgenuine') }}"><span class="mailbox-attachment-icon"><i class="far fa-folder"></i></span></a>
+                            <div class="mailbox-attachment-info" style="height:100%;">
+                                <a href="{{ route('fileCatalogues.index_produkgenuine') }}" class="mailbox-attachment-name"><i class="fas fa-folder"></i> Master Genuine</a>
+                                <span class="mailbox-attachment-size clearfix mt-1"></span>
+                            </div>
+                        </div>
+
+                        <div class="card shadow">
                             <a href="{{ route('fileCatalogues.index_daihatsu') }}"><span class="mailbox-attachment-icon has-img"><img src="https://cdn.iconscout.com/icon/free/png-256/daihatsu-3-202761.png" alt="Cover" style="height: 180px"></span></a>
                             <div class="mailbox-attachment-info" style="height:100%;">
                                 <a href="{{ route('fileCatalogues.index_daihatsu') }}" class="mailbox-attachment-name"><i class="fas fa-folder"></i> Daihatsu</a>
@@ -62,6 +70,14 @@
                                 <span class="mailbox-attachment-size clearfix mt-1"></span>
                             </div>
                         </div>
+
+                        <div class="card mb-2 shadow">
+                            <a href="{{route('fileCatalogues.index_excel')}}"><span class="mailbox-attachment-icon"><i class="far fa-file-excel"></i></span></a>
+                            <div class="mailbox-attachment-info" style="height:100%;">
+                                <a href="{{route('fileCatalogues.index_excel')}}" class="mailbox-attachment-name"><i class="fas fa-file-excel"></i> Mitsubishi</a>
+                            </div>
+                        </div>
+
                         {{--==FOLDER==--}}
 
                         @include('file_catalogues.grid')

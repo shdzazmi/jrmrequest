@@ -5,25 +5,29 @@
         <div class="card-tools">
             Tipe Harga:
             <select style="width: 80px" id="tipeharga" class="form-control form-control-sm">
-                <option value="harga">1</option>
-                <option value="harga2">2</option>
-                <option value="harga3">3</option>
-                <option value="hargamin">min</option>
+                @if(isset($tipeharga))
+                <option value="{{$tipeharga}}" selected hidden>{{$tipeharga}}</option>
+                @endif
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
             </select>
         </div>
     </div>
-    <div class="card-body table-responsive p-0" style="height: 250px; font-size:14px;">
-        <table class="table table-sm" id="orderlist">
+    <div class="card-body table-responsive p-0" style="font-size:12px; height: 250px;">
+        <table class="table table-sm" id="orderlist" style="font-size:12px;">
             <thead>
             <tr>
-                <th style="display:none;">ID</th>
-                <th style="text-align: center">Produk</th>
-                <th style="text-align: center">Barcode</th>
-                <th style="text-align: center">Kendaraan</th>
-                <th style="text-align: center">Harga</th>
-                <th style="text-align: center">Qty</th>
-                <th style="text-align: center">Subtotal</th>
-                <th style="text-align: center">
+                <th style="display:none; width: 20%;">ID</th>
+                <th style="text-align: center; width: 30%;">Produk</th>
+                <th style="text-align: center; width: 10%;">Barcode</th>
+                <th style="text-align: center; width: 10%;">Kendaraan</th>
+                <th style="text-align: center; width: 20%;">Harga</th>
+                <th style="text-align: center; width: 5%;">Qty</th>
+                <th style="text-align: center; width: 10%;">Subtotal</th>
+                <th style="text-align: center; width: 20%;">Keterangan</th>
+                <th style="text-align: center; width: 5%;">
                     <a href="#" data-toggle="tooltip" data-placement="top" title="Hapus semua">
                         <span style="color: darkred" onclick="deleteAllRow()" >
                             <i class="fas fa-ban"></i>
@@ -38,10 +42,10 @@
                     @foreach($listorder as $listorders)
                     <tr>
                         <td style="display:none;">{{ $listorders->id }}</td>
-                        <td>{{ $listorders->nama }}</td>
-                        <td>{{ $listorders->barcode }}</td>
-                        <td>{{ $listorders->kendaraan }}</td>
-                        <td>
+                        <td style="vertical-align: middle;">{{ $listorders->nama }}</td>
+                        <td style="vertical-align: middle;">{{ $listorders->barcode }}</td>
+                        <td style="vertical-align: middle;">{{ $listorders->kendaraan }}</td>
+                        <td style="vertical-align: middle;">
                             <div class="input-group-append">
                                 <input type="number" class="form-control form-control-sm inputharga dropdown-toggle" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listorders->harga}}">
                                     <div  class="dropdown-menu">
@@ -53,9 +57,10 @@
                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                             </div>
                         </td>
-                        <td><input type="number" value="{{ $listorders->qty }}" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td>
-                        <td class="text">{{ $listorders->subtotal }}</td>
-                        <td><button class="btn btn-tool" type="button" data-value="{{$listorders->id}}" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>
+                        <td style="vertical-align: middle;"><input class="form-control form-control-sm" style="width: 50px" type="number" value="{{ $listorders->qty }}" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td>
+                        <td class="text" style="vertical-align: middle;">{{ $listorders->subtotal }}</td>
+                        <td style="vertical-align: middle;"><input class="form-control form-control-sm" type="text" value="{{ $listorders->keterangan }}" id="ketInput"/></td>
+                        <td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="{{$listorders->id}}" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>
                     </tr>
                     @endforeach
                     @endif

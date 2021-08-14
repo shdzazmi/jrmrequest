@@ -1,18 +1,19 @@
 @extends('layouts.app')
-
+@section('title', 'Buat service order')
+<style>
+    div.dataTables_wrapper {
+        width:100% !important;
+    }
+</style>
 @section('content')
 
-    <div class = "row">
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="col-sm-12">
-                </div>
-            </div>
-        </section>
+    <div class="animate__animated animate__fadeIn preloader flex-column justify-content-center align-items-center">
+        <img class="animate__animated animate__rubberBand animate__infinite" src="{{asset('storage/logo.png')}}" alt="AdminLTELogo" height="60" width="60">
+        <h3>Memuat . . .</h3>
     </div>
 
-    <div class = "row">
-        <div class = "col-sm-5 pl-5 pb-5">
+    <div class = "row pt-3">
+        <div class = "col-sm-4 pl-3 pb-5">
             <div class="content">
                 <div class="card card-primary card-outline card-tabs">
                     <div class="card-header p-0 pt-1">
@@ -25,7 +26,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="card-body pl-3 pb-3" style="font-size: 14px">
+                    <div class="card-body pl-2 pr-2 pb-3" style="font-size: 12px">
                         <div class="tab-content" id="custom-tabs-one-tabContent">
                             <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
                                 @include('service_orders.table_produk')
@@ -39,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class = "col-sm-7 pr-5 pb-5">
+        <div class = "col-sm-8 pr-3 pb-3">
             <div class="content" style="font-size: 12px">
                 @include('service_orders.fields')
                 @include('service_orders.list_order')
@@ -51,9 +52,10 @@
 
 @endsection
 @push('page_scripts')
-
     <script>
-        tampilLoading('Memuat...');
+        $(document).ready(function() {
+                $('.preloader').addClass('animate__animated animate__fadeOutUpBig');
+        });
 
         var tbOrder = document.getElementById("table-body");
         function getTotalPrice() {
@@ -62,30 +64,28 @@
             var totaltext = document.getElementById("total-text");
             for(var i = 0; i < table.rows.length; i++)
             {
-                total = total + parseFloat(table.rows[i].cells[7].innerHTML);
+                total = total + parseInt(table.rows[i].cells[8].innerHTML.replaceAll([".",","],""));
             }
-            totaltext.innerHTML = numberFormat(total);
+            totaltext.innerHTML = numberFormat(total) ;
         }
 
         function updateSubtotal(id) {
-            var qty =  Number($(id).closest("tr").find("input[id*='qtyInput']").val());
-            var price = Number($(id).closest("tr").find("input[id*='hargaInput']").val());
-            var disc = Number($(id).closest("tr").find("input[id*='discInput']").val()) / 100;
+            var qty =  ($(id).closest("tr").find("input[id*='qtyInput']").val()) ;
+            var price = ($(id).closest("tr").find("input[id*='hargaInput']").val()) ;
+            var disc = ($(id).closest("tr").find("input[id*='discInput']").val()) / 100;
             var jumlah = qty*price;
             var discprice = jumlah*disc;
             var afterdisc = jumlah-discprice;
-            $(id).closest("tr").find('td:eq(7)').text(afterdisc);
+            $(id).closest("tr").find('td:eq(8)').text(afterdisc);
 
             getTotalPrice();
             return false;
         }
 
         function updateInputHarga(id) {
-            Number($(id).closest("tr").find("input[id*='hargaInput']").val($(id).attr('data-value')));
+            Number($(id).closest("tr").find("input[id*='hargaInput']").val($(id).attr('data-value').replace(".","")));
             updateSubtotal(id);
         }
-
-
 
         function uploadServiceOrder() {
 
@@ -93,28 +93,38 @@
             let tanggal = document.getElementById("tanggal_input").value;
             let mobil = document.getElementById("mobil_input").value;
             let nopol = document.getElementById("nopol_input").value;
+            let status = document.getElementById("status_input").value;
             let td_content = $('#table-body td').text();
             let table = document.getElementById( "table-body" );
+            let outlet = document.getElementById( "outlet_input" ).value;
+            var ppn = 0;
+            if(document.getElementById( "ppn_input" ).checked === true){
+                ppn = 1;
+            }
+            var tanpabongkar = 0;
+            if(document.getElementById( "tanpabongkar_input" ).checked === true){
+                tanpabongkar = 1;
+            }
+
             let url = '{{ route("serviceOrders.updateData") }}';
             let urlOrder = '{{ route("serviceOrders.store") }}';
 
-            if (td_content !== "" && nama !== "" && tanggal !== "" && mobil !== "" && nopol !== ""){
-                // tampilLoading('Menambahkan data...');
+            if (td_content !== "" && nama !== "" && tanggal !== "" && mobil !== "" && nopol !== "" && outlet !== ""){
+                tampilLoading('Menambahkan data...');
                 // listorder
                 for ( let i = 0; i < table.rows.length; i++ ) {
-                    let harga = table.rows[i].cells[4].children[0].value;
-                    let qty = table.rows[i].cells[5].children[0].value;
-                    let disc = table.rows[i].cells[6].children[0].value;
-                    let subtotal = table.rows[i].cells[7].innerHTML;
-                    let id = table.rows[i].cells[0].innerHTML;
+                    let harga = table.rows[i].cells[5].children[0].value;
+                    let qty = table.rows[i].cells[6].children[0].value;
+                    let disc = table.rows[i].cells[7].children[0].value;
+                    let subtotal = table.rows[i].cells[8].innerHTML;
                     let uid = document.getElementById( "uid_input" ).value;
                     let barcode = table.rows[i].cells[1].innerHTML;
                     let ketnama = table.rows[i].cells[3].children[0].value;
                     let type = table.rows[i].cells[2].innerHTML;
-                    let ket = table.rows[i].cells[8].children[0].value;
+                    let ket = table.rows[i].cells[9].children[0].value;
+                    let nourut = table.rows[i].cells[11].innerHTML;
 
                     let data = {
-                        id: id,
                         uid : uid,
                         barcode: barcode,
                         ketnama: ketnama,
@@ -123,7 +133,8 @@
                         discount: disc,
                         type: type,
                         keterangan: ket,
-                        subtotal: subtotal
+                        subtotal: subtotal,
+                        nourut: nourut,
                     };
                     // console.log(data);
                     $.ajax({
@@ -143,8 +154,13 @@
                     tanggal,
                     operator : document.getElementById( "operator_input" ).value,
                     mobil,
+                    status,
                     nopol,
+                    ppn,
+                    tanpabongkar,
+                    outlet
                 };
+                // console.log(dataorder);
 
                 // Serviceorder
                 $.ajax({

@@ -16,7 +16,7 @@
         <div class="content px-3">
 
             <div class="pb-2">
-                <a class="btn btn-default" href="{{ route('salesOrders.index') }}">Back</a>
+                <a class="btn btn-default" href="{{ url()->previous() }}">Back</a>
                 <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-file-download"></i>
                     Export
@@ -25,11 +25,13 @@
                     <a class="dropdown-item" href="{{ route('salesOrder.getPdf',[$salesOrder->uid]) }}"><i class="fas fa-file-pdf" style="color: darkred;"></i> PDF</a>
                     <a class="dropdown-item" href="{{ route('salesOrder.export_excel',[$salesOrder->uid]) }}"><i class="fas fa-file-excel" style="color: darkgreen;"></i> Excel</a>
                 </div>
-                @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
-                <a class="btn btn-outline-info float-right" href="{{ route('salesOrders.edit', [$salesOrder->id]) }}">
-                    <i class="fas fa-edit"></i>
-                    Edit
-                </a>
+                @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev" || Auth::user()->role == "Head")
+                    @if(substr($salesOrder->uid, 0, 1) !== 'S')
+                        <a class="btn btn-outline-info float-right" href="{{ route('salesOrders.edit', [$salesOrder->id]) }}">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </a>
+                    @endif
                 @endif
             </div>
             <div class="position-relative" style="height: 180px">

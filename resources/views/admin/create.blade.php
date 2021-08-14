@@ -67,6 +67,7 @@
                         <option value="" disabled selected hidden>Role</option>
                         <option>User</option>
                         <option>Admin</option>
+                        <option>Head</option>
                         <option>Master</option>
                     </select>
                     <div class="input-group-append">

@@ -8,11 +8,13 @@ use App\Models\SalesOrder;
 use App\Models\ListOrder;
 use App\Models\SalesOrderAffari;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -38,7 +40,7 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
     }
 
     /**
-    * @return \Illuminate\Support\Collection
+    * @return Collection
      * @var SalesOrder $row
     */
     public function view(): View
@@ -66,10 +68,10 @@ class SalesorderExport implements FromView, WithStyles, ShouldAutoSize, WithColu
         $sheet->getStyle('G')->getAlignment()->setWrapText(true);
         $sheet->getStyle('H')->getAlignment()->setWrapText(true);
         $sheet->getStyle('2')->getAlignment()->setWrapText(true);
-        $sheet->getStyle('I')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
-        $sheet->getStyle('J')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_ACCOUNTING);
-        $sheet->getStyle('D')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
-        $sheet->getStyle('E')->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('I')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_ACCOUNTING);
+        $sheet->getStyle('J')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_ACCOUNTING);
+        $sheet->getStyle('D')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+        $sheet->getStyle('E')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
         return [
             // Style

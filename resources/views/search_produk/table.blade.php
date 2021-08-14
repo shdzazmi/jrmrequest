@@ -61,21 +61,21 @@
                     </td>
                     <td style="width: 8%">
                         @if($item['lokasi1'] != "")
-                            <span class="badge badge-pill bg-secondary">1</span> {{ $item['lokasi1'] }}<br/>
+                            <span class="badge badge-pill bg-secondary">1</span>{{--<a href="javascript:void(0)" onclick="locate('B03-5C')"> --}}{{ $item['lokasi1'] }}{{--</a>--}}<br/>
                         @else
                             <span class="badge badge-pill bg-secondary">1</span> -<br/>
                         @endif
 
                         @if($item['lokasi2'] != "")
-                            <span class="badge badge-pill bg-secondary">2</span> {{ $item['lokasi2'] }}
+                            <span class="badge badge-pill bg-secondary">2</span>{{--<a href="javascript:void(0)" onclick="locate('D12-2A')">--}} {{ $item['lokasi2'] }}{{--</a>--}}<br/>
                         @else
                             <span class="badge badge-pill bg-secondary">2</span> -<br/>
                         @endif
 
                         @if($item['lokasi3'] != "")
-                            <span class="badge badge-pill bg-secondary">3</span> {{ $item['lokasi3'] }}
+                            <span class="badge badge-pill bg-secondary">3</span> {{ $item['lokasi3'] }}<br/>
                         @else
-                            <span class="badge badge-pill bg-secondary">3</span> -<br/>
+                            <span class="badge badge-pill bg-secondary">3</span> -
                         @endif
                     </td>
                     <td style="text-align:right; width: 5%">
@@ -85,11 +85,11 @@
                         <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
                     </td>
                     <td style="text-align:right; width: 5%">
-                        {{ $item['qty'] }}
+                        {{ $item['qty'] }} {{ $item['satuan'] }}
                     </td>
                     <td style="text-align:right; width: 5%">
-                        <span class="badge badge-pill bg-info">Toko:</span> {{ $item['qtyTk'] }}<br/>
-                        <span class="badge badge-pill bg-info">Gudang:</span> {{ $item['qtyGd'] }}<br/>
+                        <span class="badge bg-info">Toko:</span> {{ $item['qtyTk'] }}<br/>
+                        <span class="badge bg-info">Gudang:</span> {{ $item['qtyGd'] }}<br/>
                     </td>
                 </tr>
             @endforeach
@@ -97,14 +97,11 @@
         </table>
     </div>
 
-
-
 @push('page_scripts')
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.25/sorting/natural.js"></script>
 <script>
-    tampilLoading('Memuat...');
     $(document).ready(function() {
-        Swal.close();
         // Setup - add a text input to each footer cell
         $('#salesorderproduk tfoot th').each( function () {
             var title = $(this).text();
@@ -117,9 +114,13 @@
             fixedColumns: true,
             deferRender: true,
             cache: true,
+            oSearch: {"sSearch": "{{$searchquery}}"},
+            columnDefs: [
+                { type: 'natural', targets: 6 }
+            ],
             initComplete: function () {
                 $("#salesorderproduk").show();
-                // Apply the
+                // Apply the search
                 this.api().columns().every( function () {
                     var that = this;
 

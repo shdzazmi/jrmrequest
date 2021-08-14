@@ -3,10 +3,9 @@
         object-fit: cover;
         height: 100px;
     }
-
-
 </style>
-    @foreach($fileCatalogues as $fileCatalogue)
+
+@foreach($fileCatalogues as $fileCatalogue)
 <div class="card mb-2 shadow">
         @if($fileCatalogue->cover_path == "")
             <a href="{{$fileCatalogue->file_path}}"><span class="mailbox-attachment-icon"><i class="far fa-file-pdf"></i></span></a>

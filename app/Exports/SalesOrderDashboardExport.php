@@ -5,6 +5,7 @@ namespace App\Exports;
 use App\Models\SalesOrder;
 use App\Models\ListOrder;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
@@ -24,7 +25,7 @@ class SalesOrderDashboardExport implements FromView, WithStyles, ShouldAutoSize,
     }
 
     /**
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      * @var SalesOrder $row
      */
     public function view(): View

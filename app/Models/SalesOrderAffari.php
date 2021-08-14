@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $no_telepon
  * @property string $tanggal
  * @property string $status
+ * @property string $tipeharga
  */
 class SalesOrderAffari extends Model
 {

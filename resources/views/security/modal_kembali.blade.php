@@ -121,7 +121,7 @@
                         status : "Karyawan kembali",
                         keterangan : document.getElementById('keterangan-kembali').value,
                     };
-                    console.log(data);
+                    // console.log(data);
                     $.ajax({
                         url: url,
                         method: "POST",

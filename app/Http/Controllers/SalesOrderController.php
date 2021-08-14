@@ -12,6 +12,8 @@ use App\Models\SalesOrder;
 use App\Models\SalesOrderAffari;
 use App\Repositories\SalesOrderRepository;
 use Carbon\Carbon;
+use DateTime;
+use Exception;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -51,10 +53,6 @@ class SalesOrderController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->refreshAffari();
-
-        $salesOrders = $this->salesOrderRepository->all();
-        $salesOrderAffari = SalesOrderAffari::all();
         if(request()->ajax()) {
             return datatables()->of(SalesOrder::select('*'))
                 ->addColumn('action', 'sales_orders.bladeaction.action_sales_order')
@@ -62,10 +60,21 @@ class SalesOrderController extends AppBaseController
                 ->rawColumns(['action','status'])
                 ->make(true);
         }
-        return view('sales_orders.index')
-            ->with('salesOrders', $salesOrders)->with('salesOrderAffari', $salesOrderAffari);
+        return view('sales_orders.index')   ;
     }
 
+    public function index_affari(Request $request)
+    {
+        $this->refreshAffari();
+
+        if(request()->ajax()) {
+            return datatables()->of(SalesOrderAffari::select('*'))
+                ->addColumn('action', 'sales_orders.bladeaction.action_affari')
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('sales_orders.index_affari');
+    }
     /**
      * Show the form for creating a new SalesOrder.
      *
@@ -156,7 +165,8 @@ class SalesOrderController extends AppBaseController
                 'stokTk' => $produk->qtyTk,
                 'stokGd' => $produk->qtyGd,
                 'satuan' => $produk->satuan,
-                'merek' => $produk->merek
+                'merek' => $produk->merek,
+                'keterangan' => $request->keterangan
             ]);
         return false;
     }
@@ -217,7 +227,7 @@ class SalesOrderController extends AppBaseController
     {
         $salesOrder = $this->salesOrderRepository->find($id);
         $uid = $salesOrder->uid;
-
+        $tipeharga = $salesOrder->tipeharga;
         $listorder = ListOrder::all()->Where('uid', $uid);
         $produks = Produk::all();
 
@@ -230,6 +240,7 @@ class SalesOrderController extends AppBaseController
         return view('sales_orders.edit')
             ->with('salesOrder', $salesOrder)
             ->with('produks', $produks)
+            ->with('tipeharga', $tipeharga)
             ->with('listorder', $listorder);
     }
 
@@ -272,7 +283,7 @@ class SalesOrderController extends AppBaseController
      *
      * @param int $id
      *
-     * @throws \Exception
+     * @throws Exception
      *
      */
     public function destroy($id)
@@ -305,7 +316,7 @@ class SalesOrderController extends AppBaseController
             $listorder = ListOrder::all()->where('uid', $uid);
         }
         $totalharga = $listorder->sum('subtotal');
-        $date = new \DateTime($salesOrder->tanggal);
+        $date = new DateTime($salesOrder->tanggal);
         $tanggal = $date->format('d F Y');
         $nama = $salesOrder->nama;
         $produks = Produk::all();
@@ -349,6 +360,8 @@ class SalesOrderController extends AppBaseController
         $sqlquery .= "waktu as tanggal, ";
         $sqlquery .= "Operator as operator ";
         $sqlquery .= "FROM SOM ";
+        $sqlquery .= "WHERE Waktu >= DATEADD(day,-15,GETDATE())";
+        $sqlquery .= "and Waktu <= getdate()";
 
         $process = odbc_exec($sqlconnect, $sqlquery);
         $items = collect([]);
@@ -357,10 +370,10 @@ class SalesOrderController extends AppBaseController
             $itemAll = [
                 'uid' => utf8_encode(odbc_result($process, 'uid')),
                 'nama' => utf8_encode(odbc_result($process, 'nama')),
-                'tanggal' => \Carbon\Carbon::parse(utf8_encode(odbc_result($process, 'tanggal')))->format('d-m-Y H:i:s') ,
+                'tanggal' => Carbon::parse(utf8_encode(odbc_result($process, 'tanggal')))->format('d-m-Y H:i:s') ,
                 'operator' => utf8_encode(odbc_result($process, 'operator')),
                 'status' => 'Proses',
-                'created_at' => \Carbon\Carbon::now()->toDateTime(),
+                'created_at' => Carbon::now()->toDateTime(),
             ];
             $items->push($itemAll);
         }
@@ -389,6 +402,8 @@ class SalesOrderController extends AppBaseController
         $sqlquery .= "jumlah as subtotal ";
         $sqlquery .= "from SOD ";
         $sqlquery .= "LEFT JOIN stock ON SOD.IdItem = stock.id ";
+        $sqlquery .= "WHERE SOD.Waktu >= DATEADD(day,-15,GETDATE())";
+        $sqlquery .= "and SOD.Waktu <= getdate()";
         ListOrderAffari::truncate();
         $process = odbc_exec($sqlconnect, $sqlquery);
         $items = collect([]);

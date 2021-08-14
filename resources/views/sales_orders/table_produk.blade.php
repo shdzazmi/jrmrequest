@@ -99,7 +99,7 @@
                             <span class="badge badge-pill bg-secondary">min</span> {{ number_format($item['hargamin']) }}
                         </td>
                         <td style="text-align:right">
-                            {{ $item['qty'] }}
+                            {{ $item['qty'] }} {{ $item['satuan'] }}
                         </td>
                         <td style="text-align:right">
                             <span class="badge badge-pill bg-info">Toko:</span> {{ $item['qtyTk'] }}<br/>
@@ -138,6 +138,7 @@
 @push('page_scripts')
 
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.25/sorting/natural.js"></script>
 <script>
 
     $(document).ready(function() {
@@ -157,8 +158,12 @@
                 search: "",
                 lengthMenu: "Baris: _MENU_",
             },
+            columnDefs: [
+                { targets: [ 0 ], visible: false},
+                { targets: 7, type: 'natural'  }
+            ],
             initComplete: function () {
-                Swal.close();
+                // $('.preloader').addClass('animate__animated animate__fadeOutUpBig');
                 $("#salesorderproduk").show();
                 // Apply the search
                 this.api().columns().every( function () {
@@ -172,13 +177,7 @@
                         }
                     } );
                 } );
-            },
-            columnDefs: [
-                {
-                    targets: [ 0 ],
-                    visible: false,
-                }
-            ]
+            }
         });
 
         // klik produk di table
@@ -215,7 +214,7 @@
                             success: function (data) {
                                 if (data !== "added"){
                                     var tipeharga = $('#tipeharga').find(":selected").val();
-                                    if (tipeharga === 'harga'){
+                                    if (tipeharga === '1'){
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
@@ -234,14 +233,15 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle; width: 50px"><input class="form-control form-control-sm"  type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
                                             '<td style="vertical-align: middle;" class="text">' + data['b'].harga * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><input class="form-control form-control-sm"  type="text" value="" id="ketInput"/></td> ' +
                                             '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
 
                                         toastSuccess("Produk berhasil ditambahkan!")
-                                    } else if(tipeharga === 'harga2'){
+                                    } else if(tipeharga === '2'){
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
@@ -260,13 +260,14 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle; width: 50px"><input class="form-control form-control-sm"  type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
                                             '<td style="vertical-align: middle;" class="text">' + data['b'].harga2 * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><input class="form-control form-control-sm"  type="text" value="" id="ketInput"/></td> ' +
                                             '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
-                                    } else if(tipeharga === 'harga3'){
+                                    } else if(tipeharga === '3'){
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
@@ -285,13 +286,14 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle; width: 50px"><input class="form-control form-control-sm"  type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
                                             '<td style="vertical-align: middle;" class="text">' + data['b'].harga3 * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><input class="form-control form-control-sm"  type="text" value="" id="ketInput"/></td> ' +
                                             '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
-                                    } else if(tipeharga === 'hargamin'){
+                                    } else if(tipeharga === '4'){
                                         $('#table-body').append(
                                             '<tr>' +
                                             '<td style="display:none;">'+ data['a'].id+'</td>  ' +
@@ -310,28 +312,29 @@
                                             '<button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>'+
                                             '</div>' +
                                             '</td> ' +
-                                            '<td style="vertical-align: middle;"><input type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle; width: 50px"><input class="form-control form-control-sm"  type="number" value="'+qty+'" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
                                             '<td style="vertical-align: middle;" class="text">' + data['b'].hargamin * qty + '</td> ' +
+                                            '<td style="vertical-align: middle;"><input class="form-control form-control-sm"  type="text" value="" id="ketInput"/></td> ' +
                                             '<td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button></td>' +
                                             '</tr>'
 
                                         );
                                         toastSuccess("Produk berhasil ditambahkan!")
-                                        console.log('sukses')
+                                        // console.log('sukses')
                                     } else {
                                         toastError('Gagal!', 'Harga tidak ditemui')
-                                        console.log('harga')
+                                        // console.log('harga')
                                     }
                                 } else {
                                     toastError('Produk sudah ada list order!', '')
-                                    console.log('added')
+                                    // console.log('added')
                                 }
                                 getTotalPrice();
-                                console.log('get total')
+                                // console.log('get total')
                             },
                             error: function (data) {
                                 toastError("Gagal!", "Terjadi kesalahan internal.")
-                                console.log('internal')
+                                // console.log('internal')
                             }
                         })
                     } else {

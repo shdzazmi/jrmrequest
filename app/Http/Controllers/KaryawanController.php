@@ -7,6 +7,7 @@ use App\Http\Requests\UpdatekaryawanRequest;
 use App\Models\User;
 use App\Repositories\karyawanRepository;
 use App\Http\Controllers\AppBaseController;
+use Exception;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -30,7 +31,7 @@ class KaryawanController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $karyawans = $this->karyawanRepository->all();
+        $karyawans = $this->karyawanRepository->paginate(25);
 
         return view('karyawans.index')
             ->with('karyawans', $karyawans);
@@ -144,7 +145,7 @@ class KaryawanController extends AppBaseController
      *
      * @param int $id
      *
-     * @throws \Exception
+     * @throws Exception
      *
      * @return Response
      */

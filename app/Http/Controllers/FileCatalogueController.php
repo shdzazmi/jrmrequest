@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateFileCatalogueRequest;
 use App\Http\Requests\UpdateFileCatalogueRequest;
 use App\Models\FileCatalogue;
+use App\Models\ProdukCatalogue;
 use App\Repositories\FileCatalogueRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -35,6 +36,11 @@ class FileCatalogueController extends AppBaseController
             ->with('fileCatalogues', $fileCatalogues);
     }
 
+    public function index_genuine(Request $request)
+    {
+        return view('file_catalogues_genuine.index');
+    }
+
     public function index_daihatsu(Request $request)
     {
         $fileCatalogues = FileCatalogue::orderBy('Nama', 'ASC')->Where('kategori', 'daihatsu')->get();
@@ -49,6 +55,11 @@ class FileCatalogueController extends AppBaseController
 
         return view('file_catalogues.index_isuzu')
             ->with('fileCatalogues', $fileCatalogues);
+    }
+
+    public function index_excel(Request $request)
+    {
+        return view('file_catalogues.index_excel');
     }
 
     /**
@@ -170,14 +181,6 @@ class FileCatalogueController extends AppBaseController
         return view('file_catalogues.edit')->with('fileCatalogue', $fileCatalogue);
     }
 
-    /**
-     * Remove the specified FileCatalogue from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     */
     public function destroy($id)
     {
         $fileCatalogue = $this->fileCatalogueRepository->find($id);

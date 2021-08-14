@@ -24,6 +24,9 @@ class CreateRequestbarangsTable extends Migration
             $table->string('partno1')->nullable();
             $table->string('keterangan')->nullable();
             $table->string('user')->nullable();
+            $table->string('status')->nullable();
+            $table->string('approve_request')->nullable();
+            $table->string('approve_purchase')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

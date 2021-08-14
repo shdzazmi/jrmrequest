@@ -62,7 +62,7 @@
                 </div>
             </div>
 
-            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev")
+            @if(Auth::user()->role == "Admin" || Auth::user()->role == "Master" || Auth::user()->role == "Dev" || Auth::user()->role == "Head")
                 <!-- small card -->
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-gradient-primary">

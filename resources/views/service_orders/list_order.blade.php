@@ -1,19 +1,24 @@
-
+<style>
+    div.dataTables_wrapper {
+        width:100% !important;
+    }
+</style>
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Daftar order</h3>
+        <h5 class="card-title">Daftar order</h5>
     </div>
-    <div class="card-body table-responsive p-0">
-        <table class="table table-sm" id="orderlist">
+    <div class="card-body table-responsive p-0" style="height: 250px;">
+        <table class="table table-sm" id="orderlist" style="font-size: 14px;">
             <thead>
                 <tr>
                     <th style="display:none;">ID</th>
                     <th style="display:none;">Barcode</th>
-                    <th style="text-align: center; width: 35%">Produk</th>
-                    <th style="text-align: center; width: 15%">Harga</th>
+                    <th style="text-align: center; width: 30%">Produk</th>
+                    <th style="text-align: center; width: 10%">Detail</th>
+                    <th style="text-align: center; width: 25%">Harga</th>
                     <th style="text-align: center; width: 10%">Qty</th>
-                    <th style="text-align: center; width: 15%">Disc %</th>
-                    <th style="text-align: center; width: 25%">Jumlah</th>
+                    <th style="text-align: center; width: 10%">Disc %</th>
+                    <th style="text-align: center; width: 10%">Jumlah</th>
                     <th style="text-align: center; width: 25%">Ket</th>
                     <th style="text-align: center">
                         <a href="#" data-toggle="tooltip" data-placement="top" title="Hapus semua">
@@ -22,36 +27,83 @@
                             </span>
                         </a>
                     </th>
+                    <th style="display:none;">Nourut</th>
+
                 </tr>
             </thead>
 
-            <tbody id="table-body">
+            <tbody id="table-body" style="font-size: 12px">
                 @if(isset($listorder))
-                    @foreach($listorder as $listorders)
-                    <tr>
-                        <td style="display:none;">{{ $listorders->id }}</td>
-                        <td style="display:none;">{{ $listorders->barcode }}</td>
-                        <td style="display:none;">{{ $listorders->type }}</td>
-                        <td><input type="text" class="form-control form-control-sm" id="namaInput" value="{{ $listorders->ketnama}}"></td>
-                        <td><input type="number" class="form-control form-control-sm inputharga" id="hargaInput" style="text-align: right" onchange="updateSubtotal(this)" value="{{$listorders->harga}}"></td>
-                        <td><input type="number" class="form-control form-control-sm" value="{{ $listorders->qty }}" min="1" id="qtyInput" style="width: 50px; text-align: right" onchange="updateSubtotal(this);"/></td>
-                        <td><input type="number" class="form-control form-control-sm" value="{{ $listorders->discount }}" min="1" id="discInput" style="width: 60px; text-align: right" onchange="updateSubtotal(this);"/></td>
-                        <td class="text" style="text-align: right">{{ $listorders->subtotal }}</td>
-                        <td><input type="text" class="form-control form-control-sm" value="{{ $listorders->keterangan }}" style="width: 60px" id="ketInput"/></td>
-                        <td><button class="btn btn-tool" type="button" data-value="{{$listorders->id}}" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>
-                    </tr>
-                    @endforeach
-                    @endif
+
+{{--                    sparepart--}}
+                        @foreach($listorder as $listorders)
+                            @php
+                                $produk = $produks->firstWhere('barcode', $listorders->barcode)
+                            @endphp
+                        <tr>
+                            <td style="display:none;">{{ $listorders->id }}</td>
+                            <td style="display:none;">{{ $listorders->barcode }}</td>
+                            <td style="display:none;">{{ $listorders->type }}</td>
+                            <td style="vertical-align: middle;"><input style="font-size: 12px; width: 250px;" type="text" class="form-control form-control-sm" id="namaInput" value="{{ $listorders->ketnama}}"></td>
+                            <td style="vertical-align: middle;">
+                                @if(isset($produk->kd_supplier))
+                                    <span class="badge badge-pill bg-primary">{{$produk->kd_supplier}}</span><br/>
+                                    <span class="badge badge-pill bg-secondary">PN1</span> {{$produk->partno1 }}<br/>
+                                    <span class="badge badge-pill bg-secondary">PN2</span> {{$produk->partno2 }}
+                                @endif
+                            </td>
+                            @if(Auth::user()->role == 'Master'||Auth::user()->role == 'Admin' || Auth::user()->role == "Head")
+                                <td style="vertical-align: middle;"><input style="text-align: right; font-size: 12px;width: 120px;" type="number" class="form-control form-control-sm inputharga" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listorders->harga}}"></td>
+                            @else
+                                <td style="vertical-align: middle;"><input style="text-align: right; font-size: 12px;width: 120px;" type="number" class="form-control form-control-sm inputharga" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listorders->harga}}"></td>
+                            @endif
+                            <td style="vertical-align: middle;"><input style="width: 50px; text-align: right; font-size: 12px" type="number" class="form-control form-control-sm" value="{{ $listorders->qty }}" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td>
+                            <td style="vertical-align: middle;"><input style="width: 60px; text-align: right; font-size: 12px" type="number" class="form-control form-control-sm" value="{{ $listorders->discount }}" min="1" id="discInput" onchange="updateSubtotal(this);"/></td>
+                            <td style="text-align: right; vertical-align: middle;">{{ $listorders->subtotal }}</td>
+                            <td style="vertical-align: middle;"><input style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" value="{{ $listorders->keterangan }}" id="ketInput"/></td>
+                            <td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="{{$listorders->id}}" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>
+                            <td style="display:none;">{{ $listorders->nourut }}</td>
+                        </tr>
+                        @endforeach
+
+{{--                        jasa--}}
+                        @foreach($listjasa as $listjasas)
+                            @php
+                                $produk = $produks->firstWhere('barcode', $listjasas->barcode)
+                            @endphp
+                            <tr>
+                                <td style="display:none;">{{ $listjasas->id }}</td>
+                                <td style="display:none;">{{ $listjasas->barcode }}</td>
+                                <td style="display:none;">{{ $listjasas->type }}</td>
+                                <td style="vertical-align: middle;"><input  style="font-size: 12px; width: 250px;" type="text" class="form-control form-control-sm" id="namaInput" value="{{ $listjasas->ketnama}}"></td>
+                                <td style="vertical-align: middle;">
+                                </td>
+                                @if(Auth::user()->role == 'Master'||Auth::user()->role == 'Admin' || Auth::user()->role == "Head")
+                                    <td style="vertical-align: middle;"><input style="text-align: right; font-size: 12px;width: 120px;" type="number" class="form-control form-control-sm inputharga" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listjasas->harga}}"></td>
+                                @else
+                                    <td style="vertical-align: middle;"><input  style="text-align: right; font-size: 12px;width: 120px;" type="number" class="form-control form-control-sm inputharga" id="hargaInput" onchange="updateSubtotal(this)" value="{{$listjasas->harga}}" ></td>
+                                @endif
+                                <td style="vertical-align: middle;"><input  style="width: 50px; text-align: right; font-size: 12px" type="number" class="form-control form-control-sm" value="{{ $listjasas->qty }}" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td>
+                                <td style="vertical-align: middle;"><input  style="width: 60px; text-align: right; font-size: 12px" type="number" class="form-control form-control-sm" value="{{ $listjasas->discount }}" min="1" id="discInput" onchange="updateSubtotal(this);"/></td>
+                                <td style="text-align: right; vertical-align: middle;">{{ $listjasas->subtotal }}</td>
+                                <td style="vertical-align: middle;"><input  style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" value="{{ $listjasas->keterangan }}" id="ketInput"/></td>
+                                <td style="vertical-align: middle;"><button class="btn btn-tool" type="button" data-value="{{$listjasas->id}}" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>
+                                <td style="display:none;">{{ $listjasas->nourut }}</td>
+                            </tr>
+                        @endforeach
+
+
+                @endif
             </tbody>
         </table>
     </div>
-    <div class="card-footer">
+    <div class="card-footer pb-0">
         <div class="row">
-            <div class="col-sm-3">
-                <h5>Total</h5>
+            <div class="col-sm-3 p-0">
+                <h6>Total</h6>
             </div>
-            <div class="col-sm-9 text-right">
-                <h5 id="total-text">0</h5>
+            <div class="col-sm-9 p-0 text-right">
+                <h6 id="total-text">0</h6>
             </div>
         </div>
     </div>

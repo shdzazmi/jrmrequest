@@ -83,7 +83,7 @@
 
         </div>
         <audio id="beep">
-            <source src="beep.mp3" type="audio/mpeg">
+            <source src="{{asset('storage/beep.mp3')}}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
@@ -91,7 +91,8 @@
 @endsection
 
 @push('page_scripts')
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.0.3/html5-qrcode.min.js"></script>
     <script>
 
         var kodeLokasi = document.getElementById('kodelokasi');
@@ -284,11 +285,10 @@
             }
         }
 
-
         var resultContainer = document.getElementById('qr-reader-results');
         var lastResult, countResults = 0;
         var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250 });
+            "qr-reader", { fps: 30, qrbox: 250, aspectRatio: 2 });
         html5QrcodeScanner.render(onScanSuccess);
 
         function onScanSuccess(qrCodeMessage) {

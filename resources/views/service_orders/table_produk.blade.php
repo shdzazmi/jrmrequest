@@ -9,51 +9,21 @@
 </style>
 
 <!-- Table produk -->
-<div class="table-responsive p-0">
-    <table class="table dataTable display"  id="serviceorderproduk">
+<div class="table-responsive p-0" style="max-width: 100%; overflow: auto;">
+    <table class="table dataTable display"  id="serviceorderproduk" style="font-size: 14px;">
         <thead>
         <tr style="text-align:center">
             <th>Barcode</th>
+            <th>Nama</th>
+            <th>Kendaraan</th>
+            <th>Part1</th>
+            <th>Part2</th>
             <th style="width: 60%">Produk</th>
             <th style="width: 15%">Harga</th>
-            <th style="width: 10%">Stok Total</th>
             <th style="width: 15%">Stok</th>
         </tr>
         </thead>
         <tbody id="tbserviceorder">
-        @foreach($produks as $item)
-            <tr class='clickable-row'>
-                <td>
-                    {{ $item['barcode'] }}
-                </td>
-                <td>
-                    {{ $item['ketnama'] }} • {{ $item['kendaraan'] }}<br/>
-                    <span class="badge bg-dark">{{ $item['barcode'] }}</span>
-                    <span class="badge bg-primary">{{ $item['merek'] }}</span><br/>
-                    @if($item['partno1'] != "")
-                        <span class="badge badge-pill bg-secondary">1</span> {{ $item['partno1'] }}<br/>
-                    @else
-                        <span class="badge badge-pill bg-secondary">1</span> -<br/>
-                    @endif
-
-                    @if($item['partno2'] != "")
-                        <span class="badge badge-pill bg-secondary">2</span> {{ $item['partno2'] }}<br/>
-                    @else
-                        <span class="badge badge-pill bg-secondary">2</span> -<br/>
-                    @endif
-                </td>
-                <td style="text-align:right">
-                    {{ number_format($item['hargamin']) }}
-                </td>
-                <td style="text-align:right">
-                    {{ $item['qty'] }}
-                </td>
-                <td style="text-align:right">
-                    <span class="badge badge-pill bg-info">Tk:</span> {{ $item['qtyTk'] }}<br/>
-                    <span class="badge badge-pill bg-info">Gd:</span> {{ $item['qtyGd'] }}<br/>
-                </td>
-            </tr>
-        @endforeach
         </tbody>
     </table>
 </div>
@@ -88,30 +58,40 @@
 
     $(document).ready(function() {
 
-        // Setup - add a text input to each footer cell
-        $('#serviceorderproduk tfoot th').each( function () {
-            var title = $(this).text();
-            $(this).html( '<input type="search" class="form-control"/>' );
-        } );
-
-        const tbProduk = $('#serviceorderproduk').DataTable({
+        let tbProduk = $('#serviceorderproduk').DataTable({
+            ajax: {
+                url: '{{URL::to('getserviceOrders')}}'
+            },
             select: true,
+            cache: true,
+            serverSide: true,
+            order: [[1, "asc"]],
+            processing: true,
             autoWidth: false,
             language: {
                 searchPlaceholder: "Pencarian",
                 search: "",
-                lengthMenu: "   Baris: _MENU_",
+                lengthMenu: "   Baris: _MENU_"
             },
-            initComplete: function () {
-                Swal.close();
-                $("#serviceorderproduk").show();
-            },
+            columns: [
+                {data: 'barcode', name: 'barcode'},
+                {data: 'nama', name: 'nama'},
+                {data: 'kendaraan', name: 'kendaraan'},
+                {data: 'partno1', name: 'partno1'},
+                {data: 'partno2', name: 'partno2'},
+                {data: 'produk', name: 'produk'},
+                {data: 'hargamin', name: 'hargamin', render: $.fn.dataTable.render.number('.', ',', 0, '')},
+                {data: 'qtystok', name: 'qtystok'}
+            ],
             columnDefs: [
                 {
-                    targets: [ 0 ],
+                    targets: [ 0,1,2,3,4 ],
                     visible: false,
                 }
-            ]
+            ],
+            initComplete: function () {
+                $("#serviceorderproduk").show();
+            }
         });
 
         // klik produk di table
@@ -122,6 +102,7 @@
         $('#serviceorderproduk tbody ').on('click', 'tr', function (e, dt, type, indexes) {
             rowData = null;
             rowData = tbProduk.row(this).data();
+            // console.log(rowData.barcode);
             qtyInput.value = '';
             $("#qtyModal").modal("show");
             $('body').on('shown.bs.modal', '#qtyModal', function () {
@@ -135,8 +116,7 @@
                         var url = '{{ route("serviceOrders.put") }}';
                         var data = {
                             uid : document.getElementById( "uid_input" ).value,
-                            type : 'part',
-                            barcode: rowData[0]
+                            barcode: rowData.barcode
                         };
 
                         $.ajax({
@@ -148,30 +128,60 @@
                             },
                             success: function (data) {
                                 if (data !== "added"){
-                                    $('#table-body').append(
-                                        '<tr>' +
-                                        '<td style="display:none;">'+ data['a'].id+'</td>  ' +
-                                        '<td style="display:none;">'+ data['a'].barcode+'</td>  ' +
-                                        '<td style="display:none;">part</td>  ' +
-                                        '<td style="vertical-align: middle"><input type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].nama + '"></td>  ' +
-                                        '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="'+data['b'].hargamin+'" style="width: 100px" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
-                                        '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="'+qty+'" min="1" id="qtyInput" style="width: 50px" onchange="updateSubtotal(this);"/></td> ' +
-                                        '<td style="vertical-align: middle"><input type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" style="width: 60px" onchange="updateSubtotal(this);"/></td> ' +
-                                        '<td style="vertical-align: middle" class="text">' + data['b'].hargamin * qty + '</td> ' +
-                                        '<td style="vertical-align: middle"><input type="text" class="form-control form-control-sm" id="ketInput" style="width: 60px"/></td> ' +
-                                        '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" data-value="'+ data['a'].id +'" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
-                                        '</tr>'
-                                    );
+                                    // Fitur kunci edit data
+                                    if (data['c'] === "master"){
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                            '<td style="display:none;"></td>  ' +
+                                            '<td style="display:none;">'+ rowData.barcode+'</td>  ' +
+                                            '<td style="display:none;">part</td>  ' +
+                                            '<td style="vertical-align: middle"><input style="font-size: 12px; width: 220px " type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].ketnama + '"></td>  ' +
+                                            '<td style="vertical-align: middle;">'+
+                                            '<span class="badge bg-primary">'+data['b'].kd_supplier+'</span><br/>'+
+                                            'PN1: '+ data['b'].partno1 +'<br/>'+
+                                            'PN2: '+ data['b'].partno2 +
+                                            '</td>'+
+                                            '<td style="vertical-align: middle"><input style="width: 120px; font-size: 12px" type="number" data-a-sign="" data-a-dec="," data-a-sep="." class="form-control form-control-sm" value="'+data['b'].hargamin+'" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="'+qty+'" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" onchange="updateSubtotal(this);"/></td> ' +
+                                            '<td style="vertical-align: middle; text-align: right;" class="text">' + data['b'].hargamin * qty + '</td> ' +
+                                            '<td style="vertical-align: middle"><input style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" id="ketInput"/></td> ' +
+                                            '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
+                                            '<td style="display:none;">'+ data['a'] +'</td>  ' +
+                                            '</tr>'
+                                        );
+                                    } else {
+                                        $('#table-body').append(
+                                            '<tr>' +
+                                                '<td style="display:none;"></td>  ' +
+                                                '<td style="display:none;">'+ rowData.barcode +'</td>  ' +
+                                                '<td style="display:none;">part</td>  ' +
+                                                '<td style="vertical-align: middle"><input style="font-size: 12px; width: 220px" type="text" class="form-control form-control-sm" id="namaInput" value="' + data['b'].ketnama + '"></td>  ' +
+                                                '<td style="vertical-align: middle;">'+
+                                                '<span class="badge bg-primary">'+data['b'].kd_supplier+'</span><br/>'+
+                                                'PN1: '+ data['b'].partno1 +'<br/>'+
+                                                'PN2: '+ data['b'].partno2 +
+                                                '</td>'+
+                                                '<td style="vertical-align: middle"><input style="width: 120px; font-size: 12px" type="number" data-a-sign="" data-a-dec="," data-a-sep="." class="form-control form-control-sm" value="'+data['b'].hargamin+'" id="hargaInput" onchange="updateSubtotal(this);"/></td> ' +
+                                                '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="'+qty+'" min="1" id="qtyInput" onchange="updateSubtotal(this);"/></td> ' +
+                                                '<td style="vertical-align: middle"><input style="width: 50px; font-size: 12px" type="number" class="form-control form-control-sm" value="0" min="1" id="discInput" onchange="updateSubtotal(this);"/></td> ' +
+                                                '<td style="vertical-align: middle; text-align: right;" class="text">' + data['b'].hargamin * qty + '</td> ' +
+                                                '<td style="vertical-align: middle"><input style="width: 60px; font-size: 12px" type="text" class="form-control form-control-sm" id="ketInput"/></td> ' +
+                                                '<td style="vertical-align: middle"><button class="btn btn-tool" type="button" onclick="deleteRowService(this)"><i class="fas fa-trash"></i></button></td>' +
+                                                '<td style="display:none;">'+ data['a'] +'</td>  ' +
+                                            '</tr>'
+                                        );
+                                    }
                                     toastSuccess("Produk berhasil ditambahkan!")
                                 } else {
                                     toastError('Produk sudah ada list order!', '')
-                                    console.log('added')
+                                    // console.log('added')
                                 }
                                 getTotalPrice();
                             },
                             error: function (data) {
                                 toastError("Gagal!", "Terjadi kesalahan internal.")
-                                console.log('internal')
+                                // console.log('internal')
                             }
                         })
                     } else {

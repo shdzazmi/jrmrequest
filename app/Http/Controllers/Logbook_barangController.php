@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateLogbook_barangRequest;
 use App\Models\requestbarang;
 use App\Repositories\Logbook_barangRepository;
 use App\Http\Controllers\AppBaseController;
+use Exception;
 use Illuminate\Http\Request;
 use Flash;
 use Response;
@@ -126,7 +127,7 @@ class Logbook_barangController extends AppBaseController
      *
      * @param int $id
      *
-     * @throws \Exception
+     * @throws Exception
      *
      */
     public function destroy($id)

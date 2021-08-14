@@ -17,10 +17,15 @@ class ServiceOrderRepository extends BaseRepository
      * @var array
      */
     protected $fieldSearchable = [
-        'id',
         'uid',
+        'nourut',
+        'no_penawaran',
         'nama',
+        'mobil',
+        'nopol',
+        'status',
         'tanggal',
+        'outlet',
         'operator'
     ];
 

@@ -6,10 +6,12 @@ use App\Http\Requests\CreaterequestbarangRequest;
 use App\Http\Requests\UpdaterequestbarangRequest;
 use App\Models\Produk;
 use App\Models\requestbarang;
+use App\Models\SalesOrder;
 use App\Repositories\requestbarangRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Flash;
+use Illuminate\Support\Facades\Auth;
 use Response;
 
 use App\Exports\RequestbarangExport;
@@ -28,34 +30,86 @@ class requestbarangController extends AppBaseController
         $this->requestbarangRepository = $requestbarangRepo;
     }
 
-    /**
-     * Display a listing of the requestbarang.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-
     public function index(Request $request)
     {
-
-        if(request()->ajax()) {
-            return datatables()->of(requestbarang::select('nama', 'barcode', 'kd_supplier', 'kendaraan',\DB::raw('COUNT(id) as amount'))
-                ->groupBy('nama', 'barcode', 'kd_supplier', 'kendaraan'))
-                ->addColumn('amount', 'requestbarangs.bladeaction.amount_requestbarangs')
-                ->addColumn('namabarcode', 'requestbarangs.bladeaction.nama_requestbarangs')
-                ->addColumn('action', 'requestbarangs.bladeaction.dashboard_action_requestbarangs')
-                ->rawColumns(['namabarcode','amount','action'])
-                ->make(true);
-        }
-        return view('requestbarangs.index');
+        $requestbarangs = requestbarang::Where('status', 'Approved')->orWhere('status', 'Done')->get();
+        return view('requestbarangs.index')->with('requestbarangs', $requestbarangs);
     }
 
-    /**
-     * Show the form for creating a new requestbarang.
-     *
-     * @return Response
-     */
+    public function index_all($nama = null)
+    {
+        $requestbarangs = requestbarang::all();
+
+        return view('requestbarangs.index_all')->with('requestbarangs', $requestbarangs)
+            ->with('nama', $nama);
+    }
+
+    public function index_approval(Request $request)
+    {
+        $requestbarangs = requestbarang::all()->Where('status', 'Requested');
+        $produks = Produk::all();
+        return view('requestbarangs.index_approval')->with('requestbarangs', $requestbarangs)->with('produks', $produks);
+    }
+
+    public function approve_request($id)
+    {
+        $requestbarangs = requestbarang::find($id);
+        if($requestbarangs->status == 'Proses'){
+            $requestbarangs->status = 'Requested';
+            $requestbarangs->approve_request = Auth::user()->name;
+            $requestbarangs->requested_at = now();
+            $requestbarangs->save();
+            Flash::success('Berhasil, request dikonfirmasi.');
+        } else if ($requestbarangs->status == 'Requested') {
+            $requestbarangs->status = 'Proses';
+            $requestbarangs->approve_request = null;
+            $requestbarangs->requested_at = null;
+            $requestbarangs->save();
+            Flash::success('Request dibatalkan.');
+        } else {
+            Flash::error('Gagal, hubungi IT.');
+        }
+        return redirect(route('showAll'));
+    }
+
+    public function approve_purchase($id)
+    {
+        $requestbarangs = requestbarang::find($id);
+        if($requestbarangs->status == 'Requested'){
+            $requestbarangs->status = 'Approved';
+            $requestbarangs->approve_purchase = Auth::user()->name;
+            $requestbarangs->approved_at = now();
+            $requestbarangs->save();
+            Flash::success('Berhasil, request disetujui.');
+        } else if ($requestbarangs->status == 'Approved') {
+            $requestbarangs->status = 'Requested';
+            $requestbarangs->approve_purchase = null;
+            $requestbarangs->requested_at = null;
+            $requestbarangs->save();
+            Flash::success('Request dibatalkan.');
+        } else {
+            Flash::error('Gagal, request belum dikonfirmasi oleh Kepala Gudang.');
+        }
+        return redirect(route('requestbarang.index_approval'));
+    }
+
+    public function request_done($id)
+    {
+        $requestbarangs = requestbarang::find($id);
+        if($requestbarangs->status == 'Approved'){
+            $requestbarangs->status = 'Done';
+            $requestbarangs->save();
+            Flash::success('Berhasil, request selesai.');
+        } else if ($requestbarangs->status == 'Done') {
+            $requestbarangs->status = 'Approved';
+            $requestbarangs->save();
+            Flash::success('Request dibatalkan.');
+        } else {
+            Flash::error('Gagal, request belum dikonfirmasi.');
+        }
+        return redirect(route('requestbarangs.index'));
+    }
+
     public function create()
     {
         $produks = Produk::all();
@@ -63,13 +117,6 @@ class requestbarangController extends AppBaseController
             ->with('produks', $produks);
     }
 
-    /**
-     * Store a newly created requestbarang in storage.
-     *
-     * @param CreaterequestbarangRequest $request
-     *
-     * @return Response
-     */
     public function store(CreaterequestbarangRequest $request)
     {
         $input = $request->all();
@@ -80,13 +127,6 @@ class requestbarangController extends AppBaseController
         return redirect(route('requestbarangs.index'));
     }
 
-    /**
-     * Display the specified requestbarang.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function show($id)
     {
         $requestbarang = $this->requestbarangRepository->find($id);
@@ -100,25 +140,6 @@ class requestbarangController extends AppBaseController
         return view('requestbarangs.show')->with('requestbarang', $requestbarang);
     }
 
-    public function showAll($nama = null)
-    {
-        if(request()->ajax()) {
-            return datatables()->of(requestbarang::select('*'))
-                ->addColumn('namabarcode', 'requestbarangs.bladeaction.nama_requestbarangs')
-                ->addColumn('action', 'requestbarangs.bladeaction.action_requestbarangs')
-                ->rawColumns(['action','namabarcode'])
-                ->make(true);
-        }
-        return view('requestbarangs.show_all')->with('nama', $nama);
-    }
-
-    /**
-     * Show the form for editing the specified requestbarang.
-     *
-     * @param int $id
-     *
-     * @return Response
-     */
     public function edit($id)
     {
         $requestbarang = $this->requestbarangRepository->find($id);
@@ -133,14 +154,6 @@ class requestbarangController extends AppBaseController
             ->with('produks', $produks);
     }
 
-    /**
-     * Update the specified requestbarang in storage.
-     *
-     * @param int $id
-     * @param UpdaterequestbarangRequest $request
-     *
-     * @return Response
-     */
     public function update($id, UpdaterequestbarangRequest $request)
     {
         $requestbarang = $this->requestbarangRepository->find($id);
@@ -158,15 +171,6 @@ class requestbarangController extends AppBaseController
         return redirect(route('requestbarangs.index'));
     }
 
-    /**
-     * Remove the specified requestbarang from storage.
-     *
-     * @param int $id
-     *
-     * @throws \Exception
-     *
-     * @return Response
-     */
     public function destroy($id)
     {
         $requestbarang = $this->requestbarangRepository->find($id);

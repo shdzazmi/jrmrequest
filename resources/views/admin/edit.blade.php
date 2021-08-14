@@ -42,18 +42,31 @@
                     @enderror
                 </div>
                 <div class="input-group mb-3">
-                    <select name="role" id="role" class="form-control" required>
-                        <option value="" disabled selected hidden>Role</option>
-                        <option>User</option>
-                        <option>Admin</option>
-                        <option>Master</option>
-                    </select>
+
+                        <select name="role" id="role" class="form-control" required>
+                            <option value="" disabled selected hidden>Role</option>
+                            <option>User</option>
+                            <option>Admin</option>
+                            <option>Head</option>
+                            <option>Master</option>
+                        </select>
+
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-tools"></span></div>
                     </div>
-                    @error('name')
-                    <span class="error invalid-feedback">{{ $message }}</span>
-                    @enderror
+                </div>
+                <div class="input-group mb-3">
+
+                    <select name="divisi" id="divisi" class="form-control" required>
+                        <option value="" disabled selected hidden>Pilih Divisi</option>
+                        <option>Sparepart</option>
+                        <option>Service</option>
+                        <option>Purchasing</option>
+                    </select>
+
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-store"></span></div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -69,6 +82,7 @@
 
     @push('page_scripts')
 
+        <script>
 
             function updateuser() {
                 var url = '{{ route("admin.update") }}';
@@ -76,7 +90,8 @@
                     id : document.getElementById("ids").value,
                     name : document.getElementById("name").value,
                     email : document.getElementById("username").value,
-                    role : document.getElementById("role").value
+                    role : document.getElementById("role").value,
+                    divisi : document.getElementById("divisi").value
                 };
 
                 $.ajax({

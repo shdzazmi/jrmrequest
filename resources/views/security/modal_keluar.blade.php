@@ -115,7 +115,7 @@
                         status : "Karyawan keluar",
                         keterangan : document.getElementById('keterangan-keluar').value,
                     };
-                    console.log(data);
+                    // console.log(data);
                     $.ajax({
                         url: url,
                         method: "POST",

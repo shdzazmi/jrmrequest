@@ -51,7 +51,7 @@
             var dateStart = ConvertDateFromDiv(start_date);
             var dateEnd = ConvertDateFromDiv(end_date);
             var evalDate= ConvertDateFromDiv(aData[3]);
-            console.log(dateStart);
+            // console.log(dateStart);
 
             if ( ( isNaN( dateStart ) && isNaN( dateEnd ) ) ||
                 ( isNaN( dateStart ) && evalDate <= dateEnd ) ||
@@ -106,6 +106,9 @@
                     searchPlaceholder: "Pencarian",
                     search: "",
                     lengthMenu: "Baris: _MENU_",
+                },
+                initComplete: function () {
+                        $('.preloader').addClass('animate__animated animate__fadeOutUpBig');
                 }
             });
 
@@ -152,7 +155,7 @@
                     }
                 }, function(start, end, label) {
                     // Create date inputs
-                    console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
+                    // console.log("A new date selection was made: " + start.format('DD-MM-YYYY') + ' to ' + end.format('DD-MM-YYYY'));
                 });
 
             });

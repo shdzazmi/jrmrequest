@@ -21,6 +21,11 @@
     .a {
         text-indent: 50px;
     }
+
+    tr td{
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 </style>
 <body>
 <table class="table table-nopadding" >
@@ -61,6 +66,7 @@ Tanggal: {{$salesOrder->tanggal}}</p>
             <th style="text-align: center; width:7%;">Qty</th>
             <th style="text-align: center; width:8%;">Satuan</th>
             <th style="text-align: center; width:15%;">Harga</th>
+            <th style="text-align: center; width:20%;">Ket</th>
             <th style="text-align: center; width:20%;">Subtotal</th>
         </tr>
         </thead>
@@ -86,6 +92,9 @@ Tanggal: {{$salesOrder->tanggal}}</p>
             </td>
             <td class="text-right">
                 {{number_format($item->harga,0,",",".")}}
+            </td>
+            <td>
+                 {{$item->keterangan}}
             </td>
             <td class="text-right">
                  {{number_format($item->subtotal,0,",",".")}}
